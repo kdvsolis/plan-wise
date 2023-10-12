@@ -1,0 +1,10 @@
+bcrypt
+python-dateutil
+fastapi
+python-dotenv
+uvicorn
+Jinja2
+pyjwt
+psycopg2 # or any other driver for your database dialect
+sqlalchemy # the ORM library we are using
+sqlacodegen
