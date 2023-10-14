@@ -1,0 +1,75 @@
+﻿@page "/registration"
+
+<div class="container w-container">
+    <div class="form-wrapper">
+        <div class="w-form">
+            <form id="wf-form-signup">
+                <h1 class="heading">Sign Up</h1>
+                <div>
+                    <label for="signup-name">First Name</label>
+                    <input type="text" class="text-field-3 w-input" maxlength="256" name="signup-name" data-name="signup-name" placeholder="e.g. Howard" id="signup-name" required />
+                </div>
+                <div class="text-field-wrapper">
+                    <label for="signup-email">Email</label>
+                    <input type="email" class="text-field-4 w-input" maxlength="256" name="signup-email" placeholder="e.g. howard.thurman@gmail.com" id="signup-email" required />
+                </div>
+                <div>
+                    <label for="signup-password">Password</label>
+                    <input type="password" class="text-field-5 w-input" maxlength="256" name="signup-password" id="password" required />
+                </div>
+                <div>
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" class="text-field-5 w-input" maxlength="256" name="confirm-password" id="confirm-password" required />
+                </div>
+                <button type="button" class="uui-button-4 button-width w-button" id="register-button">Register</button>
+            </form>
+            <div class="w-form-done">
+                <div>Thank you! Your email has been registered. Go to login page to sign in</div>
+            </div>
+            <div class="w-form-fail">
+                <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
+        </div>
+        <div>
+            <div>Already have an account? <a href="/login">Log in</a></div>
+        </div>
+    </div>
+</div>
+
+<style scoped>
+    @@import "/css/components.css";
+    @@import "/css/budgeting-app.css";
+</style>
+
+<script type="module">
+    import account from '/services/account-service.js';
+
+    document.getElementById("register-button").addEventListener('click', async () => {
+        var name = document.getElementById('signup-name').value;
+        var email = document.getElementById('signup-email').value;
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirm-password').value;
+
+        if (!name || !email || !password || !confirmPassword) {
+            showError("All fields are required.");
+        } else if (password !== confirmPassword) {
+            showError("Passwords do not match.");
+        } else {
+            try {
+                var response = await account.register({ name, username: email, password });
+                if (response.success) {
+                    showError("none", "error");
+                } else {
+                    showError("block", "none");
+                }
+            } catch (e) {
+                showError("block", "none");
+            }
+        }
+    });
+
+    function showError(error, success) {
+        document.querySelector('.w-form-done').style.display = success;
+        document.querySelector('.w-form-fail').style.display = error;
+    }
+</script>

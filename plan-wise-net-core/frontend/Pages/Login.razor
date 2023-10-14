@@ -1,0 +1,79 @@
+﻿@page "/login"
+
+
+<div class="container w-container">
+    <div class="form-wrapper">
+        <div class="w-form">
+            <form id="wf-form-signup" @submit.prevent="submitForm">
+                <h1 class="heading">Login</h1>
+                <div>
+                    <label for="email" class="field-label-2">Email</label>
+                    <input type="email"
+                           class="text-field w-input"
+                           maxlength="256"
+                           name="email"
+                           data-name="email"
+                           placeholder="e.g. howard.thurman@gmail.com"
+                           id="username"
+                           required />
+                </div>
+                <div>
+                    <label for="password-2" class="field-label">Password</label>
+                    <input type="password"
+                           class="text-field-2 w-input"
+                           maxlength="256"
+                           placeholder=""
+                           id="password"
+                           data-ms-member="password"
+                           required />
+                </div>
+                <div class="relative w-clearfix">
+                    <a href="#" class="forgot-password-link">Forgot password</a>
+                </div>
+                <button type="button" class="uui-button-4 button-width w-button" id="login-button">Login</button>
+                <div>
+                    <div class="alert alert-danger" role="alert" id="error" style="display: none;"></div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <div class="text-block-2">
+                Need an account? <a href="/registration">Sign up</a>
+            </div>
+        </div>
+    </div>
+</div>
+<style scoped>
+@@import "/css/components.css";
+@@import "/css/budgeting-app.css";
+</style>
+
+<script type="module" defer>
+    import account from '../services/account-service.js';
+    document.getElementById("login-button").addEventListener('click', async () => {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        if (!username || !password) {
+            showError("Username and password are required.");
+        } else {
+            try {
+
+                var response = await account.login({ username, password });
+                if (response.success) {
+                } else {
+                    showError(response.message);
+                }
+            } catch(e){
+                showError(e.message);
+            }
+        }
+    });
+    
+
+    function showError(message) {
+        var errorElement = document.getElementById('error');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+</script>

@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/plan-wise-net-core/backend/bin/Debug/net6.0
+/plan-wise-net-core/backend/obj
+/plan-wise-net-core/frontend/bin/Debug/net6.0
+/plan-wise-net-core/frontend/obj
+/plan-wise-net-core/.vs
