@@ -1,4 +1,5 @@
 ﻿@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
 @using System.IdentityModel.Tokens.Jwt;
 
 <script>
@@ -7,33 +8,7 @@
     }
 </script>
 
-
-@code {
-    private string token = null;
-    private string UlStyle = null ;
-    private bool IsSmallScreen = false;
-
-    protected override async Task OnInitializedAsync()
-    {
-        token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
-        IsSmallScreen = await JSRuntime.InvokeAsync<bool>("isSmallScreen");
-        UlStyle = $"visibility: {(token != null ? "visible" : IsSmallScreen ? "hidden; display: none; margin-top: 10px" : "hidden")}";
-        if (string.IsNullOrEmpty(token))
-        {
-            token = null;
-        }
-        else
-        {
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-
-            if (jwtToken.ValidTo < DateTime.UtcNow)
-            {
-                token = null;
-            }
-        }
-    }
-}
+<CascadingParameter Name="token" Value="@token" />
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -108,57 +83,65 @@
             @if (token != null)
             {
                 <div class="d-flex right-menu uui-navbar07_button-wrapper" id="header-login-logout">
-                    <button class="uui-button-4 w-inline-block">Sign out</button>
+                    <button class="uui-button-4 w-inline-block" @onclick="HandleSignOut">Sign out</button>
                 </div>
             }
         </div>
     </div>
 </nav>
 
+@code {
+    [CascadingParameter]
+    public string token { get; set; }
 
-<script type="module">
-    // import { storageHandler }  from "/utils/storage_handler.js";
-    // var mediaQuery = window.matchMedia('(max-width: 992px)').matches;
+    [Parameter]
+    public EventCallback<string> OnLogin { get; set; }
 
-    // // Compute ulStyle base sa token at mediaQuery
-    // var token = storageHandler.localStorageGet("token");
-    // var loginRegisterElement = document.getElementById("header-login-register");
-    // var loginLogoutElement = document.getElementById("header-login-logout");
-    // var headerNavList = document.getElementById("header-nav-list");
+    private string UlStyle = null;
+    private bool IsSmallScreen = false;
 
-    // if (token) {
-    //     loginRegisterElement.classList.remove("d-flex");
-    //     loginRegisterElement.classList.remove("right-menu");
-    //     loginRegisterElement.classList.remove("uui-navbar07_button-wrapper");
-    //     loginLogoutElement.classList.add("d-flex");
-    //     loginLogoutElement.classList.add("right-menu");
-    //     loginLogoutElement.classList.add("uui-navbar07_button-wrapper");
+    protected override async Task OnParametersSetAsync()
+    {
+        token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        IsSmallScreen = await JSRuntime.InvokeAsync<bool>("isSmallScreen");
+        UlStyle = $"visibility: {(token != null ? "visible" : IsSmallScreen ? "hidden; display: none; margin-top: 10px" : "hidden")}";
+        if (string.IsNullOrEmpty(token))
+        {
+            token = null;
+        }
+        else
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
 
-    //     loginRegisterElement.style.display = "none";
-    //     headerNavList.style = {
-    //         visibility: 'visible'
-    //     };
-    // } else {
-    //     loginRegisterElement.classList.add("d-flex");
-    //     loginRegisterElement.classList.add("right-menu");
-    //     loginRegisterElement.classList.add("uui-navbar07_button-wrapper");
-    //     loginLogoutElement.classList.remove("d-flex");
-    //     loginLogoutElement.classList.remove("right-menu");
-    //     loginLogoutElement.classList.remove("uui-navbar07_button-wrapper");
+            if (jwtToken.ValidTo < DateTime.UtcNow)
+            {
+                token = null;
+            }
+        }
+    }
 
-    //     loginLogoutElement.style.display = "none";
-    //     if (mediaQuery) {
-    //         headerNavList.style.display = 'none';
-    //         headerNavList.style.marginTop = '10px';
-    //     } else {
-    //         headerNavList.style.visibility = 'hidden';
-    //     }
-    // }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+            StateHasChanged();
+        }
+    }
 
-    // // Methods
-    // function signOut() {
-    //     storageHandler.localStorageDelete('token');
-    // }
+    private async Task HandleLogin(string token)
+    {
+        this.token = token;
+        StateHasChanged(); // Trigger a re-render
+    }
 
-    // // Rest of your JavaScript logic here
-</script>
+    private async Task HandleSignOut()
+    {
+        // Remove the token from localStorage
+        await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "token");
+
+        // Navigate back to the login page
+        NavigationManager.NavigateTo("/login");
+    }
+}

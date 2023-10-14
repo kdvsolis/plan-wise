@@ -1,11 +1,29 @@
 ﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
 
-<div class="page">
-    <NavMenu />
+<CascadingAuthenticationState>
+    <div class="page">
+        <NavMenu OnLogin="HandleLogin" />
 
-    <main>
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+        <main>
+            <article class="content px-4">
+                @Body
+            </article>
+        </main>
+    </div>
+</CascadingAuthenticationState>
+
+@code {
+    private string token;
+
+    private async Task HandleLogin(string token)
+    {
+        this.token = token;
+        StateHasChanged(); // Trigger a re-render
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+    }
+}

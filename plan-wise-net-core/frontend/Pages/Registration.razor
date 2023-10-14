@@ -1,34 +1,36 @@
 ﻿@page "/registration"
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using System.IdentityModel.Tokens.Jwt;
 
 <div class="container w-container">
     <div class="form-wrapper">
         <div class="w-form">
-            <form id="wf-form-signup">
+            <EditForm Model="registerModel" OnValidSubmit="HandleValidSubmit">
                 <h1 class="heading">Sign Up</h1>
                 <div>
                     <label for="signup-name">First Name</label>
-                    <input type="text" class="text-field-3 w-input" maxlength="256" name="signup-name" data-name="signup-name" placeholder="e.g. Howard" id="signup-name" required />
+                    <InputText id="name" @bind-Value="registerModel.name" class="text-field-3 w-input" required />
                 </div>
                 <div class="text-field-wrapper">
                     <label for="signup-email">Email</label>
-                    <input type="email" class="text-field-4 w-input" maxlength="256" name="signup-email" placeholder="e.g. howard.thurman@gmail.com" id="signup-email" required />
+                    <InputText id="email" @bind-Value="registerModel.username" class="text-field-4 w-input" required />
                 </div>
                 <div>
                     <label for="signup-password">Password</label>
-                    <input type="password" class="text-field-5 w-input" maxlength="256" name="signup-password" id="password" required />
+                    <InputText id="password" @bind-Value="registerModel.password" type="password" class="text-field-5 w-input" required />
                 </div>
                 <div>
                     <label for="confirm-password">Confirm Password</label>
-                    <input type="password" class="text-field-5 w-input" maxlength="256" name="confirm-password" id="confirm-password" required />
+                    <InputText id="confirmPassword" @bind-Value="registerModel.confirmPassword" type="password" class="text-field-5 w-input" required />
                 </div>
-                <button type="button" class="uui-button-4 button-width w-button" id="register-button">Register</button>
-            </form>
-            <div class="w-form-done">
-                <div>Thank you! Your email has been registered. Go to login page to sign in</div>
-            </div>
-            <div class="w-form-fail">
-                <div>Oops! Something went wrong while submitting the form.</div>
-            </div>
+                <button type="submit" class="uui-button-4 button-width w-button">Register</button>
+            </EditForm>
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="@(isRegistrationSuccessful ? "alert alert-success" : "alert alert-danger")" role="alert">@errorMessage</div>
+            }
         </div>
         <div>
             <div>Already have an account? <a href="/login">Log in</a></div>
@@ -41,35 +43,76 @@
     @@import "/css/budgeting-app.css";
 </style>
 
-<script type="module">
-    import account from '/services/account-service.js';
+@code {
+    private RegisterModel registerModel = new RegisterModel();
+    private string errorMessage = string.Empty;
 
-    document.getElementById("register-button").addEventListener('click', async () => {
-        var name = document.getElementById('signup-name').value;
-        var email = document.getElementById('signup-email').value;
-        var password = document.getElementById('password').value;
-        var confirmPassword = document.getElementById('confirm-password').value;
+    private bool isRegistrationSuccessful = false;
 
-        if (!name || !email || !password || !confirmPassword) {
-            showError("All fields are required.");
-        } else if (password !== confirmPassword) {
-            showError("Passwords do not match.");
-        } else {
-            try {
-                var response = await account.register({ name, username: email, password });
-                if (response.success) {
-                    showError("none", "error");
-                } else {
-                    showError("block", "none");
-                }
-            } catch (e) {
-                showError("block", "none");
+    private async Task HandleValidSubmit()
+    {
+        if (registerModel.password != registerModel.confirmPassword)
+        {
+            errorMessage = "Passwords do not match.";
+            return;
+        }
+
+        var response = await Http.PostAsJsonAsync("/api/register", registerModel);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<RegisterResult>();
+            if (result!.success)
+            {
+                isRegistrationSuccessful = true;
+                errorMessage = "Thank you! Your email has been registered. Go to login page to sign in";
+            }
+            else
+            {
+                errorMessage = result.message;
             }
         }
-    });
-
-    function showError(error, success) {
-        document.querySelector('.w-form-done').style.display = success;
-        document.querySelector('.w-form-fail').style.display = error;
+        else
+        {
+            errorMessage = "An error occurred while registering.";
+        }
     }
-</script>
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (isRegistrationSuccessful)
+        {
+            // Wait for 3 seconds before navigating to the login page
+            Task.Delay(3000).ContinueWith(_ => NavigationManager.NavigateTo("/login"));
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        if (!string.IsNullOrEmpty(token))
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            if (jwtToken.ValidTo > DateTime.UtcNow)
+            {
+                NavigationManager.NavigateTo("/");
+            }
+        }
+    }
+
+    public class RegisterModel
+    {
+        public string name { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public string confirmPassword { get; set; }
+    }
+
+    public class RegisterResult
+    {
+        public bool success { get; set; }
+        public string message { get; set; }
+    }
+}

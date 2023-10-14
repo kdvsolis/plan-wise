@@ -1,0 +1,202 @@
+﻿@page "/categories"
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using System.IdentityModel.Tokens.Jwt;
+@using System.Net.Http.Headers;
+<div class="uui-page-padding">
+    <div class="uui-container-large">
+        <div class="uui-padding-vertical-xhuge">
+            <div class="uui-text-align-center">
+                <div class="uui-max-width-large align-center">
+                    <h2 class="uui-heading-medium">Categories</h2>
+                    <div class="uui-space-xsmall"></div>
+                    <div class="uui-text-size-large">Add and manage your expense <strong>categories</strong></div>
+                    <button class="button w-button" @onclick="inputToggle">@(showInput ? "-" : "+")</button>
+                </div>
+            </div>
+            <div class="uui-table">
+                <div class="uui-table_heading-row">
+                    <div class="uui-table_heading-row-text">Category Name</div>
+                    <div class="uui-table_heading-row-text">Monthly Average</div>
+                    <div class="uui-table_heading-row-text">Action</div>
+                </div>
+                @if (showInput)
+                {
+                    <input id="new-category" @bind="newCategory" type="text" class="w-layout-grid uui-table_row new-row uui-table_feature uui-pricing07_row-lead-text w-100" @onkeyup="@(e => createCategory(e))" />
+                }
+                @foreach (var category in categories)
+                {
+                    var index = categories.IndexOf(category);
+                    <li class="@getClass(index)">
+                        <div class="@($"w-layout-grid uui-table_row {getClass(index)}")">
+                            <div class="uui-table_feature">
+                                <div class="uui-pricing07_row-lead-text">
+                                    <input type="text" class="expense-input" @bind="@categories[index].category_name" />
+                                </div>
+                            </div>
+                            <div class="uui-table_row">
+                                <div class="uui-pricing07_row-lead-text">
+                                    $@category.average_monthly_expense?.ToString("F2")
+                                </div>
+                            </div>
+                            <div class="uui-table_row">
+                                <div class="action">
+                                    <button type="button" class="btn btn-warning" @onclick="@(() => updateCategory(index))">Save</button>
+                                    <!-- Commented out as per your request -->
+                                    <!--
+                                    <button type="button" class="btn btn-danger" @onclick="@(() => deleteCategory(index))">Delete</button>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style scoped>
+    @@import "/css/components.css";
+    @@import "/css/budgeting-app.css";
+    .no-bullet {
+        list-style: none;
+    }
+    .expense-input{
+      width: 100%;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid rgba(0, 0, 0, .1);
+      background: transparent;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,Oxygen,Fira Sans,Droid Sans,sans-serif;
+        font-size: 1.125rem;
+    }
+    .action{
+      display: flex;
+      flex-direction: row;
+      column-gap: 10px;
+    }
+</style>
+
+
+@code {
+    private List<Category> categories = new List<Category>();
+    private string newCategory;
+    private bool showInput;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        if (string.IsNullOrEmpty(token))
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            // Check if the token is expired
+            if (jwtToken.ValidTo < DateTime.UtcNow)
+            {
+                // Token is expired, redirect to login page
+                NavigationManager.NavigateTo("/login");
+            }
+        }
+        await fetchCategories();
+    }
+
+    private async Task fetchCategories()
+    {
+        try
+        {
+            string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+            var response = await Http.GetFromJsonAsync<ResponseCategoryList>("/api/categories");
+            categories = response!.category.ToList();
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+        }
+    }
+
+    private async Task createCategory(KeyboardEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(newCategory) && e.Key == "Enter")
+        {
+            var body = new { category_name = newCategory };
+            try
+            {
+                string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+                Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+                var response = await Http.PostAsJsonAsync("/api/categories", body);
+                if (response.IsSuccessStatusCode)
+                {
+                    var category = await response.Content.ReadFromJsonAsync<ResponseCategory>();
+                    categories.Add(category.category);
+                    newCategory = "";
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Please enter a category name");
+        }
+    }
+
+    private void inputToggle()
+    {
+        showInput = !showInput;
+    }
+
+    private async Task updateCategory(int index)
+    {
+        await Http.PutAsJsonAsync($"/api/categories/{categories[index].id}", categories[index]);
+    }
+
+    private async Task deleteCategory(int index)
+    {
+        var response = await Http.DeleteAsync($"/api/categories/{categories[index].id}");
+        if (response.IsSuccessStatusCode)
+        {
+            categories.RemoveAt(index);
+        }
+    }
+
+    private string getClass(int index)
+    {
+        return index % 2 == 1 ? "background-color-gray50 no-bullet" : "no-bullet";
+    }
+
+    public class ResponseCategoryList
+    {
+        public bool success { get; set; }
+        public string message { get; set; }
+        public List<Category>? category { get; set; }
+    }
+
+    public class ResponseCategory
+    {
+        public bool success { get; set; }
+        public string message { get; set; }
+        public Category category { get; set; }
+    }
+
+    public class Category
+    {
+        public int id { get; set; }
+        public string category_name { get; set; }
+        public string @class { get; set; }
+        public float? average_monthly_expense { get; set; }
+    }
+}

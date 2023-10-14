@@ -1,40 +1,32 @@
 ﻿@page "/login"
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using System.IdentityModel.Tokens.Jwt;
 
 
 <div class="container w-container">
     <div class="form-wrapper">
         <div class="w-form">
-            <form id="wf-form-signup" @submit.prevent="submitForm">
+            <EditForm Model="loginModel" OnValidSubmit="HandleValidSubmit">
                 <h1 class="heading">Login</h1>
                 <div>
                     <label for="email" class="field-label-2">Email</label>
-                    <input type="email"
-                           class="text-field w-input"
-                           maxlength="256"
-                           name="email"
-                           data-name="email"
-                           placeholder="e.g. howard.thurman@gmail.com"
-                           id="username"
-                           required />
+                    <InputText id="username" @bind-Value="loginModel.username" class="text-field w-input" required />
                 </div>
                 <div>
                     <label for="password-2" class="field-label">Password</label>
-                    <input type="password"
-                           class="text-field-2 w-input"
-                           maxlength="256"
-                           placeholder=""
-                           id="password"
-                           data-ms-member="password"
-                           required />
+                    <InputText id="password" @bind-Value="loginModel.password" type="password" class="text-field-2 w-input" required />
                 </div>
                 <div class="relative w-clearfix">
                     <a href="#" class="forgot-password-link">Forgot password</a>
                 </div>
-                <button type="button" class="uui-button-4 button-width w-button" id="login-button">Login</button>
-                <div>
-                    <div class="alert alert-danger" role="alert" id="error" style="display: none;"></div>
-                </div>
-            </form>
+                <button type="submit" class="uui-button-4 button-width w-button">Login</button>
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger" role="alert">@errorMessage</div>
+                }
+            </EditForm>
         </div>
         <div>
             <div class="text-block-2">
@@ -43,37 +35,68 @@
         </div>
     </div>
 </div>
+
 <style scoped>
-@@import "/css/components.css";
-@@import "/css/budgeting-app.css";
+    @@import "/css/components.css";
+    @@import "/css/budgeting-app.css";
 </style>
 
-<script type="module" defer>
-    import account from '../services/account-service.js';
-    document.getElementById("login-button").addEventListener('click', async () => {
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
+@code {
+    [Parameter]
+    public EventCallback<string> OnLogin { get; set; }
+    private LoginModel loginModel = new LoginModel();
+    private string errorMessage = string.Empty;
 
-        if (!username || !password) {
-            showError("Username and password are required.");
-        } else {
-            try {
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        if (!string.IsNullOrEmpty(token))
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
 
-                var response = await account.login({ username, password });
-                if (response.success) {
-                } else {
-                    showError(response.message);
-                }
-            } catch(e){
-                showError(e.message);
+            if (jwtToken.ValidTo > DateTime.UtcNow)
+            {
+                NavigationManager.NavigateTo("/");
             }
         }
-    });
-    
-
-    function showError(message) {
-        var errorElement = document.getElementById('error');
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
     }
-</script>
+
+    private async Task HandleValidSubmit()
+    {
+        var response = await Http.PostAsJsonAsync("/api/login", loginModel);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<LoginResult>();
+            if (result!.success)
+            {
+                await JSRuntime.InvokeVoidAsync("localStorage.setItem", "token", result.token);
+                await OnLogin.InvokeAsync(result.token);
+
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = result.message;
+            }
+        }
+        else
+        {
+            errorMessage = "An error occurred while logging in.";
+        }
+    }
+
+    public class LoginModel
+    {
+        public string username { get; set; }
+        public string password { get; set; }
+    }
+
+    public class LoginResult
+    {
+        public bool success { get; set; }
+        public string token { get; set; }
+        public string message { get; set; }
+    }
+}

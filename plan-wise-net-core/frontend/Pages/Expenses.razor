@@ -1,0 +1,463 @@
+﻿@page "/expenses"
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using System.IdentityModel.Tokens.Jwt;
+@using System.Net.Http.Headers;
+
+<div class="uui-page-padding">
+    <div class="uui-container-large">
+        <div class="uui-padding-vertical-xhuge">
+            <div class="uui-text-align-center">
+                <div class="uui-max-width-large align-center">
+                    <h2 class="uui-heading-medium">Expenses</h2>
+                    <div class="uui-space-xsmall"></div>
+                    <div class="uui-text-size-large">Add and manage your repeating <strong>expenses</strong></div>
+                    <button class="button w-button" @onclick="inputToggle">@(showInput? "-" : "+")</button>
+                </div>
+            </div>
+
+            <div class="uui-table">
+                <div class="uui-table_heading-row">
+                    <div class="uui-table_heading-row-text">Expense</div>
+                    <div class="uui-table_heading-row-text">Amount</div>
+                    <div class="uui-table_heading-row-text">Start Date</div>
+                    <div class="uui-table_heading-row-text">Frequency</div>
+                    <div class="uui-table_heading-row-text">Category</div>
+                    <div class="uui-table_heading-row-text">Action</div>
+                </div>
+
+                @if (showInput)
+                {
+                    <div class="@conditionalLayoutGridClass">
+                        <div class="uui-table_feature input-header">
+                            <input type="text" class="expense-input" @bind="headerExpense" />
+                        </div>
+                        <div class="uui-table_row-content input-header">
+                            <div class="expense-input">
+                                <span class="input-group-addon">$</span>
+                                <input type="number" class="no-border-input" @bind="headerAmount" />
+                            </div>
+                        </div>
+                        <div class="uui-table_row-content input-header">
+                            <input type="date" pattern="\d{4}-\d{2}-\d{2}" class="expense-input" @bind="headerDate" />
+                        </div>
+                        <div class="uui-table_row-content input-header">
+                            <div class="dropdown dropdown-border" data-bs-toggle="dropdown" data-bs-display="static">
+                                <button class="@($"btn dropdown-toggle frequency-width {selectedClassHeader}")" type="button" id="dropdownMenuButtonHeader" aria-expanded="false">
+                                    @selectedOptionHeader
+                                </button>
+                                <span class="dropdown-icon">▼</span>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonHeader">
+                                    @foreach (var option in options)
+                                    {
+                                        <li>
+                                            <a class="@($"{option.@class} dropdown-item")" href="#" @onclick="@(() => selectOptionHeader(option))">@option.text</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="uui-table_row-content input-header">
+                            <div class="dropdown dropdown-border" data-bs-toggle="dropdown" data-bs-display="static">
+                                <button class="@($"btn dropdown-toggle frequency-width {selectedClassCategoryHeader}")" type="button" id="dropdownCategoryButtonHeader" aria-expanded="false">
+                                    @(selectedOptionCategoryHeader?.category_name ?? "Select Category")
+                                </button>
+                                <span class="dropdown-icon">▼</span>
+                                <ul class="dropdown-menu" aria-labelledby="selectCategoryHeader">
+                                    <li>
+                                        <a class="dropdown-item" @onclick="@(() => selectCategoryHeader(null))">Select Category</a>
+                                    </li>
+                                    @foreach (var category in categories)
+                                    {
+                                        <li>
+                                            <a class="@($"{category.@class} dropdown-item")" @onclick="@(() => selectCategoryHeader(category))">@category.category_name</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="uui-table_row-content input-header">
+                            <button type="button" class="btn btn-primary add-button" @onclick="@createExpense">Add</button>
+                        </div>
+                    </div>
+                }
+
+                
+                @for (var index = 0; index < rows.Count; index++)
+                {
+                    var tempIndex = index;
+                    var row = rows[tempIndex];
+                    <div class="@($"w-layout-grid uui-table_row {(index % 2 == 1 ? "background-color-gray50" : "")}")">
+                        <div class="uui-table_feature">
+                            <input type="text" class="expense-input" @bind="row.expenses" />
+                        </div>
+                        <div class="uui-table_row-content">
+                            <div class="expense-input">
+                                <span class="input-group-addon">$</span>
+                                <input type="number" class="no-border-input" @bind="row.amount" />
+                            </div>
+                        </div>
+                        <div class="uui-table_row-content">
+                            <input type="date" pattern="\d{4}-\d{2}-\d{2}" class="expense-input" @bind="row.start_date" />
+                        </div>
+                        <div class="uui-table_row-content">
+                            <div class="dropdown dropdown-border" data-bs-toggle="dropdown" data-bs-display="static">
+                                <button class="@($"btn frequency-width dropdown-toggle {(row.frequency.HasValue ? options[row.frequency.Value].@class : "")}")" type="button" id="@($"dropdownMenuButton{index}")" aria-expanded="false">
+                                    @(row.frequency.HasValue ? options[row.frequency.Value].text : "Select Frequency")
+                                </button>
+                                <span class="dropdown-icon">▼</span>
+                                <ul class="dropdown-menu" aria-labelledby="@($"dropdownMenuButton{tempIndex}")">
+                                    @foreach (var option in options)
+                                    {
+                                        <li>
+                                            <a class="@($"{option.@class} dropdown-item")" href="#" @onclick="@(() => selectOption(option, tempIndex))">@option.text</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="uui-table_row-content">
+                            <div class="dropdown dropdown-border" data-bs-toggle="dropdown" data-bs-display="static">
+                                <button class="@($"btn dropdown-toggle frequency-width {(categories.FirstOrDefault(category => category.id == row.category)?.@class ?? "")}")" type="button" id="@($"dropdownCategoryButton{tempIndex}")" aria-expanded="false">
+                                    @(categories.FirstOrDefault(category => category.id == row.category)?.category_name ?? "Select Category")
+                                </button>
+                                <span class="dropdown-icon">▼</span>
+                                <ul class="dropdown-menu" aria-labelledby="@($"dropdownCategoryButton{tempIndex}")">
+                                    <li>
+                                        <a class="dropdown-item" @onclick="@(() => selectCategoryOption(null, tempIndex))">Select Category</a>
+                                    </li>
+                                    @foreach (var category in categories)
+                                    {
+                                        <li>
+                                            <a class="@($"one-time-expense dropdown-item frequency-width")" @onclick="@(() => selectCategoryOption(category, tempIndex))">@category.category_name</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="uui-table_row-content">
+                            <div class="action">
+                                <button type="button" class="btn btn-warning" @onclick="@(() => updateExpense(tempIndex))">Save</button>
+                                <button type="button" class="btn btn-danger" @onclick="@(() => deleteConfirmation(tempIndex))">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style scoped>
+    @@import "/css/components.css";
+    @@import "/css/budgeting-app.css";
+    .dropdown-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .btn.dropdown-toggle::after {
+      display: none;
+    }
+    .dropdown-toggle{
+      padding: 5px;
+    }
+    .expense-input{
+      width: 100%;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid rgba(0, 0, 0, .1);
+      background: transparent;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,Oxygen,Fira Sans,Droid Sans,sans-serif;
+      font-size: 1.125rem;
+      display: flex;
+    }
+    .dropdown-menu{
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+    }
+    .dropdown-item{
+      margin-bottom: 5px;
+    }
+    .input-header{
+      width: 100%;
+    }
+    .action{
+      display: flex;
+      flex-direction: row;
+      column-gap: 10px;
+    }
+    .no-border-input {
+      border: 0px;
+      width: 100%;
+      background-color: transparent;
+    }
+    @@media screen and (max-width: 767px) {  
+      .action{
+        align-items: stretch;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      .action > button{
+        flex: 1;
+      }
+      .add-button{
+        flex: 1;
+      }
+      .dropdown-menu{
+        width: 100%;
+      }
+      .frequency-width{
+        width: 100%;
+      }
+    }
+</style>
+
+<script>
+    function getBrowserWidth() {
+        return window.innerWidth;
+    }
+</script>
+
+@code {
+    private string headerExpense;
+    private decimal headerAmount;
+    private DateTime headerDate = DateTime.Now;
+    private bool showInput = false;
+    private string selectedOptionHeader;
+    private string selectedClassHeader;
+    private Category selectedOptionCategoryHeader;
+    private string selectedClassCategoryHeader;
+    private string conditionalLayoutGridClass = "";
+
+    private List<Row> rows = new List<Row>();
+    // {
+    //     new Row { expenses = "Meryenda", start_date = DateTime.Parse("2023-10-01"), category = 1, amount = 2.0, id = 1, frequency = 0, user_id = 1 },
+    //     new Row { expenses = "Grocery", start_date = DateTime.Parse("2023-10-01"), category = 1, amount = 10.0, id = 2, frequency = 1, user_id = 1 },
+    //     new Row { expenses = "Gas", start_date = DateTime.Parse("2023-10-01"), category = 2, amount = 20.0, id = 3, frequency = 2, user_id = 1 }
+    // };
+    private List<Option> options = new List<Option>()
+    {
+        new Option { text = "Daily", @class = "daily"},
+        new Option { text = "Weekly", @class = "weekly"},
+        new Option { text = "Every Other Week", @class = "every-other-week"},
+        new Option { text = "Monthly", @class = "monthly"},
+        new Option { text = "Quarterly", @class = "quarterly"},
+        new Option { text = "Every 6 Months", @class = "every-6-months"},
+        new Option { text = "Annually", @class = "annually"},
+        new Option { text = "One Time", @class = "one-time-expense"}
+    };
+    private List<Category> categories = new List<Category>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        if (string.IsNullOrEmpty(token))
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            // Check if the token is expired
+            if (jwtToken.ValidTo < DateTime.UtcNow)
+            {
+                // Token is expired, redirect to login page
+                NavigationManager.NavigateTo("/login");
+            }
+        }
+        await fetchCategories();
+        await fetchExpenses();
+    }
+
+    private void selectOption(Option option, int index)
+    {
+        rows[index].frequency = options.FindIndex(x => option.@class == x.@class);
+    }
+
+    private void selectCategoryOption(Category category, int index)
+    {
+        if (category == null)
+        {
+            rows[index].category = null;
+            return;
+        }
+        rows[index].category = category.id;
+    }
+
+    private void selectOptionHeader(Option option)
+    {
+        selectedOptionHeader = option.text;
+        selectedClassHeader = option.@class;
+    }
+
+    private void selectCategoryHeader(Category category)
+    {
+        selectedOptionCategoryHeader = category;
+        selectedClassCategoryHeader = category != null ? "btn-primary" : "";
+    }
+    private async Task createExpense()
+    {
+        string token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+
+        if (!string.IsNullOrEmpty(headerExpense))
+        {
+            var body = new
+            {
+                expenses = headerExpense,
+                amount = headerAmount,
+                start_date = headerDate.Date.ToString("yyyy-MM-dd"),
+                frequency = options.FindIndex(x => selectedClassHeader == x.@class),
+                category = selectedOptionCategoryHeader.id
+            };
+            try
+            {
+                string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+                Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+
+                var response = await Http.PostAsJsonAsync("/api/expense", body);
+                if (response.IsSuccessStatusCode)
+                {
+                    var expense = await response.Content.ReadFromJsonAsync<ResponseExpenses>();
+                    rows.Add(expense!.expense);
+                    headerExpense = "";
+                    headerAmount = 0;
+                    headerDate = DateTime.Now;
+                    selectOptionHeader(options.First(x => x.text == "Select Interval"));
+                    selectCategoryHeader(new Category { category_name = "Select Category" });
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Please enter a category name");
+        }
+    }
+
+    private async Task updateExpense(int index)
+    {
+        Console.WriteLine("{0} ------", index);
+        string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+        var response = await Http.PutAsJsonAsync($"/api/expenses/{rows[index].id}", new {
+            expenses = rows[index].expenses,
+            amount = rows[index].amount,
+            start_date = rows[index].start_date.ToString("yyyy-MM-dd"),
+            frequency = rows[index].frequency,
+            category = rows[index].category
+        });
+        Console.WriteLine(response);
+    }
+
+    private async Task fetchCategories()
+    {
+        try
+        {
+            string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+            var response = await Http.GetFromJsonAsync<ResponseCategoryList>("/api/categories");
+            categories = response.category;
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+        }
+    }
+
+    private async Task fetchExpenses()
+    {
+        try
+        {
+            string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+            var response = await Http.GetFromJsonAsync<ResponseExpensesList>("/api/expenses");
+            rows = response.expense;
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+        }
+    }
+
+    private void deleteConfirmation(int index)
+    {
+        // Delete confirmation here
+    }
+
+    private async Task inputToggle()
+    {
+        showInput = !showInput;
+        conditionalLayoutGridClass = await ConditionalLayoutGrid();
+    }
+
+    private async Task<string> ConditionalLayoutGrid()
+    {
+        var classNames = "uui-table_row new-row";
+        var browserWidth = await JSRuntime.InvokeAsync<int>("getBrowserWidth");
+        if (browserWidth > 600)
+        {
+            classNames += " w-layout-grid";
+        }
+        return classNames;
+    }
+
+
+    public class Row
+    {
+        public int id { get; set; }
+        public string expenses { get; set; }
+        public double amount { get; set; }
+        public DateTime start_date { get; set; }
+        public int? frequency { get; set; }
+        public int? category { get; set; }
+        public int user_id { get; set; }
+    }
+
+    public class ResponseExpensesList
+    {
+        public bool success { get; set; }
+        public string message { get; set; }
+        public List<Row>? expense { get; set; }
+    }
+
+    public class ResponseExpenses
+    {
+        public bool success { get; set; }
+        public string message { get; set; }
+        public Row expense { get; set; }
+    }
+
+
+    public class Option
+    {
+        public string text { get; set; }
+        public string @class { get; set; }
+    }
+
+    public class Category
+    {
+        public int id { get; set; }
+        public string category_name { get; set; }
+        public string @class { get; set; }
+    }
+
+    public class ResponseCategoryList
+    {
+        public bool success { get; set; }
+        public string message { get; set; }
+        public List<Category>? category { get; set; }
+    }
+}
