@@ -57,7 +57,7 @@
             return;
         }
 
-        var response = await Http.PostAsJsonAsync("/api/register", registerModel);
+        var response = await Http.PostAsJsonAsync("/api/Auth/register", registerModel);
 
         if (response.IsSuccessStatusCode)
         {

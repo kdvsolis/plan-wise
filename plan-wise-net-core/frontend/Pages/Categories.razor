@@ -113,7 +113,7 @@
         {
             string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-            var response = await Http.GetFromJsonAsync<ResponseCategoryList>("/api/categories");
+            var response = await Http.GetFromJsonAsync<ResponseCategoryList>("/api/Categories/categories");
             categories = response!.category.ToList();
         }
         catch (Exception exception)
@@ -131,7 +131,7 @@
             {
                 string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
                 Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-                var response = await Http.PostAsJsonAsync("/api/categories", body);
+                var response = await Http.PostAsJsonAsync("/api/Categories/categories", body);
                 if (response.IsSuccessStatusCode)
                 {
                     var category = await response.Content.ReadFromJsonAsync<ResponseCategory>();
@@ -161,12 +161,12 @@
 
     private async Task updateCategory(int index)
     {
-        await Http.PutAsJsonAsync($"/api/categories/{categories[index].id}", categories[index]);
+        await Http.PutAsJsonAsync($"/api/Categories/categories/{categories[index].id}", categories[index]);
     }
 
     private async Task deleteCategory(int index)
     {
-        var response = await Http.DeleteAsync($"/api/categories/{categories[index].id}");
+        var response = await Http.DeleteAsync($"/api/Categories/categories/{categories[index].id}");
         if (response.IsSuccessStatusCode)
         {
             categories.RemoveAt(index);

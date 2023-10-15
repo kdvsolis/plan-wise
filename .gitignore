@@ -7,3 +7,5 @@
 /plan-wise-net-core/frontend/bin/Debug/net6.0
 /plan-wise-net-core/frontend/obj
 /plan-wise-net-core/.vs
+/plan-wise-net-core/backend/appsettings.json
+/plan-wise-net-core/backend/appsettings.Development.json
