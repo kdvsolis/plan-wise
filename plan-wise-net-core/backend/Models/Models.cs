@@ -25,8 +25,9 @@ namespace backend.Models
 
         // Navigation property
         public ICollection<pw_categories> pw_categories { get; set; }
+        public ICollection<pw_budget_table_expense> pw_budget_table_expense { get; set; }
+        public ICollection<pw_budget_table_income> pw_budget_table_income { get; set; }
     }
-
     public class pw_categories
     {
         [Key]
@@ -39,10 +40,10 @@ namespace backend.Models
         [ForeignKey("pw_users")]
         public int user_id { get; set; }
 
-        // Navigation property
+        // Navigation properties
         public pw_users user { get; set; }
+        public ICollection<pw_expenses> pw_expenses { get; set; } // Dagdag mo ito
     }
-
 
     public class pw_income
     {
@@ -65,7 +66,6 @@ namespace backend.Models
         // Navigation property
         public pw_users user { get; set; }
     }
-
     public class pw_expenses
     {
         [Key]
@@ -81,16 +81,18 @@ namespace backend.Models
 
         public int frequency { get; set; }
 
-        [ForeignKey("pw_categories")]
+        [ForeignKey("pw_category")]
         public int category { get; set; }
 
-        [ForeignKey("pw_users")]
+        [ForeignKey("user")]
         public int user_id { get; set; }
 
         // Navigation properties
         public pw_categories pw_category { get; set; }
+
         public pw_users user { get; set; }
     }
+
 
     public class pw_notes
     {
@@ -117,7 +119,7 @@ namespace backend.Models
 
         public DateTime date { get; set; }
 
-        [ForeignKey("pw_users")]
+        [ForeignKey("pw_user")]
         public int user_id { get; set; }
 
         public int income_id { get; set; }
@@ -133,7 +135,7 @@ namespace backend.Models
         public int frequency { get; set; }
 
         // Navigation property
-        public pw_users user { get; set; }
+        public pw_users pw_user { get; set; }
     }
 
     public class pw_budget_table_expense
@@ -143,7 +145,7 @@ namespace backend.Models
 
         public DateTime date { get; set; }
 
-        [ForeignKey("pw_users")]
+        [ForeignKey("pw_user")]
         public int user_id { get; set; }
 
         public int expense_id { get; set; }
@@ -160,6 +162,6 @@ namespace backend.Models
         public int frequency { get; set; }
 
         // Navigation property
-        public pw_users user { get; set; }
+        public pw_users pw_user { get; set; }
     }
 }

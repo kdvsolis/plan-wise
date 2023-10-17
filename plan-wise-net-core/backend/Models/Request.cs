@@ -1,4 +1,7 @@
-﻿namespace backend.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace backend.Models
 {
     public class LoginRequest
     {
@@ -23,6 +26,20 @@
     public class CategoryRequest
     {
         public string category_name { get; set; }
+    }
+    public class ExpenseRequest
+    {
+        public int id { get; set; }
+        public int user_id { get; set; }
+        public string expenses { get; set; }
+
+        public decimal amount { get; set; }
+
+        public DateTime start_date { get; set; }
+
+        public int frequency { get; set; }
+
+        public int category { get; set; }
     }
 
 }

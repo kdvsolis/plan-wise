@@ -320,7 +320,7 @@
                 string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
                 Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
 
-                var response = await Http.PostAsJsonAsync("/api/expense", body);
+                var response = await Http.PostAsJsonAsync("/api/Expense/expense", body);
                 if (response.IsSuccessStatusCode)
                 {
                     var expense = await response.Content.ReadFromJsonAsync<ResponseExpenses>();
@@ -352,7 +352,7 @@
         Console.WriteLine("{0} ------", index);
         string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
         Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-        var response = await Http.PutAsJsonAsync($"/api/expenses/{rows[index].id}", new {
+        var response = await Http.PutAsJsonAsync($"/api/Expense/expenses/{rows[index].id}", new {
             expenses = rows[index].expenses,
             amount = rows[index].amount,
             start_date = rows[index].start_date.ToString("yyyy-MM-dd"),
@@ -368,7 +368,7 @@
         {
             string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-            var response = await Http.GetFromJsonAsync<ResponseCategoryList>("/api/categories");
+            var response = await Http.GetFromJsonAsync<ResponseCategoryList>("/api/Categories/categories");
             categories = response.category;
         }
         catch (Exception exception)
@@ -383,7 +383,7 @@
         {
             string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-            var response = await Http.GetFromJsonAsync<ResponseExpensesList>("/api/expenses");
+            var response = await Http.GetFromJsonAsync<ResponseExpensesList>("/api/Expense/expenses");
             rows = response.expense;
         }
         catch (Exception exception)
