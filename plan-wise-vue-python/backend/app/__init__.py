@@ -5,7 +5,6 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy.ext.declarative import declarative_base
 from fastapi.middleware.cors import CORSMiddleware
 
-
 from controller import auth_controller
 from controller import category_controller
 from controller import expense_controller
@@ -31,7 +30,6 @@ app.include_router(expense_controller.router, prefix="/api")
 app.include_router(income_controller.router, prefix="/api")
 app.include_router(budget_controller.router, prefix="/api")
 
-#static files
 current_dir = os.path.dirname(__file__)
 template_dir = os.path.join(current_dir, "../../frontend/dist")
 templates = Jinja2Templates(directory=template_dir)
