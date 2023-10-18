@@ -41,5 +41,17 @@ namespace backend.Models
 
         public int category { get; set; }
     }
+    public class IncomeRequest
+    {
+        public int id { get; set; }
+        public int user_id { get; set; }
+        public string source { get; set; }
+
+        public decimal amount { get; set; }
+
+        public DateTime start_date { get; set; }
+
+        public int frequency { get; set; }
+    }
 
 }

@@ -3,7 +3,14 @@ using System.Collections.Generic;
 
 namespace backend.Utils
 {
-    public class ItemExpense
+    public interface IItem
+    {
+        DateTime start_date { get; set; }
+        int frequency { get; set; }
+        decimal amount { get; set; }
+    }
+
+    public class ItemExpense : IItem
     {
         public DateTime start_date { get; set; }
         public int expense_id { get; set; }
@@ -11,14 +18,22 @@ namespace backend.Utils
         public int frequency { get; set; }
         public decimal amount { get; set; }
         public int category { get; set; }
+    }
 
+    public class ItemIncome : IItem
+    {
+        public DateTime start_date { get; set; }
+        public int income_id { get; set; }
+        public string source { get; set; }
+        public int frequency { get; set; }
+        public decimal amount { get; set; }
     }
 
     public class DateDataGenerator
     {
-        public static Dictionary<DateTime, List<ItemExpense>> GroupByDate(List<ItemExpense> items)
+        public static Dictionary<DateTime, List<T>> GroupByDate<T>(List<T> items) where T : IItem
         {
-            var result = new Dictionary<DateTime, List<ItemExpense>>();
+            var result = new Dictionary<DateTime, List<T>>();
             foreach (var item in items)
             {
                 var dates = GenerateDates(item.start_date, item.frequency, 365);
@@ -26,7 +41,7 @@ namespace backend.Utils
                 {
                     if (!result.ContainsKey(date))
                     {
-                        result[date] = new List<ItemExpense>();
+                        result[date] = new List<T>();
                     }
                     result[date].Add(item);
                 }

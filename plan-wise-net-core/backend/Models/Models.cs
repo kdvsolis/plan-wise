@@ -60,8 +60,10 @@ namespace backend.Models
 
         public int frequency { get; set; }
 
-        [ForeignKey("pw_users")]
+
+        [ForeignKey("user")]
         public int user_id { get; set; }
+
 
         // Navigation property
         public pw_users user { get; set; }

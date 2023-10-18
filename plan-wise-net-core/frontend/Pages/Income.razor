@@ -273,7 +273,7 @@
                 string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
                 Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
 
-                var response = await Http.PostAsJsonAsync("/api/income", body);
+                var response = await Http.PostAsJsonAsync("/api/Income/income", body);
                 if (response.IsSuccessStatusCode)
                 {
                     var income = await response.Content.ReadFromJsonAsync<ResponseIncome>();
@@ -303,7 +303,7 @@
     {
         string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
         Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-        var response = await Http.PutAsJsonAsync($"/api/income/{rows[index].id}", new
+        var response = await Http.PutAsJsonAsync($"/api/Income/income/{rows[index].id}", new
         {
             source = rows[index].source,
             amount = rows[index].amount,
@@ -319,7 +319,7 @@
         {
             string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-            var response = await Http.GetFromJsonAsync<ResponseCategoryList>("/api/categories");
+            var response = await Http.GetFromJsonAsync<ResponseCategoryList>("/api/Categories/categories");
             categories = response.category;
         }
         catch (Exception exception)
@@ -334,7 +334,7 @@
         {
             string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
             Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-            var response = await Http.GetFromJsonAsync<ResponseIncomeList>("/api/income");
+            var response = await Http.GetFromJsonAsync<ResponseIncomeList>("/api/Income/income");
             rows = response.income;
         }
         catch (Exception exception)
