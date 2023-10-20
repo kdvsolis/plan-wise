@@ -54,4 +54,33 @@ namespace backend.Models
         public int frequency { get; set; }
     }
 
+    public class BudgetRequest
+    {
+        public class IncomeData
+        {
+            public int id { get; set; }
+            public DateTime date { get; set; }
+            public int user_id { get; set; }
+            public string source { get; set; }
+
+            public decimal amount { get; set; }
+
+            public DateTime start_date { get; set; }
+        }
+        public class ExpenseData
+        {
+            public int id { get; set; }
+            public DateTime date { get; set; }
+            public int user_id { get; set; }
+            public string expenses { get; set; }
+
+            public decimal amount { get; set; }
+
+            public DateTime start_date { get; set; }
+        }
+        public DateTime date { get; set; }
+        public List<IncomeData> income { get; set; }
+        public List<ExpenseData> expense { get; set; }
+    }
+
 }
