@@ -22,6 +22,18 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+        window.showModal = function (id) {
+            var modalElement = document.getElementById(id);
+            var modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
+            modalInstance.show();
+        }
+        window.hideModal = function (id) {
+            var modalElement = document.getElementById(id);
+            var modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
+            modalInstance.hide();
+        }
+    </script>
 </body>
 
 </html>

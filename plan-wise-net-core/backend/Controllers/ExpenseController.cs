@@ -32,6 +32,7 @@ namespace backend.Controllers
             }
 
             expense.user_id = userId;
+            expense.start_date = DateTime.SpecifyKind(expense.start_date, DateTimeKind.Utc);
             _context.pw_expenses.Add(new pw_expenses
             {
                 user_id = userId,
@@ -39,7 +40,7 @@ namespace backend.Controllers
                 amount = expense.amount,
                 frequency = expense.frequency,
                 category = expense.category,
-                start_date = expense.start_date.ToUniversalTime(),
+                start_date = expense.start_date,
             });
             await _context.SaveChangesAsync();
 
@@ -47,9 +48,10 @@ namespace backend.Controllers
                 expenses = expense.expenses,
                 expense_id = expense.id,
                 amount = expense.amount,
-                start_date = expense.start_date.ToUniversalTime(),
+                start_date = expense.start_date,
                 frequency = expense.frequency,
-                category = expense.category } });
+                category = expense.category }
+            });
 
             foreach (var date in budgetData.Keys)
             {
@@ -57,12 +59,12 @@ namespace backend.Controllers
                 {
                     var budgetExpense = new pw_budget_table_expense
                     {
-                        date = date.ToUniversalTime(),
+                        date = DateTime.SpecifyKind(date, DateTimeKind.Utc),
                         user_id = userId,
                         expense_id = expense.id,
                         expenses = exp.expenses,
                         amount = exp.amount,
-                        start_date = exp.start_date.ToUniversalTime(),
+                        start_date = DateTime.SpecifyKind(expense.start_date, DateTimeKind.Utc),
                         category = exp.category,
                         frequency = exp.frequency
                     };
@@ -138,7 +140,10 @@ namespace backend.Controllers
 
             existingExpense.expenses = expense.expenses ?? existingExpense.expenses;
             existingExpense.amount = expense?.amount ?? existingExpense.amount;
-            existingExpense.start_date = expense?.start_date ?? existingExpense.start_date;
+            if (expense?.start_date != null)
+            {
+                existingExpense.start_date = DateTime.SpecifyKind(expense.start_date, DateTimeKind.Utc);
+            }
             existingExpense.frequency = expense?.frequency ?? existingExpense.frequency;
             existingExpense.category = expense?.category ?? existingExpense.category;
 
@@ -154,9 +159,10 @@ namespace backend.Controllers
                 expenses = expense.expenses,
                 expense_id = expense.id,
                 amount = expense.amount,
-                start_date = expense.start_date.ToUniversalTime(),
+                start_date = DateTime.SpecifyKind(expense.start_date, DateTimeKind.Utc),
                 frequency = expense.frequency,
-                category = expense.category } });
+                category = expense.category } 
+            });
 
             foreach (var date in budgetData.Keys)
             {
@@ -164,12 +170,12 @@ namespace backend.Controllers
                 {
                     var budgetExpense = new pw_budget_table_expense
                     {
-                        date = date.ToUniversalTime(),
+                        date = DateTime.SpecifyKind(date, DateTimeKind.Utc),
                         user_id = userId,
                         expense_id = id,
                         expenses = exp.expenses,
                         amount = exp.amount,
-                        start_date = exp.start_date.ToUniversalTime(),
+                        start_date = DateTime.SpecifyKind(exp.start_date, DateTimeKind.Utc),
                         category = exp.category,
                         frequency = exp.frequency
                     };
@@ -181,6 +187,7 @@ namespace backend.Controllers
 
             return Ok(new { success = true, message = "Expense updated successfully", expense });
         }
+
 
         // DELETE: api/expense/{id}
         [HttpDelete("expenses/{id}")]

@@ -99,7 +99,7 @@ namespace backend.Controllers
                 return NotFound(new { success = false, message = "User not found" });
             }
 
-            return Ok(user);
+            return Ok(new { success = true, user = user });
         }
 
         [HttpPut("user")]

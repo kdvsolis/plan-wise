@@ -23,12 +23,12 @@ namespace backend.Controllers
         }
 
         [HttpGet("get_budgets_in_date_range")]
-        public IActionResult GetBudgetsInDateRange(DateTime? _startDate)
+        public IActionResult GetBudgetsInDateRange(DateTime? start_date_str)
         {
             var userId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
             var earliestDate = _context.pw_budget_table_income.Min(i => i.date);
-            var startDate = DateTime.SpecifyKind((_startDate ?? earliestDate), DateTimeKind.Utc);
+            var startDate = DateTime.SpecifyKind((start_date_str ?? earliestDate), DateTimeKind.Utc);
 
             var endDate = DateTime.SpecifyKind(new DateTime(startDate.Year, startDate.Month, DateTime.DaysInMonth(startDate.Year, startDate.Month)), DateTimeKind.Utc);
 

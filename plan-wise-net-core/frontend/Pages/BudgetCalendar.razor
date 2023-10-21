@@ -29,7 +29,7 @@
                     <div class="div-block">
                         <ul class="pagination">
                             <li class="page-item">
-                                <button type="button" class="text-block-3 page-link-budget" href="#" @onclick="decrementMonth">@("<<")</button>
+                                <button type="button" class="text-block-3 page-link-budget" @onclick="decrementMonth">@("<<")</button>
                             </li>
                             <li>
                                 @if (currMonth - 1 > -1 && currYear > -1)
@@ -39,7 +39,7 @@
                                 }
                             </li>
                             <li class="page-item">
-                                <button type="button" class="text-block-3 page-link-budget" href="#" @onclick="incrementMonth">@(">>")</button>
+                                <button type="button" class="text-block-3 page-link-budget" @onclick="incrementMonth">@(">>")</button>
                             </li>
                         </ul>
                     </div>
@@ -49,27 +49,27 @@
                 @foreach (var dayData in calendar)
                 {
                     <div class="w-layout-grid uui-table-row-day-of-month_calendar border-day">
-                                    @if(dayData.date != null)
-                                    {
-                                        <div class="uui-text-size-medium">@dayData.date.ToShortDateString()</div>
-                                    } else
-                                    {
-                                        <div class="uui-text-size-medium"></div>
-                                    }
-                                    <div class='uui-text-size-medium @(getBalanceClass(dayData.date, "starting", "previousBalance"))'>
-                            <!-- Placeholder for monthDailyData -->
-                            @{
-                                var previousBalance = monthDailyData.ContainsKey(dayData.date) ? monthDailyData[dayData.date]?.previousBalance : null;
-                                if (previousBalance.HasValue)
-                                {
-                                    var balanceString = previousBalance.Value > 0 ? $"${previousBalance.Value}" : $"-${Math.Abs(previousBalance.Value)}";
-                                    @($"Start Bal: {balanceString}")
-                                }
-                                else
-                                {
-                                    @("-")
-                                }
+                        @if (dayData.date != null && dayData.date.ToShortDateString() != "1/1/0001")
+                        {
+                            <div class="uui-text-size-medium">@dayData.date.ToShortDateString()</div>
+                        } else
+                        {
+                            <div class="uui-text-size-medium"></div>
+                        }
+                        <div class='uui-text-size-medium @(getBalanceClass(dayData.date, "starting", "previousBalance"))'>
+                        <!-- Placeholder for monthDailyData -->
+                        @{
+                            var previousBalance = monthDailyData.ContainsKey(dayData.date) ? monthDailyData[dayData.date]?.previousBalance : null;
+                            if (previousBalance.HasValue)
+                            {
+                                var balanceString = previousBalance.Value > 0 ? $"${previousBalance.Value}" : $"-${Math.Abs(previousBalance.Value)}";
+                                @($"Start Bal: {balanceString}")
                             }
+                            else
+                            {
+                                @("-")
+                            }
+                        }
                         </div>
                         <div class='uui-text-size-medium @(totalIncome(dayData.date) > 0 ? "income" : "hide-dash")'>
                             <!-- Placeholder for monthDailyData -->
@@ -167,7 +167,7 @@
                                         </div>
 
                                         <!-- Income -->
-                                        <div class="@getBalanceClass(dayData.date, "starting", "income")">
+                                        <div class="@(totalExpense(dayData.date) > 0 ? "income" : "hide-dash")">
                                             @{
                                                 var income = totalIncome(dayData.date);
                                                 if (income.HasValue)
@@ -182,7 +182,7 @@
                                         </div>
 
                                         <!-- Expense -->
-                                        <div class="@getBalanceClass(dayData.date, "starting", "expense")">
+                                        <div class="@(totalExpense(dayData.date) > 0 ? "expense" : "hide-dash")">
                                             @{
                                                 var expense = totalExpense(dayData.date);
                                                 if (expense.HasValue)
@@ -317,6 +317,15 @@
         await initializeData();
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            isLargeScreen = await JSRuntime.InvokeAsync<bool>("eval", "window.matchMedia('(min-width: 724px)').matches");
+            StateHasChanged();
+        }
+    }
+
     private async Task initializeData()
     {
         string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
@@ -334,13 +343,6 @@
         calendar = getDaysInMonth(firstDayOfCurrentMonth, lastDayOfCurrentMonth);
         await generate();
     }
-    
-    [JSInvokable]
-    public void OnMediaQueryChanged(bool matches)
-    {
-        //isLargeScreen = matches;
-        //StateHasChanged();
-    }
 
     public void Dispose()
     {
@@ -350,14 +352,16 @@
     private async Task generate()
     {
         DateTime prevKey = monthDailyData.Keys.First();
+        int count = 0;
         foreach (var key in monthDailyData.Keys)
         {
             var income = monthDailyData[key]?.income?.Sum(x => x.amount) ?? 0;
             var expense = monthDailyData[key]?.expense?.Sum(x => x.amount) ?? 0;
             currentBalance += income - expense;
-            monthDailyData[key].previousBalance = monthDailyData[prevKey]?.currentBalance ?? initialBalance;
+            monthDailyData[key].previousBalance = count == 0 ? initialBalance : monthDailyData[prevKey].currentBalance;
             monthDailyData[key].currentBalance = currentBalance;
             prevKey = key;
+            count++;
         }
     }
 
@@ -373,15 +377,17 @@
         var lastDayOfCurrentMonth = firstDayOfCurrentMonth.AddMonths(1).AddDays(-1);
         calendar = getDaysInMonth(firstDayOfCurrentMonth, lastDayOfCurrentMonth);
 
+        int count = 0;
         DateTime prevKey = monthDailyData.Keys.First();
         foreach (var key in monthDailyData.Keys)
         {
             var income = monthDailyData[key]?.income?.Sum(x => x.amount) ?? 0;
             var expense = monthDailyData[key]?.expense?.Sum(x => x.amount) ?? 0;
             currentBalance += income - expense;
-            monthDailyData[key].previousBalance = monthDailyData[prevKey]?.currentBalance ?? initialBalance;
+            monthDailyData[key].previousBalance = count == 0? initialBalance : monthDailyData[prevKey].currentBalance;
             monthDailyData[key].currentBalance = currentBalance;
             prevKey = key;
+            count++;
         }
     }
 
@@ -415,7 +421,6 @@
     {
         return monthDailyData.ContainsKey(date) ? (double?)monthDailyData[date]?.expense?.Sum(x => x.amount) : null;
     }
-
 
     private string getBalanceClass(DateTime date, string type, string balance)
     {
@@ -456,16 +461,16 @@
         var monthData = monthDailyData.Keys.ToList();
         currMonth = monthData[0].AddMonths(-1).Month;
         currYear = monthData[0].AddMonths(-1).Year;
-        await getMonthlyData(currMonth, currYear);
         var firstDayOfCurrentMonth = new DateTime(currYear, currMonth, 1);
         var lastDayOfCurrentMonth = firstDayOfCurrentMonth.AddMonths(1).AddDays(-1);
         calendar = getDaysInMonth(firstDayOfCurrentMonth, lastDayOfCurrentMonth);
         if (balanceHistory.Count > 0)
         {
-            initialBalance = balanceHistory[balanceHistory.Count - 1];
+            initialBalance = balanceHistory.Last();
             balanceHistory.RemoveAt(balanceHistory.Count - 1);
         }
         currentBalance = initialBalance;
+        await getMonthlyData(currMonth, currYear);
         var firstDay = calendar[0].dayOfWeek;
         for (int i = 0; i < firstDay; i++)
         {

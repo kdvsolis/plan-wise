@@ -1,0 +1,711 @@
+﻿@page "/budget-table"
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using System.IdentityModel.Tokens.Jwt;
+@using System.Net.Http.Headers;
+@using System.Text;
+@using System.Text.Json;
+
+<section class="uui-section_table">
+    <div class="uui-page-padding">
+        <div class="uui-container-large">
+            <div class="uui-padding-vertical-xhuge">
+                <div class="uui-text-align-center">
+                    <div class="uui-text-align-center">
+                        <div class="uui-max-width-large align-center">
+                            <h2 class="uui-heading-medium">Budget Table</h2>
+                            <div class="uui-space-xsmall"></div>
+                            <div class="uui-text-size-large">See where you&#x27;ll be if you stick to your budget<strong></strong></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="uui-table">
+                    <div>
+                        <div class="@conditionalLayoutGrid">
+                            <div class="uui-table_row-content input-header">
+                                <span>Initial Balance:</span>
+                            </div>
+                            <div class="uui-table_row-content input-header">
+                                <input type="number" class="expense-input" @bind="initialBalance">
+                            </div>
+                            <div class="uui-table_row-content input-header">
+                                <button type="button" class="btn btn-primary" @onclick="changeInitialBalance">Change</button>
+                            </div>
+                        </div>
+                        <div class="uui-table_heading-row">
+                            <div class="uui-table_heading-row-text">Date</div>
+                            <div class="uui-table_heading-row-text">Balance</div>
+                            <div class="uui-table_heading-row-text">Income</div>
+                            <div class="uui-table_heading-row-text">Expense</div>
+                            <div class="uui-table_heading-row-text">Amount</div>
+                            <div class="uui-table_heading-row-text">Action</div>
+                        </div>
+                        <div class="div-block">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <button type="button" class="text-block-3 page-link-budget" href="#" @onclick="decrementMonth">@("<<")</button>
+                                </li>
+                                <li>
+                                    @if (currMonth - 1 > -1 && currYear > -1)
+                                    {
+
+                                        <div class="text-block-3 px-2">@months[currMonth - 1] @currYear</div>
+                                    }
+                                </li>
+                                <li class="page-item">
+                                    <button type="button" class="text-block-3 page-link-budget" href="#" @onclick="incrementMonth">@(">>")</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    @if (isLargeScreen)
+                    {
+                        foreach (var dayData in calendar)
+                        {
+                            <div class="w-layout-grid uui-table_row background-color-gray50">
+                                <div class="w-layout-grid uui-table-row-day-of-month">
+                                    <div class="div-block-2">
+                                        @if (dayData.date != null && dayData.date.ToShortDateString() != "1/1/0001")
+                                        {
+                                            <div class="uui-text-size-medium">@dayData.date.ToShortDateString()</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="uui-text-size-medium"></div>
+                                        }
+                                    </div>
+                                </div>
+                                @if (dayData.date.ToShortDateString() != "1/1/0001")
+                                {
+                                    @if (monthDailyData[dayData.date] != null && monthDailyData[dayData.date].previousBalance != null && monthDailyData[dayData.date].currentBalance != null)
+                                    {
+                                        <div class="w-layout-grid uui-table-row-day-of-month balance-column">
+                                            <div class="uui-text-size-medium starting-balance">
+                                                @(
+                                        (monthDailyData[dayData.date].previousBalance) > 0 ?
+                                            @monthDailyData[dayData.date].previousBalance.ToString("N2") :
+                                            !Double.IsNaN(monthDailyData[dayData.date].previousBalance) && monthDailyData[dayData.date].previousBalance < 0 ?
+                                            "-" + Math.Abs(monthDailyData[dayData.date].previousBalance).ToString("N2") : ""
+                                        )
+                                            </div>
+                                            <div class="uui-text-size-medium ending-balance">
+                                                @(
+                                        monthDailyData[dayData.date].currentBalance > 0 ?
+                                            @monthDailyData[dayData.date].currentBalance.ToString("N2") :
+                                            "-" + Math.Abs(monthDailyData[dayData.date].currentBalance).ToString("N2")
+                                        )
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="w-layout-grid uui-table-row-day-of-month">
+                                        <div class="div-block-2"></div>
+                                    </div>
+                                }
+                                @if (dayData.date.ToShortDateString() != "1/1/0001")
+                                {
+                                    @if (monthDailyData[dayData.date] != null)
+                                    {
+                                        <div class="w-layout-grid uui-table-row-day-of-month income-column">
+                                            <div class="@((monthDailyData[dayData.date].income).Count > 0 ? "uui-text-size-medium income" : "uui-text-size-medium")">
+                                                @(
+                                        (monthDailyData[dayData.date].income.Count > 0 ?
+                                            @monthDailyData[dayData.date].income.Sum(x => x.amount).ToString("N2") : "")
+                                        )
+                                            </div>
+                                            @for (int i = 0; i < Math.Max(monthDailyData[dayData.date].expense.Count - 1, 0); i++)
+                                            {
+                                                if (i > monthDailyData[dayData.date].income.Count)
+                                                {
+                                                    <div></div>
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="w-layout-grid uui-table-row-day-of-month">
+                                        <div class="div-block-2"></div>
+                                    </div>
+                                }
+
+                                @if (dayData.date.ToShortDateString() != "1/1/0001")
+                                {
+                                    @if (monthDailyData[dayData.date] != null)
+                                    {
+                                        <div class="w-layout-grid uui-table-row-day-of-month expense-column">
+                                            @foreach (var expense in monthDailyData[dayData.date].expense)
+                                            {
+                                                <div class="uui-text-size-medium expense-cell">@expense.expenses</div>
+                                            }
+                                        </div>
+                                        <div class="w-layout-grid uui-table-row-day-of-month expense-price-column">
+                                            @foreach (var expense in monthDailyData[dayData.date].expense)
+                                            {
+                                                <div class="uui-text-size-medium expense-cell">$@expense.amount.ToString("N2")</div>
+                                            }
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="w-layout-grid uui-table-row-day-of-month">
+                                        <div class="div-block-2"></div>
+                                    </div>
+                                }
+                                <div class="w-layout-grid uui-table-row-day-of-month action-column">
+                                    <div class="action">
+                                        <div class="action-data">
+                                            <button type="button" class="btn btn-primary" @onclick="()=>{}/*addIncome(dayData.date)*/">Add Income</button>
+                                            <button type="button" class="btn btn-primary" @onclick="async()=>await addExpenseModal(dayData.date)">Add Expense</button>
+                                            <button type="button" class="btn btn-primary" disabled="@(dayData.date.ToShortDateString() != "1/1/0001" && monthDailyData[dayData.date] == null)" @onclick="()=>{}/*selectedInstance(dayData.date)*/">Modify Instance</button>
+                                            <button type="button" class="btn btn-primary" @onclick="()=>{}/*notes(dayData.date)*/">Notes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    @if (!isLargeScreen)
+                    {
+                        @foreach (var dayData in calendar)
+                        {
+                            <div class="w-layout-grid-calendar-mobile background-color-gray50 calendar-mobile">
+                                @if (dayData.date != default(DateTime))
+                                {
+                                    <div class="uui-table_row_mobile">
+                                        <div class="w-layout-grid uui-table-row-day-of-month_mobile">
+                                            <div class="div-block-3">
+                                                <div class="uui-pricing07_row-lead-text date-column">@dayData.date.ToString("yyyy-MM-dd")</div>
+                                                <div class="uui-pricing07_row-lead-text date-column">@daysOfWeek[dayData.dayOfWeek]</div>
+                                            </div>
+                                            <!-- Replace the placeholders with your actual implementation -->
+                                            <div class="w-layout-grid uui-table-row-day-of-month">
+                                                <!-- Starting Balance -->
+                                                <div class="@getBalanceClass(dayData.date, "starting", "previousBalance")">
+                                                    @{
+                                                        var previousBalance = monthDailyData.ContainsKey(dayData.date) ? monthDailyData[dayData.date]?.previousBalance : null;
+                                                        if (previousBalance.HasValue)
+                                                        {
+                                                            var balanceString = previousBalance.Value > 0 ? $"${previousBalance.Value:F2}" : $"-${Math.Abs(previousBalance.Value):F2}";
+                                                            @($"Start Bal: {balanceString}")
+                                                        }
+                                                        else
+                                                        {
+                                                            @("-")
+                                                        }
+                                                    }
+                                                </div>
+
+                                                <!-- Income -->
+                                                <div class="@(totalExpense(dayData.date) > 0 ? "income" : "hide-dash")">
+                                                    @{
+                                                        var income = totalIncome(dayData.date);
+                                                        if (income.HasValue)
+                                                        {
+                                                            @($"Income: ${income.Value:F2}")
+                                                        }
+                                                        else
+                                                        {
+                                                            @("-")
+                                                        }
+                                                    }
+                                                </div>
+
+                                                <!-- Expense -->
+                                                <div class="@(totalExpense(dayData.date) > 0 ? "expense" : "hide-dash")">
+                                                    @{
+                                                        var expense = totalExpense(dayData.date);
+                                                        if (expense.HasValue)
+                                                        {
+                                                            @($"Expense: ${expense.Value:F2}")
+                                                        }
+                                                        else
+                                                        {
+                                                            @("-")
+                                                        }
+                                                    }
+                                                </div>
+
+                                                <!-- Ending Balance -->
+                                                <div class="@getBalanceClass(dayData.date, "ending", "currentBalance")">
+                                                    @{
+                                                        var currentBalance = monthDailyData.ContainsKey(dayData.date) ? monthDailyData[dayData.date]?.currentBalance : null;
+                                                        if (currentBalance.HasValue)
+                                                        {
+                                                            var balanceString = currentBalance.Value > 0 ? $"${currentBalance.Value:F2}" : $"-${Math.Abs(currentBalance.Value):F2}";
+                                                            @($"End Bal: {balanceString}")
+                                                        }
+                                                        else
+                                                        {
+                                                            @("-")
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="action">
+                                        <div class="action-data">
+                                            <button type="button" class="btn btn-primary" @onclick="()=>{}/*addIncome(dayData.date)*/">Add Income</button>
+                                            <button type="button" class="btn btn-primary" @onclick="()=>{}/*addExpense(dayData.date)*/">Add Expense</button>
+                                            <button type="button" class="btn btn-primary" disabled="@(dayData.date.ToShortDateString() != "1/1/0001" && monthDailyData[dayData.date] == null)" @onclick="()=>{}/*selectedInstance(dayData.date)*/">Modify Instance</button>
+                                            <button type="button" class="btn btn-primary" @onclick="()=>{}/*notes(dayData.date)*/">Notes</button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                    <div class="center-pagination">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <button type="button" class="page-link" @click="decrementMonth">Previous</button>
+                                </li>
+                                <li class="page-item">
+                                    <button type="button" class="page-link" @click="incrementMonth">Next</button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ExpenseModal 
+        @ref="expenseModal"
+        OnChange="StateHasChanged"
+        OnModalClose="refreshTable"
+        selectedOptionCategoryHeader="@selectedOptionCategoryHeader" 
+        selectedClassCategoryHeader="@selectedClassCategoryHeader" 
+        selectedOptionHeader="@selectedOptionHeader" 
+        selectedClassHeader="@selectedClassHeader" 
+        selectedOption="@selectedOption" 
+        selectedClass="@selectedClass" 
+        headerExpense="@headerExpense" 
+        headerAmount="@headerAmount"
+        headerDate="@selectedDate"
+        selectedDate="@selectedDate">
+    </ExpenseModal>
+
+
+</section>
+
+<style scoped>
+    @@import "/css/components.css";
+    @@import "/css/budgeting-app.css";
+
+    .center-pagination {
+        width: 100%;
+        padding: 50px;
+    }
+
+        .center-pagination > nav {
+            margin: auto;
+        }
+
+    .expense-input {
+        width: 100%;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, .1);
+        background: transparent;
+        font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,Oxygen,Fira Sans,Droid Sans,sans-serif;
+        font-size: 1.125rem;
+    }
+
+    .modal-input {
+        width: 50% !important;
+    }
+
+    .page-link-budget {
+        background-color: transparent;
+        border: none;
+        color: white;
+        text-decoration: none;
+    }
+
+    .action {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .action-data {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+    }
+
+    .expense-cell {
+        padding: 15px !important;
+    }
+
+    .income-expense-input {
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+    }
+
+    .income-expense-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .dropdown-menu {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .dropdown-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .btn.dropdown-toggle::after {
+        display: none;
+    }
+
+    .hide-dash {
+        color: transparent;
+    }
+
+    #instanceTabs {
+        padding-left: 0px !important;
+    }
+</style>
+
+@code {
+    List<object> expense = new List<object>();
+    List<object> income = new List<object>();
+    int currMonth = -1;
+    int currYear = -1;
+    int total = 365;
+    double initialBalance = 0;
+    double currentBalance = 0;
+    double previousInitialBalance = 0;
+    bool isLargeScreen = true;
+    string conditionalLayoutGrid = "";
+    Dictionary<DateTime, Budget> monthDailyData = new Dictionary<DateTime, Budget>();
+    Dictionary<DateTime, object> monthlyData = new Dictionary<DateTime, object>();
+    Dictionary<string, object> monthlyBalances = new Dictionary<string, object>();
+    List<object> pages = new List<object>();
+    List<double> balanceHistory = new List<double>();
+    List<string> months = new List<string> { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+    List<DayData> calendar = new List<DayData>();
+    List<string> daysOfWeek = new List<string> { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+
+    bool noteModal = false;
+    bool incomeModal = false;
+    ExpenseModal expenseModal;
+    bool modifyInstanceModal = false;
+    int expenseInstanceIndex = 0;
+    int incomeInstanceIndex = 0;
+
+    private DateTime selectedDate = DateTime.MinValue;
+    private dynamic selectedOptionCategoryHeader = new { category_name = "Select Category" };
+    private string selectedClassCategoryHeader = "";
+    private string selectedOptionHeader = "Select Interval";
+    private string selectedClassHeader = "";
+    private string selectedOption = "Select Interval";
+    private string selectedClass = "";
+    private string headerExpense = "";
+    private double headerAmount = 0;
+
+
+    Budget selectedInstance = new Budget { expense = new List<Expense>(), income = new List<Income>() };
+    Budget origSelectedIntance = new Budget { expense = new List<Expense>(), income = new List<Income>() };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await initializeData();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            isLargeScreen = await JSRuntime.InvokeAsync<bool>("eval", "window.matchMedia('(min-width: 724px)').matches");
+            await layoutGridProcess();
+            StateHasChanged();
+        }
+    }
+
+    private async Task initializeData()
+    {
+        string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+        var userResponse = await Http.GetFromJsonAsync<UserResponse>("/api/Auth/user");
+        initialBalance = userResponse?.user?.balance ?? 0;
+        currentBalance = initialBalance;
+        previousInitialBalance = initialBalance;
+        var budgetResponse = await Http.GetFromJsonAsync<BudgetResponse>("/api/BudgetTable/get_budgets_in_date_range");
+        monthDailyData = budgetResponse?.budgets ?? new Dictionary<DateTime, Budget>();
+        currMonth = monthDailyData.Keys.First().Month;
+        currYear = monthDailyData.Keys.First().Year;
+        var firstDayOfCurrentMonth = new DateTime(currYear, currMonth, 1);
+        var lastDayOfCurrentMonth = firstDayOfCurrentMonth.AddMonths(1).AddDays(-1);
+        calendar = getDaysInMonth(firstDayOfCurrentMonth, lastDayOfCurrentMonth);
+        await generate();
+    }
+
+    public void Dispose()
+    {
+        JSRuntime.InvokeVoidAsync("removeMediaQueryListener");
+    }
+
+    private async Task generate()
+    {
+        DateTime prevKey = monthDailyData.Keys.First();
+        int count = 0;
+        foreach (var key in monthDailyData.Keys)
+        {
+            var income = monthDailyData[key]?.income?.Sum(x => x.amount) ?? 0;
+            var expense = monthDailyData[key]?.expense?.Sum(x => x.amount) ?? 0;
+            currentBalance += income - expense;
+            monthDailyData[key].previousBalance = count == 0 ? initialBalance : monthDailyData[prevKey].currentBalance;
+            monthDailyData[key].currentBalance = currentBalance;
+            prevKey = key;
+            count++;
+        }
+    }
+
+    private async Task getMonthlyData(int month, int year)
+    {
+        currMonth = month;
+        currYear = year;
+        string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+        var budgetResponse = await Http.GetFromJsonAsync<BudgetResponse>($"/api/BudgetTable/get_budgets_in_date_range?start_date_str={new DateTime(currYear, currMonth, 1).ToString("yyyy-MM-dd")}");
+        monthDailyData = budgetResponse?.budgets ?? new Dictionary<DateTime, Budget>();
+        var firstDayOfCurrentMonth = new DateTime(currYear, currMonth, 1);
+        var lastDayOfCurrentMonth = firstDayOfCurrentMonth.AddMonths(1).AddDays(-1);
+        calendar = getDaysInMonth(firstDayOfCurrentMonth, lastDayOfCurrentMonth);
+        int count = 0;
+        DateTime prevKey = monthDailyData.Keys.First();
+        foreach (var key in monthDailyData.Keys)
+        {
+            var income = monthDailyData[key]?.income?.Sum(x => x.amount) ?? 0;
+            var expense = monthDailyData[key]?.expense?.Sum(x => x.amount) ?? 0;
+            currentBalance += income - expense;
+            monthDailyData[key].previousBalance = count == 0 ? initialBalance : monthDailyData[prevKey].currentBalance;
+            monthDailyData[key].currentBalance = currentBalance;
+            prevKey = key;
+            count++;
+        }
+    }
+
+    private List<DayData> getDaysInMonth(DateTime start, DateTime end)
+    {
+        var dates = new List<DayData>();
+        var current = start;
+        int index = 1;
+
+        while (current <= end)
+        {
+            dates.Add(new DayData
+                {
+                    date = current,
+                    dayOfWeek = (int)current.DayOfWeek,
+                    index = index++
+                });
+
+            current = current.AddDays(1);
+        }
+
+        return dates;
+    }
+
+    private double? totalIncome(DateTime date)
+    {
+        return monthDailyData.ContainsKey(date) ? (double?)monthDailyData[date]?.income?.Sum(x => x.amount) : null;
+    }
+
+    private double? totalExpense(DateTime date)
+    {
+        return monthDailyData.ContainsKey(date) ? (double?)monthDailyData[date]?.expense?.Sum(x => x.amount) : null;
+    }
+
+    private async Task incrementMonth()
+    {
+        var monthData = monthDailyData.Keys.ToList();
+        currMonth = monthData[0].AddMonths(1).Month;
+        currYear = monthData[0].AddMonths(1).Year;
+        var firstDayOfCurrentMonth = new DateTime(currYear, currMonth, 1);
+        var lastDayOfCurrentMonth = firstDayOfCurrentMonth.AddMonths(1).AddDays(-1);
+        balanceHistory.Add(initialBalance);
+        initialBalance = monthDailyData[monthData.Last()].currentBalance;
+        currentBalance = initialBalance;
+        await getMonthlyData(currMonth, currYear);
+        firstDayOfCurrentMonth = new DateTime(currYear, currMonth, 1);
+        lastDayOfCurrentMonth = firstDayOfCurrentMonth.AddMonths(1).AddDays(-1);
+    }
+
+    private async Task decrementMonth()
+    {
+        var monthData = monthDailyData.Keys.ToList();
+        currMonth = monthData[0].AddMonths(-1).Month;
+        currYear = monthData[0].AddMonths(-1).Year;
+        var firstDayOfCurrentMonth = new DateTime(currYear, currMonth, 1);
+        var lastDayOfCurrentMonth = firstDayOfCurrentMonth.AddMonths(1).AddDays(-1);
+        calendar = getDaysInMonth(firstDayOfCurrentMonth, lastDayOfCurrentMonth);
+        if (balanceHistory.Count > 0)
+        {
+            initialBalance = balanceHistory.Last();
+            balanceHistory.RemoveAt(balanceHistory.Count - 1);
+        }
+        currentBalance = initialBalance;
+        await getMonthlyData(currMonth, currYear);
+    }
+
+    private async Task changeInitialBalance()
+    {
+        try
+        {
+            string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+            var content = new StringContent(JsonSerializer.Serialize(new { balance = initialBalance }), Encoding.UTF8, "application/json");
+            var response = await Http.PutAsync("/api/Auth/user", content);
+            if (response.IsSuccessStatusCode)
+            {
+                currentBalance = initialBalance;
+                monthlyBalances = new Dictionary<string, dynamic>();
+                foreach (var key in monthDailyData.Keys)
+                {
+                    var income = monthDailyData[key].income.Sum(x => x.amount);
+                    var expense = monthDailyData[key].expense.Sum(x => x.amount);
+                    currentBalance += income - expense;
+                    monthDailyData[key].currentBalance = currentBalance;
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+        }
+    }
+
+    private string getBalanceClass(DateTime date, string type, string balance)
+    {
+        if (!monthDailyData.ContainsKey(date))
+            return "hide-dash";
+
+        var balanceValue = balance == "previousBalance" ? monthDailyData[date].previousBalance : monthDailyData[date].currentBalance;
+        if (balanceValue < 0)
+            return "expense";
+
+        return balanceValue > 0 ? $"{type}-balance" : "hide-dash";
+    }
+
+    private async Task refreshTable()
+    {
+        var firstDayOfCurrentMonth = new DateTime(currYear, currMonth, 1);
+        var lastDayOfCurrentMonth = firstDayOfCurrentMonth.AddMonths(1).AddDays(-1);
+        calendar = getDaysInMonth(firstDayOfCurrentMonth, lastDayOfCurrentMonth);
+        currentBalance = initialBalance;
+        await getMonthlyData(this.currMonth, this.currYear);
+        //this.expenseModal.hide();
+    }
+
+    public async Task addExpenseModal(DateTime date)
+    {
+        selectedDate = date;
+        selectedOptionCategoryHeader = new { category_name = "Select Category" };
+        selectedClassCategoryHeader = "";
+        selectedOptionHeader = "Select Interval";
+        selectedClassHeader = "";
+        selectedOption = "Select Interval";
+        selectedClass = "";
+        headerExpense = "";
+        headerAmount = 0;
+        StateHasChanged();
+        await expenseModal.Show();
+    }
+
+    private async Task<string> layoutGridProcess()
+    {
+        conditionalLayoutGrid = "uui-table_row new-row";
+        if (await JSRuntime.InvokeAsync<int>("eval", "window.innerWidth") > 600)
+        {
+            conditionalLayoutGrid += " w-layout-grid";
+        }
+        return conditionalLayoutGrid;
+    }
+
+    public class DayData
+    {
+        public DateTime date { get; set; }
+        public int dayOfWeek { get; set; }
+        public int index { get; set; }
+    }
+
+    public class UserResponse
+    {
+        public bool success { get; set; }
+        public string message { get; set; }
+        public User user { get; set; }
+    }
+
+    public class User
+    {
+        public string email { get; set; } = null;
+        public string name { get; set; } = null;
+        public double balance { get; set; } = double.NaN;
+    }
+
+    public class BudgetResponse
+    {
+        public bool success { get; set; }
+        public string message { get; set; }
+        public Dictionary<DateTime, Budget> budgets { get; set; }
+    }
+
+    public class Budget
+    {
+        public int user_id { get; set; }
+        public List<Income> income { get; set; }
+        public List<Expense> expense { get; set; }
+        public string notes { get; set; }
+        public double currentBalance { get; set; } = 0;
+        public double previousBalance { get; set; } = 0;
+    }
+
+    public class Income
+    {
+        public int income_id { get; set; }
+        public int user_id { get; set; }
+        public int id { get; set; }
+        public double amount { get; set; }
+        public int frequency { get; set; }
+        public string source { get; set; }
+        public DateTime start_date { get; set; }
+    }
+
+    public class Expense
+    {
+        public int expense_id { get; set; }
+        public double amount { get; set; }
+        public int frequency { get; set; }
+        public int user_id { get; set; }
+        public int id { get; set; }
+        public string expenses { get; set; }
+        public DateTime start_date { get; set; }
+        public int? category { get; set; }
+    }
+
+    public class Category
+    {
+        public int id { get; set; }
+        public string category_name { get; set; }
+    }
+}
