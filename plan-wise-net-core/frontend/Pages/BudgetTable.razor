@@ -161,10 +161,10 @@
                                 <div class="w-layout-grid uui-table-row-day-of-month action-column">
                                     <div class="action">
                                         <div class="action-data">
-                                            <button type="button" class="btn btn-primary" @onclick="()=>{}/*addIncome(dayData.date)*/">Add Income</button>
+                                            <button type="button" class="btn btn-primary" @onclick="async()=>await addIncomeModal(dayData.date)">Add Income</button>
                                             <button type="button" class="btn btn-primary" @onclick="async()=>await addExpenseModal(dayData.date)">Add Expense</button>
-                                            <button type="button" class="btn btn-primary" disabled="@(dayData.date.ToShortDateString() != "1/1/0001" && monthDailyData[dayData.date] == null)" @onclick="()=>{}/*selectedInstance(dayData.date)*/">Modify Instance</button>
-                                            <button type="button" class="btn btn-primary" @onclick="()=>{}/*notes(dayData.date)*/">Notes</button>
+                                            <button type="button" class="btn btn-primary" disabled="@(dayData.date.ToShortDateString() != "1/1/0001" && monthDailyData[dayData.date] == null)" @onclick="async()=>await selectedInstanceModal(dayData.date)">Modify Instance</button>
+                                            <button type="button" class="btn btn-primary" @onclick="async()=>await notesModal(dayData.date)">Notes</button>
                                         </div>
                                     </div>
                                 </div>
@@ -254,10 +254,10 @@
 
                                     <div class="action">
                                         <div class="action-data">
-                                            <button type="button" class="btn btn-primary" @onclick="()=>{}/*addIncome(dayData.date)*/">Add Income</button>
-                                            <button type="button" class="btn btn-primary" @onclick="()=>{}/*addExpense(dayData.date)*/">Add Expense</button>
-                                            <button type="button" class="btn btn-primary" disabled="@(dayData.date.ToShortDateString() != "1/1/0001" && monthDailyData[dayData.date] == null)" @onclick="()=>{}/*selectedInstance(dayData.date)*/">Modify Instance</button>
-                                            <button type="button" class="btn btn-primary" @onclick="()=>{}/*notes(dayData.date)*/">Notes</button>
+                                            <button type="button" class="btn btn-primary" @onclick="async()=>await addIncomeModal(dayData.date)">Add Income</button>
+                                            <button type="button" class="btn btn-primary" @onclick="async()=>await addExpenseModal(dayData.date)">Add Expense</button>
+                                            <button type="button" class="btn btn-primary" disabled="@(dayData.date.ToShortDateString() != "1/1/0001" && monthDailyData[dayData.date] == null)" @onclick="async()=>await selectedInstanceModal(dayData.date)">Modify Instance</button>
+                                            <button type="button" class="btn btn-primary" @onclick="async()=>await notesModal(dayData.date)">Notes</button>
                                         </div>
                                     </div>
                                 }
@@ -295,8 +295,27 @@
         headerDate="@selectedDate"
         selectedDate="@selectedDate">
     </ExpenseModal>
-
-
+    <IncomeModal @ref="incomeModal"
+                  OnChange="StateHasChanged"
+                  OnModalClose="refreshTable"
+                  selectedOptionCategoryHeader="@selectedOptionCategoryHeader"
+                  selectedOptionHeader="@selectedOptionHeader"
+                  selectedClassHeader="@selectedClassHeader"
+                  headerSource="@headerSource"
+                  headerAmount="@headerAmount"
+                  headerDate="@selectedDate"
+                  selectedDate="@selectedDate">
+    </IncomeModal>
+    <ModifyInstanceModal @ref="modifyInstanceModal"
+        OnChange="StateHasChanged"
+        OnModalClose="refreshTable"
+        selectedInstance="@selectedInstance"
+        selectedDate="@selectedDate">
+    </ModifyInstanceModal>
+    <NotesModal @ref="noteModal"
+                OnModalClosed="@refreshTable"
+                currentNotes="@currentNotes"
+                selectedDate="@selectedDate" />
 </section>
 
 <style scoped>
@@ -405,10 +424,10 @@
     List<DayData> calendar = new List<DayData>();
     List<string> daysOfWeek = new List<string> { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
 
-    bool noteModal = false;
-    bool incomeModal = false;
+    NotesModal noteModal;
+    IncomeModal incomeModal;
     ExpenseModal expenseModal;
-    bool modifyInstanceModal = false;
+    ModifyInstanceModal modifyInstanceModal;
     int expenseInstanceIndex = 0;
     int incomeInstanceIndex = 0;
 
@@ -420,8 +439,9 @@
     private string selectedOption = "Select Interval";
     private string selectedClass = "";
     private string headerExpense = "";
+    private string headerSource = "";
     private double headerAmount = 0;
-
+    private dynamic currentNotes = new { notes = "" };
 
     Budget selectedInstance = new Budget { expense = new List<Expense>(), income = new List<Income>() };
     Budget origSelectedIntance = new Budget { expense = new List<Expense>(), income = new List<Income>() };
@@ -632,6 +652,43 @@
         await expenseModal.Show();
     }
 
+    public async Task addIncomeModal(DateTime date)
+    {
+        selectedDate = date;
+        selectedOptionHeader = "Select Interval";
+        selectedClassHeader = "";
+        headerExpense = "";
+        headerAmount = 0;
+        StateHasChanged();
+        await incomeModal.Show();
+    }
+
+    public async Task selectedInstanceModal(DateTime date)
+    {
+        selectedInstance = monthDailyData[date];
+        selectedDate = date;
+        StateHasChanged();
+        await modifyInstanceModal.Show();
+    }
+
+    public async Task notesModal(DateTime date)
+    {
+        selectedDate = date;
+        try
+        {
+            string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+            var notesResponse = await Http.GetFromJsonAsync<NotesResponse>($"/api/BudgetTable/notes?date={date}");
+            currentNotes = notesResponse.notes;
+        }
+        catch (Exception)
+        {
+            currentNotes = new { id = 0, notes = "" };
+        }
+        StateHasChanged();
+        await noteModal.Show();
+    }
+
     private async Task<string> layoutGridProcess()
     {
         conditionalLayoutGrid = "uui-table_row new-row";
@@ -654,6 +711,20 @@
         public bool success { get; set; }
         public string message { get; set; }
         public User user { get; set; }
+    }
+
+    public class NotesResponse
+    {
+        public bool success { get; set; }
+        public string message { get; set; }
+        public Notes notes { get; set; }
+    }
+
+    public class Notes
+    {
+        public int id { get; set; }
+        public DateTime date { get; set; }
+        public string notes { get; set; }
     }
 
     public class User

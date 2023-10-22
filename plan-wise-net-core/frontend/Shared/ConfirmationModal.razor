@@ -1,0 +1,86 @@
+﻿@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@using System.IdentityModel.Tokens.Jwt;
+@using System.Net.Http.Headers;
+@using System.Text;
+@using System.Text.Json;
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">@localHeaderMessage</h5>
+                <button type="button" class="close" @onclick="closeModal">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @localBodyMessage
+                @if (displayErrorMessage)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Error occurred in this operation! Please try again
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="closeModal">Cancel</button>
+                <button type="button" class="btn @actionClass" @onclick="@confirmationAction">@actionMessage</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string headerMessage { get; set; }
+
+    [Parameter]
+    public string bodyMessage { get; set; }
+
+    [Parameter]
+    public string actionMessage { get; set; }
+
+    [Parameter]
+    public string actionClass { get; set; }
+
+    [Parameter]
+    public EventCallback confirmationAction { get; set; }
+
+    [Parameter]
+    public EventCallback closeModal { get; set; }
+
+    [Parameter] 
+    public EventCallback OnChange { get; set; }
+
+    [Parameter] public EventCallback OnModalClose { get; set; }
+
+    private string localHeaderMessage { get; set; }
+    private string localBodyMessage { get; set; }
+    private bool displayErrorMessage { get; set; }
+
+    public async Task Show()
+    {
+        await JSRuntime.InvokeVoidAsync("showModal", "confirmationModal");
+        await OnChange.InvokeAsync(null);
+    }
+
+    public async Task Hide()
+    {
+        await JSRuntime.InvokeVoidAsync("hideModal", "confirmationModal");
+        await OnChange.InvokeAsync(null);
+        await OnModalClose.InvokeAsync();
+    }
+
+    protected override void OnParametersSet()
+    {
+        localHeaderMessage = headerMessage;
+        localBodyMessage = bodyMessage;
+        base.OnParametersSet();
+    }
+
+    public void showErrorMessage()
+    {
+        displayErrorMessage = true;
+    }
+}

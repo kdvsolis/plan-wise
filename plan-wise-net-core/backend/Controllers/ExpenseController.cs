@@ -33,7 +33,7 @@ namespace backend.Controllers
 
             expense.user_id = userId;
             expense.start_date = DateTime.SpecifyKind(expense.start_date, DateTimeKind.Utc);
-            _context.pw_expenses.Add(new pw_expenses
+            var newExpense = new pw_expenses
             {
                 user_id = userId,
                 expenses = expense.expenses,
@@ -41,12 +41,13 @@ namespace backend.Controllers
                 frequency = expense.frequency,
                 category = expense.category,
                 start_date = expense.start_date,
-            });
+            };
+            _context.pw_expenses.Add(newExpense);
             await _context.SaveChangesAsync();
 
             var budgetData = DateDataGenerator.GroupByDate(new List<ItemExpense> { new ItemExpense {
                 expenses = expense.expenses,
-                expense_id = expense.id,
+                expense_id = newExpense.id,
                 amount = expense.amount,
                 start_date = expense.start_date,
                 frequency = expense.frequency,
@@ -61,7 +62,7 @@ namespace backend.Controllers
                     {
                         date = DateTime.SpecifyKind(date, DateTimeKind.Utc),
                         user_id = userId,
-                        expense_id = expense.id,
+                        expense_id = newExpense.id,
                         expenses = exp.expenses,
                         amount = exp.amount,
                         start_date = DateTime.SpecifyKind(expense.start_date, DateTimeKind.Utc),
@@ -74,7 +75,14 @@ namespace backend.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetExpense", new { id = expense.id }, new { success = true, message = "Expense created successfully", expense });
+            return CreatedAtAction("GetExpense", new { id = expense.id }, new { success = true, message = "Expense created successfully", expense = new { 
+                id = newExpense.id,
+                amount = newExpense.amount,
+                expenses = newExpense.expenses,
+                frequency = newExpense.frequency,
+                category = newExpense.category,
+                start_date = newExpense.start_date,
+            } });
         }
 
         // GET: api/expense
@@ -213,7 +221,7 @@ namespace backend.Controllers
 
             await _context.SaveChangesAsync();
 
-            var budgetExpenses = _context.pw_budget_table_expense.Where(e => e.date > DateTime.Now.Date && e.expense_id == id && e.user_id == userId);
+            var budgetExpenses = _context.pw_budget_table_expense.Where(e => e.date > DateTime.SpecifyKind(DateTime.Now.Date, DateTimeKind.Utc) && e.expense_id == id && e.user_id == userId);
 
             _context.pw_budget_table_expense.RemoveRange(budgetExpenses);
 

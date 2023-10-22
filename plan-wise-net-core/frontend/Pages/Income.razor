@@ -109,6 +109,14 @@
         </div>
     </div>
 
+    <ConfirmationModal @ref="confirmationModal"
+        OnChange="StateHasChanged"
+        headerMessage="@headerMessage"
+        bodyMessage="@deleteBodyMessage"
+        confirmationAction="deleteIncome"
+        actionMessage="@actionMessage"
+        actionClass="btn-danger">
+    </ConfirmationModal>
 </div>
 
 <style scoped>
@@ -206,6 +214,12 @@
     private string selectedClassHeader;
     private string selectedClassCategoryHeader;
     private string conditionalLayoutGridClass = "";
+    private int selectedIndex = -1;
+    private string actionMessage = "Delete";
+    private string deleteBodyMessage = "";
+    private string headerMessage = "Delete Expense";
+
+    private ConfirmationModal confirmationModal;
 
     private List<Row> rows = new List<Row>();
 
@@ -343,9 +357,23 @@
         }
     }
 
-    private void deleteConfirmation(int index)
+    private async Task deleteConfirmation(int index)
     {
-        // Delete confirmation here
+        selectedIndex = index;
+        deleteBodyMessage = $"Are you sure you want to delete {rows[selectedIndex].source}?";
+        StateHasChanged();
+        await confirmationModal.Show();
+    }
+
+    private async Task deleteIncome()
+    {
+        string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+        var response = await Http.DeleteAsync($"/api/Income/income/{rows[selectedIndex].id}");
+        rows.Remove(rows[selectedIndex]);
+        StateHasChanged();
+        selectedIndex = -1;
+        await confirmationModal.Hide();
     }
 
     private async Task inputToggle()
@@ -364,7 +392,6 @@
         }
         return classNames;
     }
-
 
     public class Row
     {

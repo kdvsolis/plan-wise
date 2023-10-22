@@ -148,6 +148,15 @@
         </div>
     </div>
 
+    <ConfirmationModal 
+        @ref="confirmationModal"
+        OnChange="StateHasChanged"
+        headerMessage="@headerMessage"
+        bodyMessage="@deleteBodyMessage"
+        confirmationAction="deleteExpense"
+        actionMessage="@actionMessage"
+        actionClass="btn-danger">
+    </ConfirmationModal>
 </div>
 
 <style scoped>
@@ -232,13 +241,12 @@
     private Category selectedOptionCategoryHeader;
     private string selectedClassCategoryHeader;
     private string conditionalLayoutGridClass = "";
+    private int selectedIndex = -1;
+    private string actionMessage = "Delete";
+    private string deleteBodyMessage = "";
+    private string headerMessage = "Delete Expense";
 
     private List<Row> rows = new List<Row>();
-    // {
-    //     new Row { expenses = "Meryenda", start_date = DateTime.Parse("2023-10-01"), category = 1, amount = 2.0, id = 1, frequency = 0, user_id = 1 },
-    //     new Row { expenses = "Grocery", start_date = DateTime.Parse("2023-10-01"), category = 1, amount = 10.0, id = 2, frequency = 1, user_id = 1 },
-    //     new Row { expenses = "Gas", start_date = DateTime.Parse("2023-10-01"), category = 2, amount = 20.0, id = 3, frequency = 2, user_id = 1 }
-    // };
     private List<Option> options = new List<Option>()
     {
         new Option { text = "Daily", @class = "daily"},
@@ -251,6 +259,8 @@
         new Option { text = "One Time", @class = "one-time-expense"}
     };
     private List<Category> categories = new List<Category>();
+
+    private ConfirmationModal confirmationModal;
 
     protected override async Task OnInitializedAsync()
     {
@@ -301,6 +311,7 @@
         selectedOptionCategoryHeader = category;
         selectedClassCategoryHeader = category != null ? "btn-primary" : "";
     }
+
     private async Task createExpense()
     {
         string token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
@@ -349,7 +360,6 @@
 
     private async Task updateExpense(int index)
     {
-        Console.WriteLine("{0} ------", index);
         string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
         Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
         var response = await Http.PutAsJsonAsync($"/api/Expense/expenses/{rows[index].id}", new {
@@ -359,7 +369,25 @@
             frequency = rows[index].frequency,
             category = rows[index].category
         });
-        Console.WriteLine(response);
+    }
+
+    private async Task deleteConfirmation(int index)
+    {
+        selectedIndex = index;
+        deleteBodyMessage = $"Are you sure you want to delete {rows[selectedIndex].expenses}?";
+        StateHasChanged();
+        await confirmationModal.Show();
+    }
+
+    private async Task deleteExpense()
+    {
+        string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+        var response = await Http.DeleteAsync($"/api/Expense/expenses/{rows[selectedIndex].id}");
+        rows.Remove(rows[selectedIndex]);
+        StateHasChanged();
+        selectedIndex = -1;
+        await confirmationModal.Hide();
     }
 
     private async Task fetchCategories()
@@ -390,11 +418,6 @@
         {
             Console.WriteLine(exception);
         }
-    }
-
-    private void deleteConfirmation(int index)
-    {
-        // Delete confirmation here
     }
 
     private async Task inputToggle()

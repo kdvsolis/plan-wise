@@ -5,11 +5,11 @@
 @using System.Text;
 @using System.Text.Json;
 
-<div class="modal fade" id="expenseModal" ref="expenseModal" tabindex="-1" role="dialog" aria-labelledby="expenseModalLabel" aria-hidden="true">
+<div class="modal fade" id="incomeModal" ref="incomeModal" tabindex="-1" role="dialog" aria-labelledby="incomeModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="expenseModalLabel">New Expense</h5>
+                <h5 class="modal-title" id="incomeModalLabel">New Income</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -17,8 +17,8 @@
             <div class="modal-body">
                 <div class="income-expense-input">
                     <div class="income-expense-row">
-                        <span>Expense: </span>
-                        <input type="text" class="expense-input modal-input" @bind="localHeaderExpense">
+                        <span>Income: </span>
+                        <input type="text" class="expense-input modal-input" @bind="localHeaderSource">
                     </div>
                     <div class="income-expense-row">
                         <span>Amount($): </span>
@@ -41,37 +41,17 @@
                                     <li class="mt-1">
                                         <a class="@(option.@class) dropdown-item" href="#" @onclick="@(() => selectOptionHeader(option))">@option.text</a>
                                     </li>
-        }
-                            </ul>
-                        </div>
-
-                    </div>
-                    <div class="income-expense-row">
-                        <span>Category: </span>
-                        <div class="dropdown dropdown-border modal-input" data-bs-toggle="dropdown" data-bs-display="static">
-                            <button class="@($"btn dropdown-toggle frequency-width {localSelectedClassCategoryHeader}")" type="button" id="dropdownCategoryButtonHeader" aria-expanded="false">
-                                @(localSelectedOptionCategoryHeader?.category_name ?? "Select Category")
-                            </button>
-                            <span class="dropdown-icon">▼</span>
-                            <ul class="dropdown-menu" aria-labelledby="selectCategoryHeader">
-                                <li>
-                                    <a class="dropdown-item" @onclick="@(() => selectCategoryHeader(null))">Select Category</a>
-                                </li>
-                                @foreach (var category in categories)
-                                {
-                                    <li>
-                                        <a class="btn btn-primary dropdown-item" @onclick="@(() => selectCategoryHeader(category))">@category.category_name</a>
-                                    </li>
                                 }
                             </ul>
                         </div>
+
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" @onclick="createExpense">Save changes</button>
+                <button type="button" class="btn btn-primary" @onclick="createIncome">Save changes</button>
             </div>
         </div>
     </div>
@@ -79,71 +59,86 @@
 <style scoped>
     @@import "/css/components.css";
     @@import "/css/budgeting-app.css";
-    .center-pagination{
-      width: 100%;
-      padding: 50px;
+
+    .center-pagination {
+        width: 100%;
+        padding: 50px;
     }
-    .center-pagination > nav{
-      margin: auto;
-    }
-    .expense-input{
-      width: 100%;
-      padding: 5px;
-      border-radius: 5px;
-      border: 1px solid rgba(0, 0, 0, .1);
-      background: transparent;
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,Oxygen,Fira Sans,Droid Sans,sans-serif;
+
+        .center-pagination > nav {
+            margin: auto;
+        }
+
+    .expense-input {
+        width: 100%;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, .1);
+        background: transparent;
+        font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,Oxygen,Fira Sans,Droid Sans,sans-serif;
         font-size: 1.125rem;
     }
+
     .modal-input {
-      width: 50% !important;
+        width: 50% !important;
     }
-    .page-link-budget{
-      background-color: transparent;
-      border: none;
-      color: white;
-      text-decoration: none;
+
+    .page-link-budget {
+        background-color: transparent;
+        border: none;
+        color: white;
+        text-decoration: none;
     }
-    .action{
-      padding-left: 10px;
-      padding-right: 10px;
+
+    .action {
+        padding-left: 10px;
+        padding-right: 10px;
     }
-    .action-data{
-      display: flex;
-      flex-direction: column;
-      row-gap: 10px;
+
+    .action-data {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
     }
+
     .expense-cell {
-      padding: 15px !important;
+        padding: 15px !important;
     }
-    .income-expense-input{
-      display: flex;
-      flex-direction: column;
-      row-gap: 15px;
+
+    .income-expense-input {
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
     }
-    .income-expense-row{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
+
+    .income-expense-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
-    .dropdown-menu{
-      padding-left: 10px !important;
-      padding-right: 10px !important;
+
+    .dropdown-menu {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
     }
+
     .dropdown-icon {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
     }
+
     .btn.dropdown-toggle::after {
-      display: none;
+        display: none;
     }
-    .hide-dash{
-      color: transparent;
+
+    .hide-dash {
+        color: transparent;
     }
+
     #instanceTabs {
-      padding-left: 0px !important;
+        padding-left: 0px !important;
     }
 </style>
 @code {
@@ -153,20 +148,15 @@
     [Parameter] public string selectedClassCategoryHeader { get; set; }
     [Parameter] public string selectedOptionHeader { get; set; }
     [Parameter] public string selectedClassHeader { get; set; }
-    [Parameter] public string selectedOption { get; set; }
-    [Parameter] public string selectedClass { get; set; }
-    [Parameter] public string headerExpense { get; set; }
+    [Parameter] public string headerSource { get; set; }
     [Parameter] public double headerAmount { get; set; }
     [Parameter] public DateTime headerDate { get; set; }
     [Parameter] public DateTime selectedDate { get; set; }
 
     private dynamic localSelectedOptionCategoryHeader;
-    private string localSelectedClassCategoryHeader;
     private string localSelectedOptionHeader;
     private string localSelectedClassHeader;
-    private string localSelectedOption;
-    private string localSelectedClass;
-    private string localHeaderExpense;
+    private string localHeaderSource;
     private double localHeaderAmount;
     private DateTime localHeaderDate;
     private DateTime localSelectedDate;
@@ -183,51 +173,32 @@
         new Option { text = "Annually", @class = "annually"},
         new Option { text = "One Time", @class = "one-time-expense"}
     };
-    private List<Category> categories = new List<Category>();
 
     protected override async Task OnInitializedAsync()
     {
-        await fetchCategories();
+        
     }
 
     protected override void OnParametersSet()
     {
         localSelectedOptionCategoryHeader = selectedOptionCategoryHeader;
-        localSelectedClassCategoryHeader = selectedClassCategoryHeader;
         localSelectedOptionHeader = selectedOptionHeader;
         localSelectedClassHeader = selectedClassHeader;
-        localSelectedOption = selectedOption;
-        localSelectedClass = selectedClass;
-        localHeaderExpense = headerExpense;
+        localHeaderSource = headerSource;
         localHeaderAmount = headerAmount;
         localHeaderDate = headerDate;
         localSelectedDate = selectedDate;
     }
 
-    private async Task fetchCategories()
-    {
-        try
-        {
-            string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
-            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-            var response = await Http.GetFromJsonAsync<ResponseCategoryList>("/api/Categories/categories");
-            categories = response.category;
-        }
-        catch (Exception exception)
-        {
-            Console.WriteLine(exception);
-        }
-    }
-
     public async Task Show()
     {
-        await JSRuntime.InvokeVoidAsync("showModal", "expenseModal");
+        await JSRuntime.InvokeVoidAsync("showModal", "incomeModal");
         await OnChange.InvokeAsync(null);
     }
 
     public async Task Hide()
     {
-        await JSRuntime.InvokeVoidAsync("hideModal", "expenseModal");
+        await JSRuntime.InvokeVoidAsync("hideModal", "incomeModal");
         await OnChange.InvokeAsync(null);
         await OnModalClose.InvokeAsync();
     }
@@ -238,31 +209,17 @@
         localSelectedClassHeader = option.@class;
     }
 
-    private void selectCategoryHeader(Category category)
-    {
-        localSelectedOptionCategoryHeader = category;
-        if(category == null)
-        {
-            localSelectedClassCategoryHeader = "";
-        } 
-        else
-        {
-            localSelectedClassCategoryHeader = category?.category_name == "Select Category" ? "" : "btn-primary";
-        }
-    }
-
-    // Implement your createExpense method here
-    async Task createExpense()
+    // Implement your createIncome method here
+    async Task createIncome()
     {
         try
         {
             var body = new
             {
-                expenses = this.localHeaderExpense,
+                source = this.localHeaderSource,
                 amount = this.localHeaderAmount,
                 start_date = this.localSelectedDate,
                 frequency = options.FindIndex(x => x.@class == localSelectedClassHeader),
-                category = categories?.Find(x => x.category_name == localSelectedOptionCategoryHeader.category_name)?.id
             };
 
             try
@@ -270,7 +227,7 @@
                 string bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
                 Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
 
-                var response = await Http.PostAsJsonAsync("/api/Expense/expense", body);
+                var response = await Http.PostAsJsonAsync("/api/Income/income", body);
                 if (response.IsSuccessStatusCode)
                 {
                     await Hide();
@@ -284,7 +241,7 @@
             {
                 Console.WriteLine(exception);
             }
-            
+
         }
         catch (Exception exception)
         {
@@ -298,29 +255,15 @@
         public string @class { get; set; }
     }
 
-    public class Category
-    {
-        public int id { get; set; }
-        public string category_name { get; set; }
-        public string? @class { get; set; }
-    }
-
-    public class ResponseCategoryList
-    {
-        public bool success { get; set; }
-        public string? message { get; set; }
-        public List<Category>? category { get; set; }
-    }
-
     public class Row
     {
         public int id { get; set; }
-        public string expenses { get; set; }
+        public string source { get; set; }
         public double amount { get; set; }
         public DateTime start_date { get; set; }
         public int? frequency { get; set; }
-        public int? category { get; set; }
         public int user_id { get; set; }
     }
+
 }
 

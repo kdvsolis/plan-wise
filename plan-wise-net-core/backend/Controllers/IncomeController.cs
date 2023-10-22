@@ -32,20 +32,21 @@ namespace backend.Controllers
             }
 
             income.user_id = userId;
-            income.start_date = DateTime.SpecifyKind(income.start_date, DateTimeKind.Utc);
-            _context.pw_income.Add(new pw_income
+
+            var newIncome = new pw_income
             {
                 user_id = userId,
                 source = income.source,
                 amount = income.amount,
                 frequency = income.frequency,
-                start_date = income.start_date,
-            });
+                start_date = DateTime.SpecifyKind(income.start_date, DateTimeKind.Utc),
+            };
+            _context.pw_income.Add(newIncome);
             await _context.SaveChangesAsync();
 
             var budgetData = DateDataGenerator.GroupByDate(new List<ItemIncome> { new ItemIncome {
                 source = income.source,
-                income_id = income.id,
+                income_id = newIncome.id,
                 amount = income.amount,
                 start_date = DateTime.SpecifyKind(income.start_date, DateTimeKind.Utc),
                 frequency = income.frequency} 
@@ -61,7 +62,7 @@ namespace backend.Controllers
                         source = income.source,
                         user_id = userId,
                         amount = exp.amount,
-                        income_id = income.id,
+                        income_id = newIncome.id,
                         start_date = DateTime.SpecifyKind(exp.start_date, DateTimeKind.Utc),
                         frequency = exp.frequency
                     };
@@ -72,7 +73,16 @@ namespace backend.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetIncome", new { id = income.id }, new { success = true, message = "Income created successfully", income });
+            return CreatedAtAction("GetIncome", new { id = income.id }, new { success = true, message = "Income created successfully",
+                income = new
+                {
+                    id = newIncome.id,
+                    amount = newIncome.amount,
+                    source = newIncome.source,
+                    frequency = newIncome.frequency,
+                    start_date = newIncome.start_date,
+                }
+            });
         }
 
 
@@ -208,7 +218,7 @@ namespace backend.Controllers
 
             await _context.SaveChangesAsync();
 
-            var budgetIncome = _context.pw_budget_table_income.Where(e => e.date > DateTime.Now.Date && e.income_id == id && e.user_id == userId);
+            var budgetIncome = _context.pw_budget_table_income.Where(e => e.date > DateTime.SpecifyKind(DateTime.Now.Date, DateTimeKind.Utc) && e.income_id == id && e.user_id == userId);
 
             _context.pw_budget_table_income.RemoveRange(budgetIncome);
 

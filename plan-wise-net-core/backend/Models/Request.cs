@@ -54,6 +54,13 @@ namespace backend.Models
         public int frequency { get; set; }
     }
 
+    public class NotesRequest
+    {
+        public int? id { get; set; }
+        public DateTime date { get; set; }
+        public string notes { get; set; }
+    }
+
     public class BudgetRequest
     {
         public class IncomeData

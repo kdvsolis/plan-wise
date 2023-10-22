@@ -1,0 +1,93 @@
+﻿@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@using System.IdentityModel.Tokens.Jwt;
+@using System.Net.Http.Headers;
+@using System.Text;
+@using System.Text.Json;
+
+<div class="modal fade" id="notesModal" tabindex="-1" aria-labelledby="notesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notesModalLabel">Notes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="notesTextArea" class="form-label">@localSelectedDate.ToShortDateString()</label>
+                <textarea class="form-control" id="notesTextArea" rows="3" @bind="@localCurrentNotes.notes"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" @onclick="@(() => saveNotes(selectedDate))">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public EventCallback OnChange { get; set; }
+    [Parameter] public EventCallback OnModalClosed { get; set; }
+    [Parameter] public dynamic currentNotes { get; set; }
+    [Parameter] public DateTime selectedDate { get; set; }
+
+    private Notes localCurrentNotes = new Notes { notes = "" };
+    private DateTime localSelectedDate { get; set; }
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    protected override void OnParametersSet()
+    {
+        localSelectedDate = selectedDate;
+        localCurrentNotes = new Notes
+        {
+            notes = currentNotes.notes
+        };
+    }
+
+    public async Task Show()
+    {
+        await JSRuntime.InvokeVoidAsync("showModal", "notesModal");
+        await OnChange.InvokeAsync(null);
+    }
+
+    public async Task Hide()
+    {
+        await JSRuntime.InvokeVoidAsync("hideModal", "notesModal");
+        await OnChange.InvokeAsync(null);
+        await OnModalClosed.InvokeAsync();
+    }
+
+    public async Task saveNotes(DateTime date)
+    {
+        var bearerToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "token");
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+        if (currentNotes.id == 0)
+        {
+            var noteRequest = new { date = date, notes = localCurrentNotes.notes };
+            var response = await Http.PostAsJsonAsync("/api/BudgetTable/notes", noteRequest);
+            if (response.IsSuccessStatusCode)
+            {
+                await Hide();
+            }
+        }
+        else
+        {
+            localCurrentNotes.date = date;
+            var response = await Http.PutAsJsonAsync($"/api/BudgetTable/notes?date={date}", localCurrentNotes);
+            if (response.IsSuccessStatusCode)
+            {
+                await Hide();
+            }
+        }
+    }
+
+
+    public class Notes
+    {
+        public DateTime date;
+        public string notes { get; set; }
+    }
+}
