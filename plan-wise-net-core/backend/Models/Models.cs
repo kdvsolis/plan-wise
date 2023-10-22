@@ -37,7 +37,7 @@ namespace backend.Models
         [MaxLength(1024)]
         public string category_name { get; set; }
 
-        [ForeignKey("pw_users")]
+        [ForeignKey("user")]
         public int user_id { get; set; }
 
         // Navigation properties

@@ -43,10 +43,9 @@
                             <div class="uui-table_row">
                                 <div class="action">
                                     <button type="button" class="btn btn-warning" @onclick="@(() => updateCategory(index))">Save</button>
-                                    <!-- Commented out as per your request -->
-                                    <!--
-                                    <button type="button" class="btn btn-danger" @onclick="@(() => deleteCategory(index))">Delete</button>
-                                    -->
+
+                                    <button type="button" class="btn btn-danger" @onclick="@(() => deleteConfirmation(index))">Delete</button>
+
                                 </div>
                             </div>
                         </div>
@@ -55,6 +54,16 @@
             </div>
         </div>
     </div>
+
+
+    <ConfirmationModal @ref="confirmationModal"
+                       OnChange="StateHasChanged"
+                       headerMessage="@headerMessage"
+                       bodyMessage="@deleteBodyMessage"
+                       confirmationAction="deleteCategory"
+                       actionMessage="@actionMessage"
+                       actionClass="btn-danger">
+    </ConfirmationModal>
 </div>
 
 <style scoped>
@@ -84,6 +93,13 @@
     private List<Category> categories = new List<Category>();
     private string newCategory;
     private bool showInput;
+    private int selectedIndex = -1;
+    private string actionMessage = "Delete";
+    private string deleteBodyMessage = "";
+    private string headerMessage = "Delete Expense";
+
+    private ConfirmationModal confirmationModal;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -164,13 +180,24 @@
         await Http.PutAsJsonAsync($"/api/Categories/categories/{categories[index].id}", categories[index]);
     }
 
-    private async Task deleteCategory(int index)
+
+    private async Task deleteConfirmation(int index)
     {
-        var response = await Http.DeleteAsync($"/api/Categories/categories/{categories[index].id}");
+        selectedIndex = index;
+        deleteBodyMessage = $"Are you sure you want to delete {categories[selectedIndex].category_name}?";
+        StateHasChanged();
+        await confirmationModal.Show();
+    }
+
+    private async Task deleteCategory()
+    {
+        var response = await Http.DeleteAsync($"/api/Categories/categories/{categories[selectedIndex].id}");
         if (response.IsSuccessStatusCode)
         {
-            categories.RemoveAt(index);
+            categories.RemoveAt(selectedIndex);
         }
+        selectedIndex = -1;
+        await confirmationModal.Hide();
     }
 
     private string getClass(int index)

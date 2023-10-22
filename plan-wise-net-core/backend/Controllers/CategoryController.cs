@@ -41,7 +41,7 @@ namespace backend.Controllers
             _context.pw_categories.Add(newCategory);
             await _context.SaveChangesAsync();
 
-            return Ok(new { success = false, message = "Category created successfully" });
+            return Ok(new { success = true, message = "Category created successfully", category = newCategory });
         }
 
         [HttpGet]
