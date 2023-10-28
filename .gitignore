@@ -11,3 +11,5 @@
 /plan-wise-net-core/backend/appsettings.Development.json
 /plan-wise-net-core/frontend/bin/Release/net6.0
 /plan-wise-net-core/frontend/wwwroot/lib/bootstrap/node_modules
+/plan-wise-net-core/backend/bin
+/plan-wise-net-core/frontend/bin/Debug/net7.0
