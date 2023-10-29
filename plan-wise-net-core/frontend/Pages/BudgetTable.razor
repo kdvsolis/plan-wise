@@ -578,7 +578,6 @@
         currYear = monthData[0].AddMonths(-1).Year;
         var firstDayOfCurrentMonth = new DateTime(currYear, currMonth, 1);
         var lastDayOfCurrentMonth = firstDayOfCurrentMonth.AddMonths(1).AddDays(-1);
-        calendar = getDaysInMonth(firstDayOfCurrentMonth, lastDayOfCurrentMonth);
         if (balanceHistory.Count > 0)
         {
             initialBalance = balanceHistory.Last();
