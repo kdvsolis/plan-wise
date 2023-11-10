@@ -1,0 +1,23 @@
+@import '../assets/components.css';
+@import '../assets/budgeting-app.css';
+
+.center-pagination{
+  width: 100%;
+  padding: 50px;
+}
+.center-pagination>nav{
+  margin: auto;
+}
+.border-day{
+  border: lightgrey solid 1px;
+}
+.hide-dash{
+  color: transparent;
+}
+
+.page-link-budget{
+  background-color: transparent;
+  border: none;
+  color: white;
+  text-decoration: none;
+}

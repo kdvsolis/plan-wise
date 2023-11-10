@@ -53,6 +53,7 @@ class Account {
         if (!user) {
             return { "success": false, "message": "User not found" };
         }
+        user.balance = parseFloat(user.balance);
         return { "success": true, "message": "User updated successfully", "user": user };
     }
 
