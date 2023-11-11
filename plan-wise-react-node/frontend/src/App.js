@@ -12,6 +12,7 @@ import Categories from './pages/Categories';
 import Expenses from './pages/Expenses';
 import Income from './pages/Income';
 import BudgetCalendar from './pages/BudgetCalendar';
+import BudgetTable from './pages/BudgetTable';
 // ... import the rest of your pages
 
 function App() {
@@ -55,8 +56,8 @@ function App() {
           <Route path="/categories" element={<PrivateRoute><Categories /></PrivateRoute>} />
           <Route path="/expenses" element={<PrivateRoute><Expenses /></PrivateRoute>} />
           <Route path="/income" element={<PrivateRoute><Income /></PrivateRoute>} />
+          <Route path="/budget-table" element={<PrivateRoute><BudgetTable /></PrivateRoute>} />
           <Route path="/budget-calendar" element={<PrivateRoute><BudgetCalendar /></PrivateRoute>} />
-          {/* ... define the rest of your routes using PrivateRoute */}
         </Routes>
       </Router>
     </div>

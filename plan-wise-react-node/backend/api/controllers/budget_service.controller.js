@@ -42,7 +42,7 @@ class BudgetController {
     }
 
     async update_notes_by_date(req, res) {
-        const result = await this.budgetService.update_notes_by_date(req.user_id, req.query.date, req.body.new_notes);
+        const result = await this.budgetService.update_notes_by_date(req.user_id, req.query.date, req.body);
         if (result.success) {
             res.status(200).send(result);
         } else {

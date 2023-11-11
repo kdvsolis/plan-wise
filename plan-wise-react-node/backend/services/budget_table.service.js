@@ -141,10 +141,10 @@ class BudgetService {
         }
 
         for (let note of notes) {
-            note.notes = new_notes;
+            note.notes = new_notes.notes;
             await note.save();
         }
-        return { "success": True, "message": "Notes updated successfully", "notes": notes };
+        return { "success": true, "message": "Notes updated successfully", "notes": notes };
     }
 
     async delete_note(user_id, note_id){
