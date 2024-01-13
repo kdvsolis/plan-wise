@@ -3,6 +3,8 @@ package com.planwise.backend;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "pw_budget_table_expense")
@@ -14,21 +16,22 @@ public class PwBudgetTableExpense {
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private PwUser user;
-    private Integer expense_id;
+    @Column(name = "expense_id", nullable = false)
+    private Integer expenseId;
     @Column(nullable = false)
     private String expenses;
     private BigDecimal amount;
     private Date start_date;
     private Integer frequency;
-    private Integer category;
+    private Long category;
 
     public PwBudgetTableExpense() {}
 
-    public PwBudgetTableExpense(Integer id, Date date, PwUser user, Integer expense_id, String expenses, BigDecimal amount, Date start_date, Integer frequency, Integer category) {
+    public PwBudgetTableExpense(Integer id, Date date, PwUser user, Integer expenseId, String expenses, BigDecimal amount, Date start_date, Integer frequency, Long category) {
         this.id = id;
         this.date = date;
         this.user = user;
-        this.expense_id = expense_id;
+        this.expenseId = expenseId;
         this.expenses = expenses;
         this.amount = amount;
         this.start_date = start_date;
@@ -42,16 +45,29 @@ public class PwBudgetTableExpense {
     public void setDate(Date date) { this.date = date; }
     public PwUser getUser() { return user; }
     public void setUser(PwUser user) { this.user = user; }
-    public Integer getExpense_id() { return expense_id; }
-    public void setExpense_id(Integer expense_id) { this.expense_id = expense_id; }
+    public Integer getExpenseId() { return expenseId; }
+    public void setExpenseId(Integer expenseId) { this.expenseId = expenseId; }
     public String getExpenses() { return expenses; }
     public void setExpenses(String expenses) { this.expenses = expenses; }
     public BigDecimal getAmount() { return amount; }
     public void setAmount(BigDecimal amount) { this.amount = amount; }
-    public Date getStart_date() { return start_date; }
-    public void setStart_date(Date start_date) { this.start_date = start_date; }
+    public Date getStartDate() { return start_date; }
+    public void setStartDate(Date start_date) { this.start_date = start_date; }
     public Integer getFrequency() { return frequency; }
     public void setFrequency(Integer frequency) { this.frequency = frequency; }
-    public Integer getCategory() { return category; }
-    public void setCategory(Integer category) { this.category = category; }
+    public Long getCategory() { return category; }
+    public void setCategory(Long category) { this.category = category; }
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", this.id);
+        map.put("date", this.date);
+        map.put("user", this.user);
+        map.put("expense_id", this.expenseId);
+        map.put("expenses", this.expenses);
+        map.put("amount", this.amount);
+        map.put("start_date", this.start_date);
+        map.put("frequency", this.frequency);
+        map.put("category", this.category);
+        return map;
+    }
 }

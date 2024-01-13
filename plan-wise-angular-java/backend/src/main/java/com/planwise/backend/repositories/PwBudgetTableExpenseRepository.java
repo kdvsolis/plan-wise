@@ -7,4 +7,5 @@ import java.util.*;
 @Repository
 public interface PwBudgetTableExpenseRepository extends JpaRepository<PwBudgetTableExpense, Long> {
     List<PwBudgetTableExpense> findByCategory(Integer categoryId);
+    void deleteByDateAfterAndExpenseIdAndUserId(Date date, Long expenseId, Integer userId);
 }
