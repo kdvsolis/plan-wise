@@ -5,3 +5,4 @@ spring.jpa.hibernate.ddl-auto=update
 spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
 spring.jpa.defer-datasource-initialization=true
 app.secret-key=
+spring.resources.static-locations=file:../frontend/dist/

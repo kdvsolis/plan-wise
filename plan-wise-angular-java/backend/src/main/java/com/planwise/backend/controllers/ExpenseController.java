@@ -164,4 +164,28 @@ public class ExpenseController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/{expenseId}")
+    public ResponseEntity<Map<String, Object>> deleteExpense(HttpServletRequest request, @PathVariable Long expenseId) {
+        Map<String, Object> response = new HashMap<>();
+        Integer userId = (Integer) request.getAttribute("user_id");
+        PwUser user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            response.put("success", false);
+            response.put("message", "User not found");
+            return ResponseEntity.ok(response);
+        }
+        PwExpense expense = expenseRepository.findByIdAndUserId(expenseId, userId).orElse(null);
+        if (expense == null) {
+            response.put("success", false);
+            response.put("message", "Expense not found or not owned by the user");
+            return ResponseEntity.ok(response);
+        }
+        expenseRepository.delete(expense);
+    
+        budgetTableExpenseRepository.deleteByDateAfterAndExpenseIdAndUserId(new Date(), expenseId, userId);
+        
+        response.put("success", true);
+        response.put("message", "Expense deleted successfully");
+        return ResponseEntity.ok(response);
+    }
 }

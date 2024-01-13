@@ -9,11 +9,12 @@ import java.util.Date;
 public class PwIncome {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(nullable = false)
     private String source;
     private BigDecimal amount;
-    private Date start_date;
+    @Column(name = "start_date", nullable = false)
+    private Date startDate;
     private Integer frequency;
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
@@ -21,23 +22,23 @@ public class PwIncome {
 
     public PwIncome() {}
 
-    public PwIncome(Integer id, String source, BigDecimal amount, Date start_date, Integer frequency, PwUser user) {
+    public PwIncome(Long id, String source, BigDecimal amount, Date startDate, Integer frequency, PwUser user) {
         this.id = id;
         this.source = source;
         this.amount = amount;
-        this.start_date = start_date;
+        this.startDate = startDate;
         this.frequency = frequency;
         this.user = user;
     }
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public String getSource() { return source; }
     public void setSource(String source) { this.source = source; }
     public BigDecimal getAmount() { return amount; }
     public void setAmount(BigDecimal amount) { this.amount = amount; }
-    public Date getStart_date() { return start_date; }
-    public void setStart_date(Date start_date) { this.start_date = start_date; }
+    public Date getStartDate() { return startDate; }
+    public void setStartDate(Date startDate) { this.startDate = startDate; }
     public Integer getFrequency() { return frequency; }
     public void setFrequency(Integer frequency) { this.frequency = frequency; }
     public PwUser getUser() { return user; }
