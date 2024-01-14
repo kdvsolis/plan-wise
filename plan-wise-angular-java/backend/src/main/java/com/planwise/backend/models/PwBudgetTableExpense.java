@@ -12,6 +12,7 @@ public class PwBudgetTableExpense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
@@ -21,20 +22,21 @@ public class PwBudgetTableExpense {
     @Column(nullable = false)
     private String expenses;
     private BigDecimal amount;
-    private Date start_date;
+    @Column(name = "start_date", nullable = false)
+    private Date startDate;
     private Integer frequency;
     private Long category;
 
     public PwBudgetTableExpense() {}
 
-    public PwBudgetTableExpense(Integer id, Date date, PwUser user, Integer expenseId, String expenses, BigDecimal amount, Date start_date, Integer frequency, Long category) {
+    public PwBudgetTableExpense(Integer id, Date date, PwUser user, Integer expenseId, String expenses, BigDecimal amount, Date startDate, Integer frequency, Long category) {
         this.id = id;
         this.date = date;
         this.user = user;
         this.expenseId = expenseId;
         this.expenses = expenses;
         this.amount = amount;
-        this.start_date = start_date;
+        this.startDate = startDate;
         this.frequency = frequency;
         this.category = category;
     }
@@ -51,8 +53,8 @@ public class PwBudgetTableExpense {
     public void setExpenses(String expenses) { this.expenses = expenses; }
     public BigDecimal getAmount() { return amount; }
     public void setAmount(BigDecimal amount) { this.amount = amount; }
-    public Date getStartDate() { return start_date; }
-    public void setStartDate(Date start_date) { this.start_date = start_date; }
+    public Date getStartDate() { return startDate; }
+    public void setStartDate(Date startDate) { this.startDate = startDate; }
     public Integer getFrequency() { return frequency; }
     public void setFrequency(Integer frequency) { this.frequency = frequency; }
     public Long getCategory() { return category; }
@@ -61,11 +63,11 @@ public class PwBudgetTableExpense {
         Map<String, Object> map = new HashMap<>();
         map.put("id", this.id);
         map.put("date", this.date);
-        map.put("user", this.user);
+        map.put("user", this.user != null ? this.user.toMap() : null);
         map.put("expense_id", this.expenseId);
         map.put("expenses", this.expenses);
         map.put("amount", this.amount);
-        map.put("start_date", this.start_date);
+        map.put("startDate", this.startDate);
         map.put("frequency", this.frequency);
         map.put("category", this.category);
         return map;

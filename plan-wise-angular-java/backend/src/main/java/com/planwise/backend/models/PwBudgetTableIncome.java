@@ -3,6 +3,8 @@ package com.planwise.backend;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "pw_budget_table_income")
@@ -10,6 +12,7 @@ public class PwBudgetTableIncome {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
@@ -52,4 +55,16 @@ public class PwBudgetTableIncome {
     public void setStartDate(Date startDate) { this.startDate = startDate; }
     public Integer getFrequency() { return frequency; }
     public void setFrequency(Integer frequency) { this.frequency = frequency; }
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", this.id);
+        map.put("date", this.date);
+        map.put("user", this.user != null ? this.user.toMap() : null);
+        map.put("income_id", this.incomeId);
+        map.put("source", this.source);
+        map.put("amount", this.amount);
+        map.put("start_date", this.startDate);
+        map.put("frequency", this.frequency);
+        return map;
+    }
 }

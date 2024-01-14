@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BackendApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("user.timezone", "UTC");
 		SpringApplication.run(BackendApplication.class, args);
 	}
 

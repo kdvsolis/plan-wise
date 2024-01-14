@@ -3,6 +3,8 @@ package com.planwise.backend;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "pw_users")
@@ -38,5 +40,13 @@ public class PwUser {
     public void setName(String name) { this.name = name; }
     public BigDecimal getBalance() { return balance; }
     public void setBalance(BigDecimal balance) { this.balance = balance; }
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", this.id != null ? this.id : 0);
+        map.put("email", this.email);
+        map.put("name", this.name);
+        map.put("balance", this.balance != null ? this.balance : BigDecimal.ZERO);
+        return map;
+    }
 }
 
