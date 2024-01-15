@@ -10,7 +10,8 @@ import java.util.*;
 @Repository
 public interface PwBudgetTableIncomeRepository extends JpaRepository<PwBudgetTableIncome, Long> {
     void deleteByDateAfterAndIncomeIdAndUserId(Date date, Long incomeId, Integer userId);
-    @Query(value = "SELECT * FROM pw_budget_table_income i WHERE i.user_id = :userId AND i.date BETWEEN :start AND :end", nativeQuery = true)
-    List<PwBudgetTableIncome> findByUserIdAndDateBetween(@Param("userId") Integer userId, @Param("start") Date start, @Param("end") Date end);    
+    @Query(value = "SELECT * FROM pw_budget_table_income i WHERE i.user_id = ?1 AND i.date BETWEEN ?2 AND ?3", nativeQuery = true)
+    List<PwBudgetTableIncome> findByUserIdAndDateBetween(Integer userId, Date start, Date end); 
+    @Query(value = "SELECT MIN(i.date) FROM pw_budget_table_income i WHERE i.user_id = ?1", nativeQuery = true)   
     Date findEarliestDateByUserId(Integer userId);
 }

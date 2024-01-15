@@ -3,6 +3,8 @@ package com.planwise.backend;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
 
 @Entity
 @Table(name = "pw_notes")
@@ -34,4 +36,12 @@ public class PwNotes {
     public void setNotes(String notes) { this.notes = notes; }
     public PwUser getUser() { return user; }
     public void setUser(PwUser user) { this.user = user; }
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("date", date);
+        map.put("notes", notes);
+        map.put("user", user);
+        return map;
+    }    
 }

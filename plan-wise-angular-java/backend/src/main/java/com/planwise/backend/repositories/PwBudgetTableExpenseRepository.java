@@ -13,5 +13,6 @@ public interface PwBudgetTableExpenseRepository extends JpaRepository<PwBudgetTa
     void deleteByDateAfterAndExpenseIdAndUserId(Date date, Long expenseId, Integer userId);
     @Query(value = "SELECT * FROM pw_budget_table_expense i WHERE i.user_id = :userId AND i.date BETWEEN :start AND :end", nativeQuery = true)
     List<PwBudgetTableExpense> findByUserIdAndDateBetween(@Param("userId") Integer userId, @Param("start") Date start, @Param("end") Date end); 
-    Date findEarliestDateByUserId(Integer userId);
+    @Query(value = "SELECT MIN(i.date) FROM pw_budget_table_expense i WHERE i.user_id = :userId", nativeQuery = true)
+    Date findEarliestDateByUserId(@Param("userId") Integer userId);
 }
