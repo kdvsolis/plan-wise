@@ -1,0 +1,74 @@
+<div class="container w-container">
+    <div class="form-wrapper">
+        <h1>Sign Up</h1>
+        <div class="w-form">
+            <form id="wf-form-signup" (ngSubmit)="submitForm()">
+            <div>
+                <div>
+                <label for="signup-name">First Name</label>
+                <input 
+                    type="text"
+                    class="text-field-3 w-input"
+                    maxlength="256"
+                    name="signup-name"
+                    data-name="signup-name"
+                    placeholder="e.g. Howard"
+                    id="signup-name"
+                    [(ngModel)]="name"
+                >
+                </div>
+            </div>
+            <div class="text-field-wrapper">
+                <label for="signup-email">Email</label>
+                <input 
+                type="email" 
+                class="text-field-4 w-input" 
+                maxlength="256" 
+                name="signup-email" 
+                placeholder="e.g. howard.thurman@gmail.com"
+                [(ngModel)]="email"
+                required
+                >
+            </div>
+            <div>
+                <label for="signup-password">Password</label>
+                <input 
+                type="password" 
+                class="text-field-5 w-input" 
+                maxlength="256" 
+                name="signup-password" 
+                id="password"
+                [(ngModel)]="password"
+                required
+                >
+            </div>
+            <div>
+                <label for="signup-password">Confirm Password</label>
+                <input 
+                type="password" 
+                class="text-field-5 w-input" 
+                maxlength="256" 
+                name="signup-password" 
+                id="confirm-password"
+                [(ngModel)]="confirmPassword"
+                required
+                >
+            </div>
+            <button class="uui-button-4 button-width w-button">
+                Register
+            </button>
+            </form>
+            <div class="w-form-done" *ngIf="success">
+            <div>Thank you! Your email has been registered. Go to login page to sign in</div>
+            </div>
+            <div class="w-form-fail" *ngIf="error">
+            <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
+        </div>
+        <div>
+            <div>Already have an account? <a routerLink="/login">Log in</a>
+            </div>
+        </div>
+    </div>
+</div>
+  

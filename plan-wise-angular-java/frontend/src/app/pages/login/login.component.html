@@ -1,0 +1,46 @@
+<div class="container w-container">
+    <div class="form-wrapper">
+        <div class="w-form">
+            <form id="wf-form-signup" (ngSubmit)="submitForm()">
+            <h1 class="heading">Login</h1>
+            <div>
+                <label for="email" class="field-label-2">Email</label>
+                <input 
+                type="email" 
+                class="text-field w-input" 
+                maxLength="256" 
+                name="email" 
+                data-name="email" 
+                placeholder="e.g. howard.thurman@gmail.com" 
+                id="username"
+                [(ngModel)]="username"
+                required
+                />
+            </div>
+            <div>
+                <label for="password-2" class="field-label">Password</label>
+                <input 
+                type="password" 
+                class="text-field-2 w-input" 
+                maxLength="256" 
+                placeholder="" 
+                id="password-2" 
+                [(ngModel)]="password"
+                required
+                />
+            </div>
+            <div class="relative w-clearfix">
+                <a href="#" class="forgot-password-link">Forgot password</a>
+            </div>
+            <button class="uui-button-4 button-width w-button">Login</button>
+            <div>
+                <div *ngIf="error" class="alert alert-danger" role="alert">{{error}}</div>
+            </div>
+            </form>
+        </div>
+        <div>
+            <div class="text-block-2">Need an account? <a routerLink="/registration">Sign up</a></div>
+        </div>
+    </div>
+</div>
+  

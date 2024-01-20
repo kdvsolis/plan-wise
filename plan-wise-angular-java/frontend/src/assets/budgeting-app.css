@@ -1,0 +1,2172 @@
+.w-layout-grid {
+    grid-row-gap: 16px;
+    grid-column-gap: 16px;
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-columns: 1fr;
+    display: grid;
+  }
+  
+  label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    display: block;
+  }
+  
+  .form-block {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    padding-left: 40px;
+  }
+  
+  .uui-button-secondary-gray {
+    grid-column-gap: .5rem;
+    color: #344054;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #fff;
+    border: 1px solid #d0d5dd;
+    border-radius: .5rem;
+    justify-content: center;
+    align-items: center;
+    padding: .625rem 1.125rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: all .3s;
+    display: flex;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  }
+  
+  .uui-button-secondary-gray:hover {
+    color: #1d2939;
+    background-color: #f9fafb;
+  }
+  
+  .uui-button-secondary-gray:focus {
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 0 0 4px #f2f4f7;
+  }
+  
+  .uui-button {
+    grid-column-gap: .5rem;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #7f56d9;
+    border: 1px solid #7f56d9;
+    border-radius: .5rem;
+    justify-content: center;
+    align-items: center;
+    padding: .625rem 1.125rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: all .3s;
+    display: flex;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  }
+  
+  .uui-button:hover {
+    background-color: #6941c6;
+    border-color: #6941c6;
+  }
+  
+  .uui-button:focus {
+    background-color: #7f56d9;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 0 0 4px #f4ebff;
+  }
+  
+  .uui-pricing07_bottom-row-content {
+    height: 100%;
+    grid-row-gap: .75rem;
+    text-align: center;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    display: flex;
+  }
+  
+  .uui-pricing07_bottom-row {
+    grid-column-gap: 2rem;
+    grid-row-gap: 0px;
+    background-color: #fff;
+    grid-template-rows: auto;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    padding-top: 2rem;
+  }
+  
+  .uui-icon-1x1-xsmall {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .uui-table_row-content {
+    text-align: center;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 1.5rem 0 .5rem;
+    display: flex;
+  }
+  
+  .uui-pricing07_row-lead-text {
+    color: #6941c6;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+  }
+  
+  .uui-table_feature {
+    padding: 0 1.5rem;
+  }
+  
+  .uui-table_row {
+    height: auto;
+    min-height: 50px;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .uui-table_row_calendar {
+    height: auto;
+    min-height: 50px;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  /* .uui-table_row.background-color-gray50 {
+    height: auto;
+    min-height: 50px;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    border-top: 1px rgba(127, 86, 217, .15);
+    border-radius: 10px;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-flow: row;
+    align-items: center;
+    margin-top: 10px;
+  } */
+  
+  .uui-table_row.new-row {
+    border-radius: 10px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+  
+  .background-color-gray50 {
+    background-color: #f9fafb;
+  }
+  
+  .uui-table_heading-row-text {
+    color: #6941c6;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-weight: 600;
+  }
+  
+  .uui-table_heading-row {
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    background-color: #f4ebff;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-columns: 1fr;
+    margin-top: 2.5rem;
+    padding: 1rem 1.5rem;
+    display: grid;
+  }
+  
+  .uui-table_heading-row_calendar {
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    background-color: #f4ebff;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-columns: 1fr;
+    margin-top: 2.5rem;
+    padding: 1rem 1.5rem;
+    display: grid;
+  }
+  
+  
+  .uui-text-size-medium {
+    color: #475467;
+    letter-spacing: normal;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .uui-space-medium {
+    width: 100%;
+    min-height: 2rem;
+  }
+  
+  .uui-text-size-small {
+    color: #475467;
+    letter-spacing: normal;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: .875rem;
+    line-height: 1.5;
+  }
+  
+  .uui-pricing07_price-text {
+    color: #475467;
+    letter-spacing: normal;
+    margin-left: .25rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  
+  .uui-pricing07_price {
+    color: #101828;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  
+  .uui-heading-xxsmall {
+    color: #101828;
+    letter-spacing: normal;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  
+  .uui-pricing07_top-row-content {
+    height: 100%;
+    text-align: center;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    display: flex;
+  }
+  
+  .uui-pricing07_top-row {
+    grid-column-gap: 2rem;
+    grid-row-gap: 0px;
+    background-color: #fff;
+    grid-template-rows: auto;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  }
+  
+  .uui-table {
+    width: 100%;
+    margin-top: 20px;
+    display: block;
+  }
+  
+  .uui-pricing07_tabs-content {
+    width: 100%;
+  }
+  
+  .uui-badge {
+    grid-column-gap: .375rem;
+    color: #344054;
+    white-space: nowrap;
+    background-color: #f2f4f7;
+    border-radius: 10rem;
+    align-items: center;
+    padding: .125rem .625rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: .875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-decoration: none;
+    display: flex;
+  }
+  
+  .uui-pricing07_tab-link {
+    grid-column-gap: .5rem;
+    grid-row-gap: .5rem;
+    color: #667085;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: .375rem;
+    align-items: center;
+    padding: .5rem 1rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-weight: 600;
+    display: flex;
+  }
+  
+  .uui-pricing07_tab-link.w--current {
+    color: #344054;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, .1), 0 1px 2px rgba(16, 24, 40, .06);
+  }
+  
+  .uui-pricing07_tabs-menu {
+    grid-column-gap: .5rem;
+    grid-row-gap: 16px;
+    background-color: #f9fafb;
+    border: 1px solid #f2f4f7;
+    border-radius: .5rem;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr max-content 1fr;
+    grid-auto-columns: 1fr;
+    align-self: center;
+    margin-bottom: 2rem;
+    padding: .375rem;
+    display: grid;
+  }
+  
+  .uui-pricing07_component {
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    margin-top: 2.5rem;
+    display: flex;
+  }
+  
+  .uui-text-size-large {
+    color: #475467;
+    letter-spacing: normal;
+    margin-bottom: 10px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+  
+  .uui-space-xsmall {
+    width: 100%;
+    min-height: 1rem;
+  }
+  
+  .uui-heading-medium {
+    color: #101828;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  
+  .uui-heading-subheading {
+    color: #7f56d9;
+    margin-bottom: .75rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  
+  .uui-max-width-large {
+    width: 100%;
+    max-width: 48rem;
+  }
+  
+  .uui-max-width-large.align-center, .align-center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .uui-text-align-center {
+    text-align: center;
+  }
+  
+  .uui-padding-vertical-xhuge {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+  
+  .uui-container-large {
+    width: 100%;
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .uui-page-padding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  .dropdown-border {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    margin-left: -11px;
+    padding: 5px;
+    padding-left: 9px;
+    text-align: left;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+  }
+  
+  .dropdown-toggle {
+    z-index: 2;
+    padding: 5px 0;
+  }
+  
+  .dropdown-toggle.w--open {
+    z-index: 0;
+  }
+  
+  .dropdown-link {
+    z-index: 0;
+    opacity: 1;
+    background-color: #e9dfff;
+    border-radius: 10px;
+    margin-bottom: 5px;
+  }
+  
+  .dropdown-link:hover {
+    color: #fff;
+    background-color: #6941c6;
+  }
+  
+  .dropdown-list {
+    z-index: 3;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  
+  .dropdown-list.w--open {
+    z-index: 0;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 10px;
+    margin-top: 5px;
+    margin-left: -10px;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  
+  .text-block {
+    color: #98a2b3;
+  }
+  
+  .uui-button-2 {
+    grid-column-gap: .5rem;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #7f56d9;
+    border: 1px solid #7f56d9;
+    border-radius: .5rem;
+    justify-content: center;
+    align-items: center;
+    padding: .625rem 1.125rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: all .3s;
+    display: flex;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  }
+  
+  .uui-button-2:hover {
+    background-color: #6941c6;
+    border-color: #6941c6;
+  }
+  
+  .uui-button-2:focus {
+    background-color: #7f56d9;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 0 0 4px #f4ebff;
+  }
+  
+  .uui-button-secondary-gray-2 {
+    grid-column-gap: .5rem;
+    color: #344054;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #fff;
+    border: 1px solid #d0d5dd;
+    border-radius: .5rem;
+    justify-content: center;
+    align-items: center;
+    padding: .625rem 1.125rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: all .3s;
+    display: flex;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  }
+  
+  .uui-button-secondary-gray-2:hover {
+    color: #1d2939;
+    background-color: #f9fafb;
+  }
+  
+  .uui-button-secondary-gray-2:focus {
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 0 0 4px #f2f4f7;
+  }
+  
+  .uui-button-row {
+    grid-column-gap: .75rem;
+    grid-row-gap: .75rem;
+    flex-wrap: wrap;
+    align-items: center;
+    display: flex;
+  }
+  
+  .uui-text-size-large-2 {
+    color: #475467;
+    letter-spacing: normal;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+  
+  .uui-space-xsmall-2 {
+    width: 100%;
+    min-height: 1rem;
+  }
+  
+  .uui-heading-medium-2 {
+    color: #101828;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  
+  .uui-max-width-large-2 {
+    width: 100%;
+    max-width: 48rem;
+  }
+  
+  .uui-cta04_content {
+    flex: 1;
+  }
+  
+  .uui-cta04_component {
+    grid-column-gap: 4rem;
+    grid-row-gap: 2rem;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr max-content;
+    grid-auto-columns: 1fr;
+    justify-content: space-between;
+    align-items: start;
+    display: grid;
+  }
+  
+  .uui-padding-vertical-xhuge-2 {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+  
+  .uui-container-large-2 {
+    width: 100%;
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .uui-page-padding-2 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  .uui-section_cta04 {
+    background-color: #fff;
+  }
+  
+  .button {
+    float: none;
+    background-color: #7f56d9;
+    border-radius: 100px;
+    padding-left: 14px;
+    padding-right: 14px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 18px;
+  }
+  
+  .new-row {
+    background-color: rgba(247, 144, 9, .05);
+    border: 1px solid #7f56d9;
+    grid-template-rows: auto;
+  }
+  
+  .date-bold {
+    color: #475467;
+    font-weight: 700;
+  }
+  
+  .monthly {
+    color: #fff;
+    background-color: #7f56d9;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .annually {
+    color: #fff;
+    background-color: #667085;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .daily {
+    color: #fff;
+    background-color: #b93815;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .weekly {
+    color: #fff;
+    background-color: #f79009;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .every-6-months {
+    color: #fff;
+    background-color: #175cd3;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .quarterly {
+    color: #fff;
+    background-color: #ee46bc;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .every-other-week {
+    color: #fff;
+    background-color: #12b76a;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .one-time-expense{
+    color: #fff;
+    background-color: #0d6efd;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .uui-button-3 {
+    grid-column-gap: .5rem;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #7f56d9;
+    border: 1px solid #7f56d9;
+    border-radius: .5rem;
+    justify-content: center;
+    align-items: center;
+    padding: .625rem 1.125rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: all .3s;
+    display: flex;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  }
+  
+  .uui-button-3:hover {
+    background-color: #6941c6;
+    border-color: #6941c6;
+  }
+  
+  .uui-button-3:focus {
+    background-color: #7f56d9;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 0 0 4px #f4ebff;
+  }
+  
+  .uui-button-secondary-gray-3 {
+    grid-column-gap: .5rem;
+    color: #344054;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #fff;
+    border: 1px solid #d0d5dd;
+    border-radius: .5rem;
+    justify-content: center;
+    align-items: center;
+    padding: .625rem 1.125rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: all .3s;
+    display: flex;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  }
+  
+  .uui-button-secondary-gray-3:hover {
+    color: #1d2939;
+    background-color: #f9fafb;
+  }
+  
+  .uui-button-secondary-gray-3:focus {
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 0 0 4px #f2f4f7;
+  }
+  
+  .uui-button-row-2 {
+    grid-column-gap: .75rem;
+    grid-row-gap: .75rem;
+    flex-wrap: wrap;
+    align-items: center;
+    display: flex;
+  }
+  
+  .uui-text-size-large-3 {
+    color: #475467;
+    letter-spacing: normal;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+  
+  .uui-space-xsmall-3 {
+    width: 100%;
+    min-height: 1rem;
+  }
+  
+  .uui-heading-small {
+    color: #101828;
+    letter-spacing: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  
+  .uui-max-width-large-3 {
+    width: 100%;
+    max-width: 48rem;
+  }
+  
+  .uui-cta05_content {
+    flex: 1;
+  }
+  
+  .uui-cta05_component {
+    grid-column-gap: 4rem;
+    grid-row-gap: 2rem;
+    background-color: #f9fafb;
+    border-radius: 1rem;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr max-content;
+    grid-auto-columns: 1fr;
+    justify-content: space-between;
+    align-items: start;
+    padding: 4rem;
+    display: grid;
+  }
+  
+  .uui-padding-vertical-xhuge-3 {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+  
+  .uui-container-large-3 {
+    width: 100%;
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .uui-page-padding-3 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  .uui-section_cta05 {
+    background-color: #fff;
+  }
+  
+  .uui-navbar07_menu-button {
+    padding: 0;
+  }
+  
+  .uui-button-4 {
+    grid-column-gap: .5rem;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #7f56d9;
+    border: 1px solid #7f56d9;
+    border-radius: .5rem;
+    justify-content: center;
+    align-items: center;
+    padding: .625rem 1.125rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: all .3s;
+    display: flex;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  }
+  
+  .uui-button-4:hover {
+    background-color: #6941c6;
+    border-color: #6941c6;
+  }
+  
+  .uui-button-4:focus {
+    background-color: #7f56d9;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 0 0 4px #f4ebff;
+  }
+  
+  .uui-button-tertiary-gray {
+    grid-column-gap: .5rem;
+    color: #475467;
+    white-space: nowrap;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: .5rem;
+    justify-content: center;
+    align-items: center;
+    padding: .625rem 1.125rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: all .3s;
+    display: flex;
+  }
+  
+  .uui-button-tertiary-gray:hover {
+    color: #344054;
+    background-color: #f9fafb;
+  }
+  
+  .uui-button-secondary-gray-4 {
+    grid-column-gap: .5rem;
+    color: #344054;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #fff;
+    border: 1px solid #d0d5dd;
+    border-radius: .5rem;
+    justify-content: center;
+    align-items: center;
+    padding: .625rem 1.125rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: all .3s;
+    display: flex;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  }
+  
+  .uui-button-secondary-gray-4:hover {
+    color: #1d2939;
+    background-color: #f9fafb;
+  }
+  
+  .uui-button-secondary-gray-4:focus {
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 0 0 4px #f2f4f7;
+  }
+  
+  .uui-button-secondary-gray-4.show-tablet, .show-tablet {
+    display: none;
+  }
+  
+  .uui-navbar07_button-wrapper {
+    grid-column-gap: .75rem;
+    grid-row-gap: .75rem;
+    align-items: center;
+    display: flex;
+  }
+  
+  .uui-navbar07_menu-right {
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-columns: 1fr;
+    align-items: center;
+    display: flex;
+  }
+  
+  .uui-navbar07_link {
+    color: #475467;
+    align-items: center;
+    padding: .75rem 1rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all .3s;
+  }
+  
+  .uui-navbar07_link:hover {
+    color: #344054;
+  }
+  
+  .uui-navbar07_link.w--current {
+    color: #000;
+  }
+  
+  .uui-text-size-small-2 {
+    color: #475467;
+    letter-spacing: normal;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: .875rem;
+    line-height: 1.5;
+  }
+  
+  .uui-navbar07_item-heading {
+    color: #101828;
+    margin-top: 0;
+    margin-bottom: .25rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-weight: 600;
+  }
+  
+  .uui-navbar07_item-right {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    font-weight: 400;
+    display: flex;
+  }
+  
+  .uui-icon-1x1-xsmall-2 {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .uui-navbar07_icon-wrapper {
+    color: #7f56d9;
+    flex: none;
+  }
+  
+  .uui-navbar07_dropdown-link {
+    grid-column-gap: 1rem;
+    grid-row-gap: 0px;
+    border-radius: .5rem;
+    grid-template-rows: auto;
+    grid-template-columns: max-content 1fr;
+    grid-auto-columns: 1fr;
+    align-items: flex-start;
+    padding: .75rem;
+    text-decoration: none;
+    transition: all .3s;
+    display: grid;
+  }
+  
+  .uui-navbar07_dropdown-link:hover {
+    background-color: #f9fafb;
+  }
+  
+  .uui-navbar07_dropdown-link-list {
+    grid-column-gap: 0px;
+    grid-row-gap: .5rem;
+    grid-template-rows: max-content;
+    grid-template-columns: 1fr;
+    grid-auto-rows: max-content;
+    grid-auto-columns: 1fr;
+    display: grid;
+  }
+  
+  .uui-navbar07_dropdown-list {
+    box-shadow: 0 12px 16px -4px rgba(0, 0, 0, .08), 0 4px 6px -2px rgba(16, 24, 40, .03);
+  }
+  
+  .uui-navbar07_dropdown-list.w--open {
+    width: 20rem;
+    background-color: #fff;
+    border: 1px solid #eaecf0;
+    border-radius: .75rem;
+    padding: .75rem;
+    right: -100%;
+  }
+  
+  .uui-dropdown-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+    display: flex;
+    position: absolute;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: 0%;
+  }
+  
+  .uui-navbar07_dropdown-toggle {
+    color: #475467;
+    align-items: center;
+    padding: .75rem 2.5rem .75rem 1rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all .3s;
+    display: flex;
+  }
+  
+  .uui-navbar07_dropdown-toggle:hover {
+    color: #344054;
+  }
+  
+  .uui-navbar07_menu {
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 1.5rem;
+    display: flex;
+    position: static;
+  }
+  
+  .uui-logo_image {
+    width: auto;
+    height: 100%;
+    flex: none;
+    display: none;
+  }
+  
+  .uui-logo_logotype {
+    width: auto;
+    height: 100%;
+    flex: none;
+  }
+  
+  .uui-logo_logomark-dot {
+    z-index: 1;
+    width: 50%;
+    height: 50%;
+    background-image: linear-gradient(26.5deg, #6941c6, #53389e);
+    border-radius: 50%;
+    position: relative;
+  }
+  
+  .uui-logo_logomark-blur {
+    z-index: 2;
+    width: 100%;
+    height: 50%;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, .2);
+    border-bottom-right-radius: .5rem;
+    border-bottom-left-radius: .5rem;
+    position: absolute;
+    top: 50%;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    overflow: hidden;
+  }
+  
+  .uui-styleguide_logomark-bg {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 8px;
+    position: absolute;
+    top: 0%;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+  }
+  
+  .uui-logo_logomark {
+    width: 2rem;
+    height: 2rem;
+    border: .1px solid #dae0e8;
+    border-radius: .5rem;
+    flex: none;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 1px rgba(16, 24, 40, .06), 0 1px 2px rgba(16, 24, 40, .1);
+  }
+  
+  .uui-logo_component {
+    width: auto;
+    height: 2rem;
+    flex-flow: row;
+    align-items: center;
+    display: flex;
+  }
+  
+  .uui-navbar07_logo-link {
+    padding-left: 0;
+  }
+  
+  .uui-navbar07_container {
+    width: 100%;
+    height: 100%;
+    max-width: 80rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+  }
+  
+  .uui-navbar07_component {
+    min-height: 5rem;
+    background-color: #fff;
+    border-bottom: 1px solid #f2f4f7;
+    align-items: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: flex;
+  }
+  
+  .paragraph {
+    margin-bottom: 0;
+    margin-left: 5px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  
+  .utility-page-wrap {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100%;
+    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  
+  .utility-page-content {
+    width: 260px;
+    text-align: center;
+    flex-direction: column;
+    display: flex;
+  }
+  
+  .utility-page-form {
+    flex-direction: column;
+    align-items: stretch;
+    display: flex;
+  }
+  
+  .form-wrapper {
+    z-index: 50;
+    width: 100%;
+    max-width: 400px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    display: flex;
+    position: relative;
+    overflow: visible;
+  }
+  
+  .forgot-password-link {
+    float: right;
+    margin-left: auto;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+  }
+  
+  .tooltip-title {
+    margin-bottom: 6px;
+    font-size: 110%;
+    font-weight: 800;
+  }
+  
+  .tooltip-wrapper {
+    width: 300px;
+    color: #333;
+    text-align: left;
+    background-color: #fafbfe;
+    border: 1px solid #d8e3f0;
+    border-radius: 10px;
+    font-size: 11.5px;
+    font-weight: 400;
+    line-height: 1.5em;
+    display: block;
+    position: absolute;
+    box-shadow: 1px 1px 8px 1px rgba(45, 62, 80, .12);
+  }
+  
+  .tooltip-diamond {
+    z-index: 2;
+    width: 16px;
+    height: 16px;
+    background-color: #fafbfe;
+    border: 1px solid #d8e3f0;
+    border-radius: 2px;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    top: -7px;
+    bottom: auto;
+    left: 0%;
+    right: 0%;
+    transform: rotate(45deg);
+    box-shadow: 0 -3px 8px rgba(45, 62, 80, .06);
+  }
+  
+  .tooltip-diamond.left {
+    margin-top: auto;
+    margin-bottom: auto;
+    top: 0;
+    bottom: 10px;
+    left: -7px;
+    right: auto;
+  }
+  
+  .tooltip-svg {
+    width: 16px;
+    height: 16px;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+  }
+  
+  .tour-step {
+    display: none;
+  }
+  
+  .tooltip-author-wrap {
+    align-items: center;
+    display: flex;
+  }
+  
+  .tooltip-anchor {
+    z-index: 100;
+    width: 100%;
+    height: 10px;
+    justify-content: center;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 12px;
+    display: flex;
+    position: absolute;
+    top: 100%;
+    bottom: 0;
+    left: 0%;
+    right: 0%;
+  }
+  
+  .tooltip-anchor.right {
+    width: auto;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: -12px;
+    padding-left: 12px;
+    top: 0%;
+    bottom: 0%;
+    left: auto;
+    right: 0%;
+  }
+  
+  .tooltip-author {
+    width: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .tooltip-close {
+    z-index: 5;
+    width: 24px;
+    height: 24px;
+    color: #3f3e46;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  
+  .tooltip-close:hover {
+    background-color: rgba(0, 42, 255, .1);
+  }
+  
+  .tooltip-container {
+    z-index: 3;
+    background-color: #fafbfe;
+    border-radius: 9px 9px 0 0;
+    padding: 20px;
+    font-size: 12.5px;
+    position: relative;
+  }
+  
+  .tooltip-navigation {
+    z-index: 3;
+    min-height: 50px;
+    color: #64636e;
+    background-color: #fafbfe;
+    border-top: 1px solid #d8e3f0;
+    border-radius: 0 0 9px 9px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    display: flex;
+    position: relative;
+    bottom: 0;
+  }
+  
+  .tooltip-navigation.top {
+    border-top-style: none;
+    border-bottom: 1px solid #d8e3f0;
+    border-radius: 9px 9px 0 0;
+  }
+  
+  .relative {
+    position: relative;
+  }
+  
+  .container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    display: flex;
+  }
+  
+  .text-field {
+    height: 50px;
+    border-radius: 5px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 16px;
+  }
+  
+  .text-field-2 {
+    height: 50px;
+    border-radius: 5px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+  }
+  
+  .field-label, .field-label-2, .heading, .text-block-2 {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+  }
+  
+  .text-field-wrapper {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    display: flex;
+    position: relative;
+  }
+  
+  .text-field-3, .text-field-4, .text-field-5 {
+    height: 50px;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .heading-2 {
+    margin-bottom: 20px;
+  }
+  
+  .button-width {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .div-block {
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    color: #fff;
+    background-color: #6941c6;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr;
+    grid-auto-columns: 1fr;
+    padding: .5rem 1.5rem;
+    display: grid;
+  }
+  
+  .text-block-3 {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-weight: 600;
+  }
+  
+  .fixed-headers {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+  }
+  
+  .container-2 {
+    height: 200vh;
+  }
+  
+  .uui-table-row-day-of-month {
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    grid-template-rows: 50px 50px 50px 50px;
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+  }
+  
+  .uui-table-row-day-of-month_calendar {
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    grid-template-rows: 50px;
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+  }
+  
+  .div-block-2 {
+    height: 100%;
+    background-color: rgba(71, 84, 103, .08);
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 20px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+  }
+
+  .div-block-3 {
+    height: 100%;
+    background-color: rgb(244, 235, 255);
+    flex-direction: column;
+    margin-right: 20px;
+    padding-top: 30px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+  }
+
+  .income {
+    color: #fff;
+    background-color: #12b76a;
+    border-radius: 5px;
+    padding: 2px 15px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 16px;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  .expense {
+    color: #fff;
+    background-color: #ff4d4d;
+    border-radius: 5px;
+    padding: 2px 15px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 16px;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  .starting-balance {
+    color: #fff;
+    background-color: #f79009;
+    border-radius: 5px;
+    padding: 2px 15px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 16px;
+    width: fit-content;
+    height: fit-content;
+  }
+  
+  .ending-balance {
+    color: #fff;
+    background-color: #027a48;
+    border-radius: 5px;
+    padding: 2px 15px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+    font-size: 16px;
+    width: fit-content;
+    height: fit-content;
+  }
+  
+  .uui-table-row-day-of-month_mobile {
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    grid-template-rows: 200px;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: row;
+  }
+
+  .uui-table_row_mobile {
+    height: auto;
+    min-height: 50px;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    grid-template-rows: auto;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .calendar-mobile{
+    width: 90%;
+    margin: auto;
+  }
+
+  .w-layout-grid-calendar-mobile{
+    grid-row-gap: 16px;
+    grid-column-gap: 16px;
+    grid-template-rows: auto auto;
+    grid-auto-columns: 1fr;
+    display: grid;
+  }
+
+  @media screen and (max-width: 991px) {
+    .uui-table_row-content {
+      padding-right: .25rem;
+    }
+  
+    .uui-padding-vertical-xhuge {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  
+    .hide-tablet {
+      display: none;
+    }
+  
+    .uui-cta04_component {
+      grid-template-columns: 1fr;
+    }
+  
+    .uui-padding-vertical-xhuge-2 {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  
+    .uui-cta05_content {
+      margin-right: 3rem;
+    }
+  
+    .uui-cta05_component {
+      grid-template-columns: 1fr;
+      padding: 3rem;
+    }
+  
+    .uui-padding-vertical-xhuge-3 {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  
+    .menu-icon_line-bottom {
+      width: 24px;
+      height: 2px;
+      background-color: #344054;
+      border-radius: 1rem;
+      padding-bottom: 0;
+      padding-right: 0;
+    }
+  
+    .menu-icon_line-middle-inner {
+      width: 4px;
+      height: 0;
+      padding-bottom: 0;
+      padding-right: 0;
+    }
+  
+    .menu-icon_line-middle {
+      width: 24px;
+      height: 2px;
+      background-color: #344054;
+      border-radius: 1rem;
+      justify-content: center;
+      align-items: center;
+      margin-top: 6px;
+      margin-bottom: 6px;
+      padding-bottom: 0;
+      padding-right: 0;
+      display: flex;
+    }
+  
+    .menu-icon_line-top {
+      width: 24px;
+      height: 2px;
+      background-color: #344054;
+      border-radius: 1rem;
+      padding-bottom: 0;
+      padding-right: 0;
+    }
+  
+    .menu-icon_component {
+      width: 48px;
+      height: 48px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-right: -.5rem;
+      padding-bottom: 0;
+      padding-right: 0;
+      display: flex;
+    }
+  
+    .uui-navbar07_menu-button.w--open {
+      background-color: rgba(0, 0, 0, 0);
+    }
+  
+    .hide-tablet-2 {
+      display: none;
+    }
+  
+    .uui-button-secondary-gray-4.show-tablet, .show-tablet {
+      display: block;
+    }
+  
+    .uui-navbar07_button-wrapper {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      display: flex;
+    }
+  
+    .uui-navbar07_menu-right {
+      flex-direction: column-reverse;
+      grid-template-rows: auto auto;
+      grid-template-columns: 1fr;
+      align-items: stretch;
+      margin-top: 1.5rem;
+      padding-bottom: 7rem;
+    }
+  
+    .uui-navbar07_link {
+      width: 100%;
+      color: #101828;
+      padding: .75rem 0;
+      font-size: 1.125rem;
+    }
+  
+    .uui-navbar07_link:hover {
+      color: #101828;
+    }
+  
+    .uui-navbar07_dropdown-link {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  
+    .uui-navbar07_dropdown-link:hover {
+      background-color: rgba(0, 0, 0, 0);
+    }
+  
+    .uui-navbar07_dropdown-link-list {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+  
+    .uui-navbar07_dropdown-list {
+      position: static;
+      overflow: hidden;
+    }
+  
+    .uui-navbar07_dropdown-list.w--open {
+      width: auto;
+      box-shadow: none;
+      border-style: none;
+      border-color: rgba(0, 0, 0, 0);
+      padding: 0;
+    }
+  
+    .uui-dropdown-icon {
+      color: #667085;
+      margin-top: 0;
+      margin-bottom: 0;
+      margin-right: 0;
+      top: auto;
+      bottom: auto;
+      left: auto;
+      right: 0%;
+    }
+  
+    .uui-navbar07_dropdown-toggle {
+      color: #101828;
+      align-items: center;
+      padding-top: .75rem;
+      padding-bottom: .75rem;
+      padding-left: 0;
+      font-size: 1.125rem;
+      display: flex;
+    }
+  
+    .uui-navbar07_dropdown-toggle:hover {
+      color: #101828;
+    }
+  
+    .uui-navbar07_menu-dropdown {
+      width: 100%;
+      position: relative;
+    }
+  
+    .uui-navbar07_menu-left {
+      grid-column-gap: 0px;
+      grid-row-gap: .5rem;
+      color: #101828;
+      flex-direction: column;
+      align-items: flex-start;
+      display: flex;
+    }
+  
+    .uui-navbar07_menu {
+      height: 100vh;
+      -webkit-text-fill-color: inherit;
+      background-color: #fff;
+      background-clip: border-box;
+      border-top: 1px solid #f2f4f7;
+      align-items: flex-start;
+      margin-left: 0;
+      padding: 1.5rem 2rem 5rem;
+      position: absolute;
+      overflow: auto;
+    }
+  }
+  
+  @media screen and (max-width: 767px) {
+    .uui-button-secondary-gray {
+      padding-left: 1.25rem;
+      font-size: 1rem;
+    }
+  
+    .uui-button-secondary-gray:hover {
+      color: #344054;
+      background-color: #fff;
+    }
+  
+    .uui-button {
+      font-size: 1rem;
+    }
+  
+    .uui-button:hover {
+      background-color: #7f56d9;
+      border-color: #7f56d9;
+    }
+  
+    .uui-table_row-content {
+      padding-right: .5rem;
+    }
+  
+    .uui-table_row {
+      border: 1px solid rgba(0, 0, 0, .1);
+      border-radius: 10px;
+      grid-template-columns: 1.5fr 1fr;
+      grid-auto-flow: row;
+      margin-bottom: 20px;
+    }
+  
+    .uui-table_heading-row {
+      display: none;
+    }
+  
+    .uui-space-medium {
+      min-height: 1.5rem;
+    }
+  
+    .uui-pricing07_price {
+      font-size: 2.25rem;
+    }
+  
+    .uui-heading-xxsmall {
+      font-size: 1.125rem;
+    }
+  
+    .uui-table {
+      display: block;
+    }
+  
+    .uui-badge {
+      padding: .125rem .5rem;
+    }
+  
+    .uui-pricing07_component {
+      margin-top: 2rem;
+    }
+  
+    .uui-text-size-large {
+      font-size: 1rem;
+    }
+  
+    .uui-space-xsmall {
+      min-height: .75rem;
+    }
+  
+    .uui-heading-medium {
+      font-size: 1.75rem;
+      line-height: 1.4;
+    }
+  
+    .uui-padding-vertical-xhuge {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+  
+    .uui-page-padding {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  
+    .dropdown {
+      margin-left: 0;
+    }
+  
+    .uui-button-2 {
+      font-size: 1rem;
+    }
+  
+    .uui-button-2:hover {
+      background-color: #7f56d9;
+      border-color: #7f56d9;
+    }
+  
+    .uui-button-wrapper.max-width-full-mobile-landscape {
+      width: 100%;
+    }
+  
+    .max-width-full-mobile-landscape {
+      width: 100%;
+      max-width: none;
+    }
+  
+    .uui-button-secondary-gray-2 {
+      padding-left: 1.25rem;
+      font-size: 1rem;
+    }
+  
+    .uui-button-secondary-gray-2:hover {
+      color: #344054;
+      background-color: #fff;
+    }
+  
+    .uui-button-row {
+      align-self: stretch;
+    }
+  
+    .uui-button-row.is-reverse-mobile-landscape {
+      flex-direction: column-reverse;
+    }
+  
+    .uui-text-size-large-2 {
+      font-size: 1rem;
+    }
+  
+    .uui-space-xsmall-2 {
+      min-height: .75rem;
+    }
+  
+    .uui-heading-medium-2 {
+      font-size: 1.75rem;
+      line-height: 1.4;
+    }
+  
+    .uui-cta04_content {
+      margin-right: 0;
+    }
+  
+    .uui-cta04_component {
+      flex-direction: column;
+    }
+  
+    .uui-padding-vertical-xhuge-2 {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+  
+    .uui-page-padding-2 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  
+    .new-row {
+      border-radius: 10px;
+    }
+  
+    .uui-button-3 {
+      font-size: 1rem;
+    }
+  
+    .uui-button-3:hover {
+      background-color: #7f56d9;
+      border-color: #7f56d9;
+    }
+  
+    .uui-button-wrapper-2.max-width-full-mobile-landscape {
+      width: 100%;
+    }
+  
+    .max-width-full-mobile-landscape-2 {
+      width: 100%;
+      max-width: none;
+    }
+  
+    .uui-button-secondary-gray-3 {
+      padding-left: 1.25rem;
+      font-size: 1rem;
+    }
+  
+    .uui-button-secondary-gray-3:hover {
+      color: #344054;
+      background-color: #fff;
+    }
+  
+    .uui-button-row-2 {
+      align-self: stretch;
+    }
+  
+    .uui-button-row-2.is-reverse-mobile-landscape {
+      flex-direction: column-reverse;
+    }
+  
+    .uui-text-size-large-3 {
+      font-size: 1rem;
+    }
+  
+    .uui-space-xsmall-3 {
+      min-height: .75rem;
+    }
+  
+    .uui-heading-small {
+      font-size: 1.5rem;
+    }
+  
+    .uui-cta05_content {
+      margin-right: 0;
+    }
+  
+    .uui-cta05_component {
+      flex-direction: column;
+      padding: 2.5rem 1.5rem;
+    }
+  
+    .uui-padding-vertical-xhuge-3 {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+  
+    .uui-page-padding-3 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  
+    .uui-button-4 {
+      font-size: 1rem;
+    }
+  
+    .uui-button-4:hover {
+      background-color: #7f56d9;
+      border-color: #7f56d9;
+    }
+  
+    .uui-button-tertiary-gray:hover {
+      color: #475467;
+      background-color: rgba(0, 0, 0, 0);
+    }
+  
+    .uui-button-secondary-gray-4 {
+      padding-left: 1.25rem;
+      font-size: 1rem;
+    }
+  
+    .uui-button-secondary-gray-4:hover {
+      color: #344054;
+      background-color: #fff;
+    }
+  
+    .uui-navbar07_link {
+      font-size: 1rem;
+    }
+  
+    .uui-navbar07_dropdown-link-list {
+      max-width: none;
+      grid-row-gap: .5rem;
+      padding-top: .75rem;
+      padding-bottom: .75rem;
+    }
+  
+    .uui-navbar07_dropdown-toggle {
+      font-size: 1rem;
+    }
+  
+    .uui-navbar07_menu {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  
+    .uui-styleguide_logomark-bg {
+      background-image: url('../images/untitled-ui-logomark.svg');
+      background-position: 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  
+    .uui-navbar07_component {
+      min-height: 4.5rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  
+    .container {
+      padding-top: 50px;
+    }
+  }
+  
+  @media screen and (max-width: 479px) {
+  
+    .uui-table_row.new-row {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+    }
+
+    .uui-table_row {
+      grid-template-columns: 1.5fr;
+    }
+  
+    .uui-table_feature {
+      padding: 0.5rem;
+    }
+    
+    .uui-navbar07_dropdown-link {
+      padding-left: 0;
+    }
+  }
+  
+  #w-node-b8e7c7cf-e800-07d4-69d8-edeae44d3113-c27281f5 {
+    grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+  
+  #w-node-_27df402e-7b08-1f62-5a10-02c8d8ebdbcb-c27281f5 {
+    grid-area: span 4 / span 1 / span 4 / span 1;
+    align-self: auto;
+  }
+  
+  #w-node-e1758af3-161d-859a-3882-6f82f516b7af-c27281f5 {
+    grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+  
+  #w-node-_537e29ff-0ba6-13f6-18d7-382c1d3f44c8-c27281f5 {
+    align-self: center;
+    justify-self: start;
+  }
+  
+  #w-node-_7b595032-9c45-3caa-c491-76b65e3d5d7f-c27281f5, #w-node-_4a8097b5-8e65-26c1-eec7-105df88c66d7-c27281f5 {
+    align-self: center;
+  }
+  
+  #w-node-_09a41125-b511-2417-9f82-8428d7c395ee-c27281f5 {
+    align-self: center;
+    justify-self: start;
+  }
+  
+  #w-node-_36557076-0b78-8a5a-2275-003716b0293c-c27281f5 {
+    grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+  
+  #w-node-f924fc86-f19b-70ec-a295-7eeeebc96225-c27281f5 {
+    align-self: center;
+    justify-self: start;
+  }
+  
+  #w-node-a2068c37-31fc-ea74-6cd6-e28a9bfe7e3a-c27281f5 {
+    grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+  
+  #w-node-_2b1329d2-0286-6d09-1830-005483ed6f69-c27281f5, #w-node-d50d1390-0c22-2ced-9ac8-56fd6ab79cf3-c27281f5, #w-node-_336c2d1a-d209-6fc9-d519-afbec5246287-c27281f5, #w-node-a4f941ac-6fb7-b09d-4867-25560ba2a743-c27281f5 {
+    align-self: center;
+  }
+  
+  #w-node-_08e159ad-68f0-a399-f4a5-f52d039c5b7e-c27281f5 {
+    grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+  
+  #w-node-_08e159ad-68f0-a399-f4a5-f52d039c5b7f-c27281f5, #w-node-_08e159ad-68f0-a399-f4a5-f52d039c5b81-c27281f5, #w-node-_08e159ad-68f0-a399-f4a5-f52d039c5b83-c27281f5, #w-node-_49d20719-ba42-31ac-3e9a-fc598be92699-c27281f5 {
+    align-self: center;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626a4-c27281f5 {
+    grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626a5-c27281f5 {
+    grid-area: span 4 / span 1 / span 4 / span 1;
+    align-self: auto;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626a8-c27281f5 {
+    grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626a9-c27281f5 {
+    align-self: center;
+    justify-self: start;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626ab-c27281f5, #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626ac-c27281f5 {
+    align-self: center;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626ad-c27281f5 {
+    align-self: center;
+    justify-self: start;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626af-c27281f5 {
+    grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626b0-c27281f5 {
+    align-self: center;
+    justify-self: start;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626b2-c27281f5 {
+    grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626b3-c27281f5, #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626b9-c27281f5 {
+    align-self: center;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626bb-c27281f5 {
+    grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+  
+  #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626bc-c27281f5, #w-node-b4d895b5-91e9-bbd2-108c-b7387bc626c2-c27281f5 {
+    align-self: center;
+  }
+  
+  
+  
