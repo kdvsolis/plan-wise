@@ -10,7 +10,7 @@ export class BudgetTableService {
 
   async create(body: any) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.post('/api/budgets', headers, {}, '', body);
+    return this.apiService.post('/api/budgets/', headers, {}, '', body);
   }
 
   async get(id: string) {

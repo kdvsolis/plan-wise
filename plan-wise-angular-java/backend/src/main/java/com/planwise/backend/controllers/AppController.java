@@ -13,10 +13,11 @@ import java.io.IOException;
 public class AppController {
 
     @RequestMapping({
+        "/",
         "/login",
         "/registration",
         "/expenses",
-        "/category",
+        "/categories",
         "/income",
         "/budget-table",
         "/budget-calendar"

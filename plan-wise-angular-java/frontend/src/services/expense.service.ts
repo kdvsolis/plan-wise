@@ -10,7 +10,7 @@ export class ExpenseService {
 
   async create(body: any) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.post('/api/expense', headers, {}, '', body);
+    return this.apiService.post('/api/expenses/', headers, {}, '', body);
   }
 
   async get(id: string) {

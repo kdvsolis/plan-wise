@@ -26,7 +26,9 @@ export class LoginComponent {
     if (response.success) {
       storageHandler.localStorageSet('token', response.token);
       this.token = response.token;
-      this.router.navigate(['/']);
+      this.router.navigate(['/']).then(() => {
+        window.location.reload();
+      });
     } else {
       this.error = response.message;
     }

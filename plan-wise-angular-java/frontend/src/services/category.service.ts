@@ -10,26 +10,26 @@ export class CategoryService {
 
   async create(body: any) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.post('/api/categories', headers, {}, '', body);
+    return this.apiService.post('/api/category/', headers, {}, '', body);
   }
 
   async get(id: string) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.get(`/api/categories/${id}`, headers, {}, '');
+    return this.apiService.get(`/api/category/${id}`, headers, {}, '');
   }
 
   async getAll() {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.get('/api/categories', headers, {}, '');
+    return this.apiService.get('/api/category/', headers, {}, '');
   }
 
   async update(id: string, body: any) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.put(`/api/categories/${id}`, headers, {}, '', body);
+    return this.apiService.put(`/api/category/${id}`, headers, {}, '', body);
   }
 
   async delete(id: string) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.delete(`/api/categories/${id}`, headers, {}, '', {});
+    return this.apiService.delete(`/api/category/${id}`, headers, {}, '', {});
   }
 }

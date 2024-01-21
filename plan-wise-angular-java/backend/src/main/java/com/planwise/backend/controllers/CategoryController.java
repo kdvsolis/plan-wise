@@ -24,6 +24,7 @@ public class CategoryController {
     @Autowired
     private PwBudgetTableExpenseRepository budgetTableExpenseRepository;
 
+    @Autowired
     private PwExpenseRepository expenseRepository;
 
     @GetMapping("/")
@@ -141,9 +142,11 @@ public class CategoryController {
         }
     
         List<PwExpense> expenses = expenseRepository.findByCategoryId(Math.toIntExact(category_id));
-        for (PwExpense expense : expenses) {
-            expense.setCategory(null);
-            expenseRepository.save(expense);
+        if(expenses != null){
+            for (PwExpense expense : expenses) {
+                expense.setCategory(null);
+                expenseRepository.save(expense);
+            }
         }
     
         categoryRepository.deleteById(category_id);

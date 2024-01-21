@@ -1,0 +1,48 @@
+<div class="uui-page-padding">
+    <div class="uui-container-large">
+      <div class="uui-padding-vertical-xhuge">
+        <div class="uui-text-align-center">
+          <div class="uui-max-width-large align-center">
+            <h2 class="uui-heading-medium">Categories</h2>
+            <div class="uui-space-xsmall"></div>
+            <div class="uui-text-size-large">Add and manage your expense <strong>categories</strong></div>
+            <button class="button w-button" (click)="showInput = !showInput">+</button>
+          </div>
+        </div>
+        <div class="uui-table">
+          <div class="uui-table_heading-row">
+            <div class="uui-table_heading-row-text">Category Name</div>
+            <div class="uui-table_heading-row-text">Monthly Average</div>
+            <div class="uui-table_heading-row-text">Action</div>
+          </div>
+          <input 
+            *ngIf="showInput"
+            id="new-category" 
+            [(ngModel)]="newCategory"
+            type="text" 
+            class="w-layout-grid uui-table_row new-row uui-table_feature uui-pricing07_row-lead-text w-100"
+            (keyup.enter)="createCategory()"
+          />
+          <div *ngFor="let category of categories; let i = index" [ngClass]="{'w-layout-grid uui-table_row': true, 'background-color-gray50': i % 2 === 1}">
+            <div class="uui-table_feature">
+              <div class="uui-pricing07_row-lead-text">                                
+                <input type="text" class="expense-input" [(ngModel)]="category.category_name"/>
+              </div>
+            </div>
+            <div class="uui-table_row">
+              <div class="uui-pricing07_row-lead-text">   
+                {{category.average_monthly_expense | number:'1.2-2'}}
+              </div>
+            </div>
+            <div class="uui-table_row">
+              <div class="action">
+                <button type="button" class="btn btn-warning" (click)="updateCategory(i)">Save</button>
+                <button type="button" class="btn btn-danger" (click)="deleteCategory(i)">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
