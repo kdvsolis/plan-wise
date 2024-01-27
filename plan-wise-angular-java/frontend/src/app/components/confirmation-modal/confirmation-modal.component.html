@@ -1,0 +1,23 @@
+<div #confirmationModal class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel">{{ headerMessage }}</h5>
+          <button type="button" class="close" aria-label="Close" (click)="close()">
+            <span aria-hidden="true">x</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ bodyMessage }}
+          <div *ngIf="displayErrorMessage" class="alert alert-danger" role="alert">
+            Error occurred in this operation! Please try again
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+          <button type="button" [ngClass]="actionClass" (click)="confirmationAction()">{{ actionMessage }}</button>
+        </div>
+      </div>
+    </div>
+</div>
+  

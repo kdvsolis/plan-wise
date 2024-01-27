@@ -1,0 +1,46 @@
+# Java / Maven
+backend/target/
+backend/!.mvn/wrapper/maven-wrapper.jar
+backend/!**/src/main/**/target/
+backend/!**/src/test/**/target/
+
+# Gradle
+backend/.gradle/
+backend/build/
+
+# Miscellaneous
+backend/*.class
+backend/*.log
+
+# Package Files
+backend/*.jar
+backend/*.war
+backend/*.ear
+backend/*.zip
+backend/*.tar
+backend/*.rar
+
+# Maven Wrapper
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+backend/.m2
+
+# IntelliJ project files
+backend/.idea/
+backend/*.iml
+backend/*.iws
+
+# Eclipse project files
+backend/.classpath
+backend/.project
+backend/.settings/
+
+# VS Code project files
+backend/.vscode/
+
+# Node / Angular
+frontend/node_modules/
+frontend/dist/
+frontend/*.log
+frontend/package-lock.json

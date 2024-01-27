@@ -10,6 +10,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
+import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
+import { ExpensesComponent } from './pages/expenses/expenses.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { CategoriesComponent } from './pages/categories/categories.component';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    ConfirmationModalComponent,
+    ExpensesComponent
   ],
   imports: [
     BrowserModule,

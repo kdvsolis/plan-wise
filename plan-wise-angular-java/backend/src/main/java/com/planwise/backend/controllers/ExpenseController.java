@@ -14,7 +14,7 @@ import java.math.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
-@RequestMapping("/api/expense")
+@RequestMapping("/api/expenses")
 public class ExpenseController {
 
     @Autowired

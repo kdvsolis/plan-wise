@@ -1,0 +1,122 @@
+<div class="uui-page-padding">
+    <div class="uui-container-large">
+        <div class="uui-padding-vertical-xhuge">
+            <div class="uui-text-align-center">
+                <div class="uui-max-width-large align-center">
+                    <h2 class="uui-heading-medium">Expenses</h2>
+                    <div class="uui-space-xsmall"></div>
+                    <div class="uui-text-size-large">Add and manage your repeating <strong>expenses</strong></div>
+                    <a href="javascript:void(0)" class="button w-button" (click)="inputToggle()">{{ showInput ? "-" : "+" }}</a>
+                </div>                  
+            </div>
+            <div class="uui-table">
+                <div class="uui-table_heading-row">
+                    <div class="uui-table_heading-row-text">Expense</div>
+                    <div class="uui-table_heading-row-text">Amount</div>
+                    <div class="uui-table_heading-row-text">Start Date</div>
+                    <div class="uui-table_heading-row-text">Frequency</div>
+                    <div class="uui-table_heading-row-text">Category</div>
+                    <div class="uui-table_heading-row-text">Action</div>
+                </div>
+                <div [ngClass]="conditionalLayoutGrid" *ngIf="showInput">
+                    <div class="uui-table_feature input-header">
+                        <input type="text" class="expense-input" [(ngModel)]="headerExpense" />
+                    </div>
+                    <div class="uui-table_row-content input-header">
+                        <div class="expense-input">
+                            <span class="input-group-addon">$</span>
+                            <input type="number" class="no-border-input" [(ngModel)]="headerAmount" />
+                        </div>
+                    </div>
+                    <div class="uui-table_row-content input-header">
+                        <input type="date" pattern="\d{4}-\d{2}-\d{2}" class="expense-input" [(ngModel)]="headerDate" />
+                    </div>
+                    <div class="uui-table_row-content input-header">
+                        <div class="dropdown dropdown-border" data-bs-toggle="dropdown" data-bs-display="static">
+                        <button [ngClass]="['btn', 'dropdown-toggle', 'frequency-width', selectedClassHeader]" type="button" id="dropdownMenuButtonHeader" aria-expanded="false">
+                            {{ selectedOptionHeader }}
+                        </button>
+                        <span class="dropdown-icon">▼</span>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonHeader">
+                            <li *ngFor="let option of options">
+                            <a [ngClass]="[option.class, 'dropdown-item']" href="#" (click)="selectOptionHeader(option)">{{ option.text }}</a>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+                    <div class="uui-table_row-content input-header">
+                        <div class="dropdown dropdown-border" data-bs-toggle="dropdown" data-bs-display="static">
+                            <button [ngClass]="['btn', 'dropdown-toggle', 'frequency-width', selectedClassCategoryHeader]" type="button" id="dropdownCategoryButtonHeader" aria-expanded="false">
+                                {{ selectedOptionCategoryHeader.category_name || "Select Category" }}
+                            </button>
+                            <span class="dropdown-icon">▼</span>
+                            <ul class="dropdown-menu" aria-labelledby="selectCategoryHeader">
+                                <li>
+                                    <a class="dropdown-item" (click)="selectCategoryHeader(null)">Select Category</a>
+                                </li>
+                                <li *ngFor="let category of categories">
+                                    <a [ngClass]="['one-time-expense', 'dropdown-item', 'frequency-width']" (click)="selectCategoryHeader(category)">{{ category.category_name }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="uui-table_row-content input-header">
+                        <button type="button" class="btn btn-primary add-button" (click)="createExpense()">Add</button>
+                    </div>
+                </div> 
+                <div *ngFor="let row of rows; let index = index">
+                    <div [ngClass]="['w-layout-grid', 'uui-table_row', 'background-color-gray50']">
+                        <div class="uui-table_feature">
+                        <input type="text" class="expense-input" [(ngModel)]="rows[index].expenses" />
+                        </div>
+                        <div class="uui-table_row-content">
+                        <div class="expense-input">
+                            <span class="input-group-addon">$</span>
+                            <input type="number" class="no-border-input" [(ngModel)]="rows[index].amount" />
+                        </div>
+                        </div>
+                        <div class="uui-table_row-content">
+                            <input type="date" pattern="\d{4}-\d{2}-\d{2}" class="expense-input" [ngModel]="(rows[index].startDate | date:'yyyy-MM-dd') || null" />
+                        </div>
+                        <div class="uui-table_row-content">
+                        <div class="dropdown dropdown-border" data-bs-toggle="dropdown" data-bs-display="static">
+                            <button [ngClass]="['btn', 'frequency-width', 'dropdown-toggle', isNan(rows[index].frequency)? '': options[rows[index].frequency].class]" type="button" [id]="'dropdownMenuButton' + index" aria-expanded="false">
+                            {{ isNan(rows[index].frequency)? 'Select Frequency': options[rows[index].frequency].text }}
+                            </button>
+                            <span class="dropdown-icon">▼</span>
+                            <ul class="dropdown-menu" [attr.aria-labelledby]="'dropdownMenuButton' + index">
+                            <li *ngFor="let option of options">
+                                <a [ngClass]="[option.class, 'dropdown-item']" href="#" (click)="selectOption(option, index)">{{ option.text }}</a>
+                            </li>
+                            </ul>
+                        </div>
+                        </div>
+                        <div class="uui-table_row-content">
+                            <div class="dropdown dropdown-border" data-bs-toggle="dropdown" data-bs-display="static">
+                            <button [ngClass]="['btn', 'dropdown-toggle', 'frequency-width', getButtonClass(index)]" type="button" [id]="'dropdownCategoryButton' + index" aria-expanded="false">
+                                {{ getCategoryName(index) }}
+                            </button>
+                            <span class="dropdown-icon">▼</span>
+                            <ul class="dropdown-menu" [attr.aria-labelledby]="'dropdownCategoryButton' + index">
+                                <li>
+                                    <a class="dropdown-item" (click)="selectCategoryOption(null, index)">Select Category</a>
+                                </li>
+                                <li *ngFor="let category of categories">
+                                    <a [ngClass]="['one-time-expense', 'dropdown-item', 'frequency-width']" (click)="selectCategoryOption(category, index)">{{ category.category_name }}</a>
+                                </li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div class="uui-table_row-content">
+                        <div class="action">
+                            <button type="button" class="btn btn-warning" (click)="updateExpense(index)">Save</button>
+                            <button type="button" class="btn btn-danger" (click)="deleteConfirmation(index)">Delete</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-confirmation-modal></app-confirmation-modal>
+</div>

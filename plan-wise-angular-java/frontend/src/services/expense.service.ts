@@ -20,7 +20,7 @@ export class ExpenseService {
 
   async getAll() {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.get('/api/expenses', headers, {}, '');
+    return this.apiService.get('/api/expenses/', headers, {}, '');
   }
 
   async update(id: string, body: any) {
