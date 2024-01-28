@@ -104,7 +104,7 @@ public class IncomeController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<Map<String, Object>> getIncomeByUser(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
         Integer userId = (Integer) request.getAttribute("user_id");

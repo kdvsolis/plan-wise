@@ -12,6 +12,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { ExpensesComponent } from './pages/expenses/expenses.component';
+import { IncomeComponent } from './pages/income/income.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ExpensesComponent } from './pages/expenses/expenses.component';
     HomeComponent,
     CategoriesComponent,
     ConfirmationModalComponent,
-    ExpensesComponent
+    ExpensesComponent,
+    IncomeComponent
   ],
   imports: [
     BrowserModule,

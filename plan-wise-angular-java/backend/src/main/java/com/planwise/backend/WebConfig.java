@@ -16,6 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor).addPathPatterns("/api/auth/user");
         registry.addInterceptor(jwtInterceptor).addPathPatterns("/api/category/*");
         registry.addInterceptor(jwtInterceptor).addPathPatterns("/api/expenses/*");
+        registry.addInterceptor(jwtInterceptor).addPathPatterns("/api/income/*");
         registry.addInterceptor(jwtInterceptor).addPathPatterns("/api/budget/*");
     }
 }

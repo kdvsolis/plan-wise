@@ -10,7 +10,7 @@ export class IncomeService {
 
   async create(body: any) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.post('/api/income', headers, {}, '', body);
+    return this.apiService.post('/api/income/', headers, {}, '', body);
   }
 
   async get(id: string) {
@@ -20,7 +20,7 @@ export class IncomeService {
 
   async getAll() {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.get('/api/income', headers, {}, '');
+    return this.apiService.get('/api/income/', headers, {}, '');
   }
 
   async update(id: string, body: any) {

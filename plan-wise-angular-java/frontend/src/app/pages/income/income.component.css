@@ -1,0 +1,61 @@
+.dropdown-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .btn.dropdown-toggle::after {
+    display: none;
+  }
+  .dropdown-toggle{
+    padding: 5px;
+  }
+  .expense-input{
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, .1);
+    background: transparent;
+    font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,Oxygen,Fira Sans,Droid Sans,sans-serif;
+    font-size: 1.125rem;
+    display: flex;
+  }
+  .dropdown-menu{
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  .dropdown-item{
+    margin-bottom: 5px;
+  }
+  .input-header{
+    width: 100%;
+  }
+  .action{
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+  }
+  .no-border-input {
+    border: 0px;
+    width: 100%;
+    background-color: transparent;
+  }
+  @media screen and (max-width: 767px) {  
+    .action{
+      align-items: stretch;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .action > button{
+      flex: 1;
+    }
+    .add-button{
+      flex: 1;
+    }
+    .dropdown-menu{
+      width: 100%;
+    }
+    .frequency-width{
+      width: 100%;
+    }
+}
