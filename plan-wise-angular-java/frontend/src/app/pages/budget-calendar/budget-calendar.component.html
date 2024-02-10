@@ -1,0 +1,114 @@
+<section class="uui-section_table">
+    <div class="uui-page-padding">
+        <div class="uui-container-large">
+            <div class="uui-padding-vertical-xhuge">
+            <div class="uui-text-align-center">
+                <div class="uui-max-width-large align-center">
+                <h2 class="uui-heading-medium">Budget Calendar</h2>
+                <div class="uui-space-xsmall"></div>
+                <div class="uui-text-size-large">Calendar view of your budget per day<strong></strong></div>
+                </div>
+            </div>
+            <div class="uui-table">
+                
+                <div class="fixed-headers" [style.display]="isLargeScreen ? 'block' : 'none'">
+                    <div class="uui-table_heading-row_calendar">
+                        <div class="uui-table_heading-row-text">Sunday</div>
+                        <div class="uui-table_heading-row-text">Monday</div>
+                        <div class="uui-table_heading-row-text">Tuesday</div>
+                        <div class="uui-table_heading-row-text">Wednesday</div>
+                        <div class="uui-table_heading-row-text">Thursday</div>
+                        <div class="uui-table_heading-row-text">Friday</div>
+                        <div class="uui-table_heading-row-text">Saturday</div>
+                    </div>
+                    <div class="div-block">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="text-block-3 page-link-budget" href="javascript:void(0)" (click)="decrementMonth()">&lt;&lt;</a>
+                            </li>
+                            <li>
+                                <div class="text-block-3 px-2">{{months[currMonth]}} {{currYear < 0 ? '' : currYear}}</div>
+                            </li>
+                            <li class="page-item">
+                                <a class="text-block-3 page-link-budget" href="javascript:void(0)" (click)="incrementMonth()">&gt;&gt;</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>   
+                <div [style.display]="isLargeScreen ? 'grid' : 'none'" class="w-layout-grid uui-table_row_calendar background-color-gray50">
+                    <div *ngFor="let dayData of calendar; let index = index" class="w-layout-grid uui-table-row-day-of-month_calendar border-day">
+                        <div class="uui-text-size-medium">{{dayData.date || ""}}</div>
+                        <div class="uui-text-size-medium" [ngClass]="getBalanceClass(dayData.date, 'starting', 'previousBalance')">
+                            {{ getStartBalance(dayData) }}
+                        </div>
+                        <div class="uui-text-size-medium" [ngClass]="getIncome(dayData) != '-' ? 'income' : 'hide-dash'">
+                            {{ getIncome(dayData) }}
+                        </div>
+                        <div class="uui-text-size-medium" [ngClass]="getExpense(dayData) != '-' ? 'expense' : 'hide-dash'">
+                            {{ getExpense(dayData) }}
+                        </div>
+                        <div class="uui-text-size-medium" [ngClass]="getBalanceClass(dayData.date, 'ending', 'currentBalance')">
+                            {{ getEndBalance(dayData) }}
+                        </div>
+                    </div>
+                </div>                
+                <div [style.display]="!isLargeScreen ? 'block' : 'none'">
+                    <div class="div-block">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="text-block-3 page-link-budget" href="#" (click)="decrementMonth()">&lt;&lt;</a>
+                            </li>
+                            <li>
+                                <div class="text-block-3 px-2">{{months[currMonth]}} {{currYear < 0 ? '' : currYear}}</div>
+                            </li>
+                            <li class="page-item">
+                                <a class="text-block-3 page-link-budget" href="#" (click)="incrementMonth()">&gt;&gt;</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div *ngFor="let dayData of calendar; let index = index" class="w-layout-grid-calendar-mobile background-color-gray50 calendar-mobile">
+                        <ng-container *ngIf="dayData.date">
+                            <div class="uui-table_row_mobile">
+                                <div class="w-layout-grid uui-table-row-day-of-month_mobile">
+                                    <div class="div-block-3">
+                                        <div class="uui-pricing07_row-lead-text date-column">{{dayData.date}}</div>
+                                        <div class="uui-pricing07_row-lead-text date-column">{{daysOfWeek[dayData.dayOfWeek]}}</div>
+                                    </div>
+                                    <div class="w-layout-grid uui-table-row-day-of-month">
+                                        <div class="uui-text-size-medium" [ngClass]="getBalanceClass(dayData.date, 'starting', 'previousBalance')">
+                                            {{ getStartBalance(dayData) }}
+                                        </div>
+                                        <div class="uui-text-size-medium" [ngClass]="totalIncome(dayData.date) > 0 ? 'income' : 'hide-dash'">
+                                            {{ getIncome(dayData) }}
+                                        </div>
+                                        <div class="uui-text-size-medium" [ngClass]="totalExpense(dayData.date) > 0 ? 'expense' : 'hide-dash'">
+                                            {{ getExpense(dayData) }}
+                                        </div>
+                                        <div class="uui-text-size-medium" [ngClass]="getBalanceClass(dayData.date, 'ending', 'currentBalance')">
+                                            {{ getEndBalance(dayData) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                
+                <div class="center-pagination">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)" (click)="decrementMonth()">Previous</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)" (click)="incrementMonth()">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                
+            </div>
+        </div>
+        </div>
+    </div>
+</section>

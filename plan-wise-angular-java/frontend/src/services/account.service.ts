@@ -16,7 +16,7 @@ export class AccountService {
     return this.apiService.post('/api/auth/login', {}, {}, '', body);
   }
 
-  async getUser(body: any) {
+  async getUser() {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
     return this.apiService.get('/api/auth/user', headers, {}, '');
   }

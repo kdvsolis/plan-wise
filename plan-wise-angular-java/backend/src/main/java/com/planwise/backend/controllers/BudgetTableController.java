@@ -94,7 +94,6 @@ public class BudgetTableController {
             sdf.setTimeZone(tz);
             sdf.setLenient(false);
             Date startDate;
-            System.out.println(user_id);
             Date earliestIncomeDate = budgetTableIncomeRepository.findEarliestDateByUserId(user_id);
             Date earliestExpenseDate = budgetTableExpenseRepository.findEarliestDateByUserId(user_id);
             Date earliestDate = earliestIncomeDate.before(earliestExpenseDate) ? earliestIncomeDate : earliestExpenseDate;
@@ -112,9 +111,9 @@ public class BudgetTableController {
             Date endDate = cal.getTime();
             List<PwBudgetTableIncome> incomes = budgetTableIncomeRepository.findByUserIdAndDateBetween(user_id, startDate, endDate);
             List<PwBudgetTableExpense> expenses = budgetTableExpenseRepository.findByUserIdAndDateBetween(user_id, startDate, endDate);
-            Map<Date, Map<String, Object>> budgets = new TreeMap<>();
+            Map<String, Map<String, Object>> budgets = new TreeMap<>();
             for (PwBudgetTableIncome income : incomes) {
-                Date date = income.getDate();
+                String date = sdf.format(income.getDate());
                 if (!budgets.containsKey(date)) {
                     budgets.put(date, new HashMap<>());
                     budgets.get(date).put("user_id", user_id);
@@ -124,7 +123,7 @@ public class BudgetTableController {
                 ((List)budgets.get(date).get("income")).add(income.toMap());
             }
             for (PwBudgetTableExpense expense : expenses) {
-                Date date = expense.getDate();
+                String date = sdf.format(expense.getDate());
                 if (!budgets.containsKey(date)) {
                     budgets.put(date, new HashMap<>());
                     budgets.get(date).put("user_id", user_id);

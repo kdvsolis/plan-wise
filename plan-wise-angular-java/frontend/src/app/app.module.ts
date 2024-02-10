@@ -13,6 +13,7 @@ import { CategoriesComponent } from './pages/categories/categories.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { ExpensesComponent } from './pages/expenses/expenses.component';
 import { IncomeComponent } from './pages/income/income.component';
+import { BudgetCalendarComponent } from './pages/budget-calendar/budget-calendar.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { IncomeComponent } from './pages/income/income.component';
     CategoriesComponent,
     ConfirmationModalComponent,
     ExpensesComponent,
-    IncomeComponent
+    IncomeComponent,
+    BudgetCalendarComponent
   ],
   imports: [
     BrowserModule,

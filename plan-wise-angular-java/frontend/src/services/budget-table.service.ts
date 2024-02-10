@@ -20,32 +20,32 @@ export class BudgetTableService {
 
   async update(id: string, body: any) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.put(`/api/budgets/${id}`, headers, {}, '', body);
+    return this.apiService.put(`/api/budget/${id}`, headers, {}, '', body);
   }
 
   async delete(id: string) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.delete(`/api/budgets/${id}`, headers, {}, '', {});
+    return this.apiService.delete(`/api/budget/${id}`, headers, {}, '', {});
   }
 
   async bulkCreate(body: any) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.post('/api/bulk_create_budgets', headers, {}, '', body);
+    return this.apiService.post('/api/budget/bulk_create_budgets', headers, {}, '', body);
   }
 
   async getStartDates() {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.get('/api/budgets_start_dates', headers, {}, '');
+    return this.apiService.get('/api/budget/budgets_start_dates', headers, {}, '');
   }
 
   async getBudgetsInDateRange(start_date_str: string) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
     const query = start_date_str ? { start_date_str: start_date_str } : {};
-    return this.apiService.get('/api/get_budgets_in_date_range', headers, query, '');
+    return this.apiService.get('/api/budget/get_budgets_in_date_range', headers, query, '');
   }
 
   async updateBudgets(body: any) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.put('/api/update_budgets', headers, {}, '', body);
+    return this.apiService.put('/api/budget/update_budgets', headers, {}, '', body);
   }
 }
