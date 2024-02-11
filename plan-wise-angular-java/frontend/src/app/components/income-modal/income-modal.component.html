@@ -1,0 +1,49 @@
+<div #incomeModal class="modal fade" id="incomeModal" tabindex="-1" role="dialog" aria-labelledby="incomeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="incomeModalLabel">New Income</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="income-expense-input">
+                    <div class="income-expense-row">
+                        <span>Source: </span>
+                        <input type="text" class="expense-input modal-input" [(ngModel)]="localHeaderSource" />
+                    </div>
+                    <div class="income-expense-row">
+                        <span>Amount($): </span>
+                        <input type="number" class="expense-input modal-input" [(ngModel)]="localHeaderAmount" />
+                    </div>
+                    <div class="income-expense-row">
+                        <span>Date: </span>
+                        <input type="date" pattern="\d{4}-\d{2}-\d{2}" disabled="true" class="expense-input modal-input" [(ngModel)]="localSelectedDate" />
+                    </div>
+                    <div class="income-expense-row">
+                        <span>Frequency: </span>
+                        <div class="dropdown dropdown-border modal-input" data-bs-toggle="dropdown" data-bs-display="static">
+                            <button class="btn dropdown-toggle" [ngClass]="localSelectedClassHeader" type="button" id="dropdownMenuButtonHeader" aria-expanded="false">
+                                {{localSelectedOptionHeader}}
+                            </button>
+                            <span class="dropdown-icon">▼</span>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonHeader">
+                                <li class="mt-1">
+                                    <a class="dropdown-item" href="javascript:void(0)" (click)="selectOptionHeader({ text: '', class: '' })">Select Interval</a>
+                                </li>
+                                <li *ngFor="let option of options" class="mt-1">
+                                    <a class="dropdown-item" [ngClass]="option.class" href="javascript:void(0)" (click)="selectOptionHeader(option)">{{option.text}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="createIncome()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

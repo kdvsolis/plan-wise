@@ -14,6 +14,9 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
 import { ExpensesComponent } from './pages/expenses/expenses.component';
 import { IncomeComponent } from './pages/income/income.component';
 import { BudgetCalendarComponent } from './pages/budget-calendar/budget-calendar.component';
+import { NotesModalComponent } from './components/notes-modal/notes-modal.component';
+import { ExpenseModalComponent } from './components/expense-modal/expense-modal.component';
+import { IncomeModalComponent } from './components/income-modal/income-modal.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { BudgetCalendarComponent } from './pages/budget-calendar/budget-calendar
     ConfirmationModalComponent,
     ExpensesComponent,
     IncomeComponent,
-    BudgetCalendarComponent
+    BudgetCalendarComponent,
+    NotesModalComponent,
+    ExpenseModalComponent,
+    IncomeModalComponent
   ],
   imports: [
     BrowserModule,
