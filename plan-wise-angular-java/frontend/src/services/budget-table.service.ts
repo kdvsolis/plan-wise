@@ -38,7 +38,7 @@ export class BudgetTableService {
     return this.apiService.get('/api/budget/budgets_start_dates', headers, {}, '');
   }
 
-  async getBudgetsInDateRange(start_date_str: string) {
+  async getBudgetsInDateRange(start_date_str: string | undefined) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
     const query = start_date_str ? { start_date_str: start_date_str } : {};
     return this.apiService.get('/api/budget/get_budgets_in_date_range', headers, query, '');

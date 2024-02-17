@@ -10,26 +10,26 @@ export class NoteService {
 
   async create(body: any) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.post('/api/notes', headers, {}, '', body);
+    return this.apiService.post('/api/budget/notes', headers, {}, '', body);
   }
 
   async get(id: string) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.get(`/api/notes/${id}`, headers, {}, '');
+    return this.apiService.get(`/api/budget/notes/${id}`, headers, {}, '');
   }
 
   async getByDate(date: string) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.get(`/api/notes?date=${date}`, headers, {}, '');
+    return this.apiService.get(`/api/budget/notes?date=${date}`, headers, {}, '');
   }
 
   async updateByDate(date: string, body: any) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.put(`/api/notes?date=${date}`, headers, {}, '', body);
+    return this.apiService.put(`/api/budget/notes?date=${date}`, headers, {}, '', body);
   }
 
   async delete(id: string) {
     const headers = { 'Authorization': `Bearer ${storageHandler.localStorageGet('token')}` };
-    return this.apiService.delete(`/api/notes/${id}`, headers, {}, '', {});
+    return this.apiService.delete(`/api/budget/notes/${id}`, headers, {}, '', {});
   }
 }

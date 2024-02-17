@@ -6,11 +6,12 @@ import { ExpenseService } from '../../../services/expense.service';
 @Component({
   selector: 'app-expense-modal',
   templateUrl: './expense-modal.component.html',
-  styleUrls: ['./expense-modal.component.css']
+  styleUrls: ['./expense-modal.component.css', '../../../assets/components.css', '../../../assets/budgeting-app.css']
 })
 export class ExpenseModalComponent implements OnInit {
   @Input() headerExpense: string = '';
   @Input() headerAmount: number = -1;
+  @Input() headerDate: any;
   @Input() selectedDate: string = '';
   @Input() selectedClassHeader: string = '';
   @Input() selectedOptionHeader: string = '';
@@ -34,7 +35,7 @@ export class ExpenseModalComponent implements OnInit {
     { text: 'Every 6 Months', class: 'every-6-months' },
     { text: 'Annually', class: 'annually' },
     { text: 'One Time', class: 'one-time-expense' }];
-  categories = [];
+  categories: any = [];
   modalInstance: any;
 
   constructor(private categoryService: CategoryService, private expenseService: ExpenseService) { }

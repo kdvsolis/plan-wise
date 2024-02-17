@@ -10,7 +10,7 @@
                 <textarea class="form-control" id="notesTextArea" rows="3" [(ngModel)]="localCurrentNotes.notes"></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Close</button>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveNotes(localSelectedDate)">Save changes</button>
             </div>
         </div>

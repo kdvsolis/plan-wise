@@ -1,0 +1,156 @@
+<section class="uui-section_table">
+    <div class="uui-page-padding">
+      <div class="uui-container-large">
+        <div class="uui-padding-vertical-xhuge">
+            <div class="uui-text-align-center">
+                <div class="uui-max-width-large align-center">
+                <h2 class="uui-heading-medium">Budget Table</h2>
+                <div class="uui-space-xsmall"></div>
+                <div class="uui-text-size-large">See where you&#x27;ll be if you stick to your budget<strong></strong></div>
+                </div>
+            </div>
+                <div class="uui-table">
+                    <div class="">
+                        <div [ngClass]="{'w-layout-grid': isLargeScreen, 'uui-table_row': true, 'new-row': true}">
+                            <div class="uui-table_row-content input-header">
+                              <span>Initial Balance:</span>
+                            </div>
+                            <div class="uui-table_row-content input-header">
+                              <input type="number" class="expense-input" [(ngModel)]="initialBalance" />
+                            </div>
+                            <div class="uui-table_row-content input-header">
+                              <button type="button" class="btn btn-primary" (click)="changeInitialBalance()">Change</button>
+                            </div>
+                        </div>                          
+                        <div class="uui-table_heading-row">
+                          <div class="uui-table_heading-row-text">Date</div>
+                          <div class="uui-table_heading-row-text">Balance</div>
+                          <div class="uui-table_heading-row-text">Income</div>
+                          <div class="uui-table_heading-row-text">Expense</div>
+                          <div class="uui-table_heading-row-text">Amount</div>
+                          <div class="uui-table_heading-row-text">Action</div>
+                        </div>
+                        <div class="div-block">
+                          <ul class="pagination">
+                            <li class="page-item">
+                              <a class="text-block-3 page-link-budget" href="javascript:void(0)" (click)="decrementMonth()"><<</a>
+                            </li>
+                            <li>
+                              <div class="text-block-3 px-2">{{months[currMonth]}} {{currYear < 0 ? '' : currYear}}</div>
+                            </li>
+                            <li class="page-item">
+                              <a class="text-block-3 page-link-budget" href="javascript:void(0)" (click)="incrementMonth()">>></a>
+                            </li>
+                          </ul>
+                        </div>
+                    </div>
+                      
+                    <div *ngIf="isLargeScreen">
+                        <div *ngFor="let dayData of calendar; index as i" class="w-layout-grid uui-table_row background-color-gray50">
+                            <div class="w-layout-grid uui-table-row-day-of-month">
+                                <div class="div-block-2">
+                                <div class="uui-pricing07_row-lead-text date-column">{{dayData.date}}</div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="monthDailyData[dayData.date] && monthDailyData[dayData.date].previousBalance && monthDailyData[dayData.date].currentBalance" class="w-layout-grid uui-table-row-day-of-month balance-column">
+                                <div class="uui-text-size-medium starting-balance">
+                                {{ getBalanceDisplay(monthDailyData[dayData.date].previousBalance || 0) }}
+                                </div>
+                                <div class="uui-text-size-medium ending-balance">
+                                {{ getBalanceDisplay(monthDailyData[dayData.date].currentBalance) }}
+                                </div>
+                            </div>
+                            <div *ngIf="!monthDailyData[dayData.date] || !monthDailyData[dayData.date].previousBalance || !monthDailyData[dayData.date].currentBalance" class="w-layout-grid uui-table-row-day-of-month">
+                                <div class="div-block-2"></div>
+                            </div>
+                            <div *ngIf="monthDailyData[dayData.date]" class="w-layout-grid uui-table-row-day-of-month income-column">
+                                <div class="{{(monthDailyData[dayData.date].income || []).length > 0 ? 'uui-text-size-medium income' : 'uui-text-size-medium'}}">
+                                {{ getIncomeDisplay(monthDailyData[dayData.date].income || []) }}
+                                </div>
+                                <div *ngFor="let _ of getArray((monthDailyData[dayData.date].expense || []).length - 1)" class="uui-text-size-medium">
+                                    <div></div>
+                                </div>                                  
+                            </div>
+                            <div *ngIf="!monthDailyData[dayData.date]" class="w-layout-grid uui-table-row-day-of-month">
+                                <div class="div-block-2"></div>
+                            </div>
+                            <div *ngIf="monthDailyData[dayData.date]" class="w-layout-grid uui-table-row-day-of-month expense-column">
+                                <div *ngFor="let expense of (monthDailyData[dayData.date].expense || [])" class="uui-text-size-medium expense-cell">{{expense.expenses}}</div>
+                            </div>
+                            <div *ngIf="!monthDailyData[dayData.date]" class="w-layout-grid uui-table-row-day-of-month">
+                                <div class="div-block-2"></div>
+                            </div>
+                            <div *ngIf="monthDailyData[dayData.date]" class="w-layout-grid uui-table-row-day-of-month expense-price-column">
+                                <div *ngFor="let expense of (monthDailyData[dayData.date].expense || [])" class="uui-text-size-medium expense-cell">
+                                $ {{expense.amount.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 })}}
+                                </div>
+                            </div>
+                            <div *ngIf="!monthDailyData[dayData.date]" class="w-layout-grid uui-table-row-day-of-month">
+                                <div class="div-block-2"></div>
+                            </div>
+
+                            <div class="w-layout-grid uui-table-row-day-of-month action-column">
+                                <div class="action">
+                                <div class="action-data">
+                                    <button type="button" class="btn btn-primary" (click)="addIncomeModal(dayData.date)">Add Income</button>
+                                    <button type="button" class="btn btn-primary" (click)="addExpenseModal(dayData.date)">Add Expense</button>
+                                    <button type="button" class="btn btn-primary" [disabled]="!monthDailyData[dayData.date]" (click)="selectedInstanceModal(dayData.date)">Modify Instance</button>
+                                    <button type="button" class="btn btn-primary" (click)="notesModal(dayData.date)">Notes</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      
+                    <div class="center-pagination">
+                        <nav aria-label="Page navigation example">
+                          <ul class="pagination">
+                            <li class="page-item">
+                              <a class="page-link" href="javascript:void(0)" (click)="decrementMonth()">Previous</a>
+                            </li>
+                            <li class="page-item">
+                              <a class="page-link" href="javascript:void(0)" (click)="incrementMonth()">Next</a>
+                            </li>
+                          </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-notes-modal 
+        #noteModal 
+        (modalClosed)="refreshTable()" 
+        [currentNotes]="currentNotes" 
+        [selectedDate]="selectedDate">
+    </app-notes-modal>
+    <app-expense-modal
+        #expenseModal
+        (modalClosed)="refreshTable()"
+        [selectedOptionCategoryHeader]="selectedOptionCategoryHeader"
+        [selectedClassCategoryHeader]="selectedClassCategoryHeader"
+        [selectedOptionHeader]="selectedOptionHeader"
+        [selectedClassHeader]="selectedClassHeader"
+        [headerExpense]="headerExpense"
+        [headerAmount]="headerAmount"
+        [headerDate]="headerDate"
+        [selectedDate]="selectedDate">
+    </app-expense-modal>
+    <app-income-modal
+        #incomeModal
+        (modalClosed)="refreshTable()"
+        [selectedOptionHeader]="selectedOptionHeader"
+        [selectedClassHeader]="selectedClassHeader"
+        [headerSource]="headerSource"
+        [headerAmount]="headerAmount"
+        [headerDate]="headerDate"
+        [selectedDate]="selectedDate">
+    </app-income-modal>
+    <app-modify-instance-modal
+        #modifyInstanceModal
+        (modalClosed)="refreshTable()"
+        [selectedDate]="selectedDate"
+        [selectedInstance]="selectedInstance">
+    </app-modify-instance-modal>
+</section>

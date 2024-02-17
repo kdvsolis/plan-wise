@@ -19,11 +19,18 @@ export class NotesModalComponent {
   constructor(private notesService: NoteService) { }
 
   ngOnInit(): void {
+    this.onShow();
+  }
+
+  onShow(){
+    console.log(this.currentNotes, this.selectedDate);
     this.localCurrentNotes = this.currentNotes;
     this.localSelectedDate = this.selectedDate;
   }
 
-  open() {
+  open(currentNotes: any, selectedDate: any) {
+    this.localCurrentNotes = currentNotes;
+    this.localSelectedDate = selectedDate;
     this.modalInstance = new bootstrap.Modal(this.notesModal.nativeElement);
     this.modalInstance.show();
   }

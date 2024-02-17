@@ -1,0 +1,85 @@
+<div #modifyInstanceModal class="modal fade" id="modifyInstanceModal" tabindex="-1" role="dialog" aria-labelledby="modifyInstanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modifyInstanceModalLabel">Modify Instance</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="instanceTabs" role="tablist">
+                    <li class="nav-item" role="presentation" *ngIf="localSelectedInstance.expense.length > 0">
+                      <button class="nav-link" [class.active]="activeTab === 'expense'" id="expense-data-tab" type="button" role="tab" aria-controls="expense-data" aria-selected="true" (click)="switchTab('expense')">Expense</button>
+                    </li>
+                    <li class="nav-item" role="presentation" *ngIf="localSelectedInstance.income.length > 0">
+                      <button class="nav-link" [class.active]="activeTab === 'income'" id="income-data-tab" type="button" role="tab" aria-controls="income-data" aria-selected="false" (click)="switchTab('income')">Income</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="instanceTabsContent">
+                    <div class="tab-pane fade" [class.show]="activeTab === 'expense'" [class.active]="activeTab === 'expense'" id="expense-data" role="tabpanel" aria-labelledby="expense-data-tab" *ngIf="localSelectedInstance.expense.length > 0">
+                        <div class="income-expense-input">
+                            <div class="income-expense-row">
+                                <span>Expense: </span>
+                                <input type="text" class="expense-input modal-input" [(ngModel)]="localSelectedInstance.expense[expenseInstanceIndex].expenses" />
+                            </div>
+                            <div class="income-expense-row">
+                                <span>Amount($): </span>
+                                <input type="number" class="expense-input modal-input" [(ngModel)]="localSelectedInstance.expense[expenseInstanceIndex].amount" />
+                            </div>
+                            <div class="income-expense-row">
+                                <span>Date: </span>
+                                <input type="date" pattern="\d{4}-\d{2}-\d{2}" disabled="true" class="expense-input modal-input" [(ngModel)]="localSelectedDate" />
+                            </div>
+                        </div>
+                        <div class="center-pagination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link" (click)="decrementExpenseInstanceIndex()"><< Previous</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" (click)="incrementExpenseInstanceIndex()">Next >></a>
+                                </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" [class.show]="activeTab === 'income'" [class.active]="activeTab === 'income'" id="income-data" role="tabpanel" aria-labelledby="income-data-tab" *ngIf="localSelectedInstance.income.length > 0">
+                        <div class="income-expense-input">
+                            <div class="income-expense-row">
+                                <span>Source: </span>
+                                <input type="text" class="expense-input modal-input" [(ngModel)]="localSelectedInstance.income[incomeInstanceIndex].source" />
+                            </div>
+                            <div class="income-expense-row">
+                                <span>Amount($): </span>
+                                <input type="number" class="expense-input modal-input" [(ngModel)]="localSelectedInstance.income[incomeInstanceIndex].amount" />
+                            </div>
+                            <div class="income-expense-row">
+                                <span>Date: </span>
+                                <input type="date" pattern="\d{4}-\d{2}-\d{2}" disabled="true" class="expense-input modal-input" [(ngModel)]="localSelectedDate" />
+                            </div>
+                        </div>
+                            <div class="center-pagination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link" (click)="decrementIncomeInstanceIndex()"><< Previous</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" (click)="incrementIncomeInstanceIndex()">Next >></a>
+                                </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="modifyInstance()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+  

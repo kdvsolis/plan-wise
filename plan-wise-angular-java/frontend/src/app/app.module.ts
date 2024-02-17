@@ -17,6 +17,8 @@ import { BudgetCalendarComponent } from './pages/budget-calendar/budget-calendar
 import { NotesModalComponent } from './components/notes-modal/notes-modal.component';
 import { ExpenseModalComponent } from './components/expense-modal/expense-modal.component';
 import { IncomeModalComponent } from './components/income-modal/income-modal.component';
+import { ModifyInstanceModalComponent } from './components/modify-instance-modal/modify-instance-modal.component';
+import { BudgetTableComponent } from './pages/budget-table/budget-table.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { IncomeModalComponent } from './components/income-modal/income-modal.com
     BudgetCalendarComponent,
     NotesModalComponent,
     ExpenseModalComponent,
-    IncomeModalComponent
+    IncomeModalComponent,
+    ModifyInstanceModalComponent,
+    BudgetTableComponent
   ],
   imports: [
     BrowserModule,

@@ -14,6 +14,7 @@ export class IncomeModalComponent implements OnInit {
   @Input() selectedDate: string = '';
   @Input() selectedClassHeader: string = '';
   @Input() selectedOptionHeader: string = '';
+  @Input() headerDate: any;
   @Input() onModalClosed: any;
   @ViewChild('incomeModal') incomeModal!: ElementRef;
   localHeaderSource: string = '';

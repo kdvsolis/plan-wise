@@ -9,7 +9,7 @@ import { CategoriesComponent } from './pages/categories/categories.component';
 import { ExpensesComponent } from './pages/expenses/expenses.component';
 import { IncomeComponent } from './pages/income/income.component';
 import { BudgetCalendarComponent } from './pages/budget-calendar/budget-calendar.component';
-// import { BudgetTableComponent } from './pages/budget-table/budget-table.component';
+import { BudgetTableComponent } from './pages/budget-table/budget-table.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'categories', component: CategoriesComponent, canActivate: [AuthGuard] },
   { path: 'expenses', component: ExpensesComponent },
   { path: 'income', component: IncomeComponent, canActivate: [AuthGuard] },
-  // { path: 'budget-table', component: BudgetTableComponent, canActivate: [AuthGuard] },
+  { path: 'budget-table', component: BudgetTableComponent, canActivate: [AuthGuard] },
   { path: 'budget-calendar', component: BudgetCalendarComponent, canActivate: [AuthGuard] },
 ];
 
