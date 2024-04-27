@@ -758,7 +758,7 @@
         public double amount { get; set; }
         public int frequency { get; set; }
         public string source { get; set; }
-        public DateTime start_date { get; set; }
+        public DateTime? start_date { get; set; }
     }
 
     public class Expense
@@ -769,7 +769,7 @@
         public int user_id { get; set; }
         public int id { get; set; }
         public string expenses { get; set; }
-        public DateTime start_date { get; set; }
+        public DateTime? start_date { get; set; }
         public int? category { get; set; }
     }
 

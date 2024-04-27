@@ -132,7 +132,7 @@ namespace backend.Models
 
         public decimal amount { get; set; }
 
-        public DateTime start_date { get; set; }
+        public DateTime? start_date { get; set; }
 
         public int frequency { get; set; }
 
