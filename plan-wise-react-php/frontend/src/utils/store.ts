@@ -1,5 +1,6 @@
 import account from '../services/account-service';
 import { storageHandler } from '../utils/storage_handler';
+// @ts-expect-error TS(2307): Cannot find module 'vuex' or its corresponding typ... Remove this comment to see the full error message
 import { createStore } from 'vuex';
 
 const store = createStore({
@@ -9,14 +10,14 @@ const store = createStore({
         }
     },
     mutations: {
-        setToken(state, payload) {
+        setToken(state: any, payload: any) {
             state.token = payload;
         }
     },
     actions: {
         login({
             commit
-        }, payload) {
+        }: any, payload: any) {
             return account.login(payload)
                 .then(response => {
                     if (response.success) {
@@ -28,12 +29,13 @@ const store = createStore({
                     }
                 })
                 .catch(error => {
+                    // @ts-expect-error TS(2552): Cannot find name 'response'. Did you mean 'Respons... Remove this comment to see the full error message
                     return Promise.resolve(response);
                 });
         }
     },
     getters: {
-        isLoggedIn(state) {
+        isLoggedIn(state: any) {
             return !!state.token;
         }
     }
