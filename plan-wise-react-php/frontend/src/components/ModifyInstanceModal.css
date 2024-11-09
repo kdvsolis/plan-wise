@@ -1,0 +1,44 @@
+@import '../assets/components.css';
+@import '../assets/budgeting-app.css';
+.expense-input{
+  width: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, .1);
+  background: transparent;
+  font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,Oxygen,Fira Sans,Droid Sans,sans-serif;
+    font-size: 1.125rem;
+}
+
+.expense-cell {
+  padding: 15px !important;
+}
+.modal-input {
+  width: 50% !important;
+}
+.income-expense-input{
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+.income-expense-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.dropdown-menu{
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+.dropdown-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.btn.dropdown-toggle::after {
+  display: none;
+}
+#instanceTabs {
+  padding-left: 0px !important;
+}
