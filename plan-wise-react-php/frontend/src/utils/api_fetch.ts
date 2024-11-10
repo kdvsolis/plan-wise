@@ -1,5 +1,5 @@
 const api_fetch = {
-    get: async function (url: any, headers_json: any, query_json: any, params: any) {
+    get: async function (url, headers_json, query_json, params) {
         const query = Object.keys(query_json).length > 0 ? "?" +  new URLSearchParams(query_json).toString() : "";
         const headers = { ...{
             'Content-Type': 'application/json'
@@ -11,7 +11,7 @@ const api_fetch = {
             referrerPolicy: 'no-referrer'
         }));
     },
-    post: async function (url: any, headers_json: any, query_json: any, params: any, body: any) {
+    post: async function (url, headers_json, query_json, params, body) {
         const query = Object.keys(query_json).length > 0 ? "?" +  new URLSearchParams(query_json).toString() : "";
         const headers = { ...{
             'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ const api_fetch = {
             body: JSON.stringify(body)
         }));
     },
-    patch: async function (url: any, headers_json: any, query_json: any, params: any, body: any) {
+    patch: async function (url, headers_json, query_json, params, body) {
         const query = Object.keys(query_json).length > 0 ? "?" +  new URLSearchParams(query_json).toString() : "";
         const headers = { ...{
             'Content-Type': 'application/json'
@@ -37,7 +37,7 @@ const api_fetch = {
             body: JSON.stringify(body)
         }));
     },
-    put: async function (url: any, headers_json: any, query_json: any, params: any, body: any) {
+    put: async function (url, headers_json, query_json, params, body) {
         const query = Object.keys(query_json).length > 0 ? "?" +  new URLSearchParams(query_json).toString() : "";
         const headers = { ...{
             'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ const api_fetch = {
             body: JSON.stringify(body)
         }));
     },
-    delete: async function (url: any, headers_json: any, query_json: any, params: any, body: any) {
+    delete: async function (url, headers_json, query_json, params, body) {
         const query = Object.keys(query_json).length > 0 ? "?" +  new URLSearchParams(query_json).toString() : "";
         const headers = { ...{
             'Content-Type': 'application/json'

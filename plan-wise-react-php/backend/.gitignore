@@ -1,0 +1,62 @@
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/.idea
+/.vscode
+# Laravel & Composer files
+/vendor/
+/node_modules/
+/public/storage
+/storage/*.key
+.env
+.phpunit.result.cache
+
+# Laravel specific
+/.vagrant/
+/.idea/
+/phpunit.xml
+/phpunit.xml.dist
+
+# Ignore Composer lock file on vendor updates
+composer.lock
+
+# NPM packages
+npm-debug.log
+yarn-error.log
+
+# IDE & Editor files
+/.vscode/
+/.DS_Store
+/.env.local
+/.env.*.local
+*.log
+*.sql
+
+# SASS & CSS files
+*.sass-cache
+
+# PHPUnit
+phpunit.xml
+phpunit.xml.dist
+/storage/*.key
+
+# Mac system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Laravel Mix config
+/public/hot
+/public/mix-manifest.json
+/public/build/

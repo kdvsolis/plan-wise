@@ -1,25 +1,22 @@
 import account from '../services/account-service';
-import { storageHandler } from '../utils/storage_handler';
-// @ts-expect-error TS(2307): Cannot find module 'vuex' or its corresponding typ... Remove this comment to see the full error message
+import { storageHandler } from './storage_handler';
 import { createStore } from 'vuex';
 
 const store = createStore({
-    state() {
+    state(): { token: any } {
         return {
             token: ''
-        }
+        };
     },
     mutations: {
-        setToken(state: any, payload: any) {
+        setToken(state: any, payload: any): void {
             state.token = payload;
         }
     },
     actions: {
-        login({
-            commit
-        }: any, payload: any) {
+        login({ commit }: any, payload: any): Promise<any> {
             return account.login(payload)
-                .then(response => {
+                .then((response: any) => {
                     if (response.success) {
                         storageHandler.localStorageSet('token', response.token);
                         commit('setToken', response.token);
@@ -28,14 +25,13 @@ const store = createStore({
                         return Promise.resolve(response);
                     }
                 })
-                .catch(error => {
-                    // @ts-expect-error TS(2552): Cannot find name 'response'. Did you mean 'Respons... Remove this comment to see the full error message
-                    return Promise.resolve(response);
+                .catch((error: any) => {
+                    return Promise.resolve(error);
                 });
         }
     },
     getters: {
-        isLoggedIn(state: any) {
+        isLoggedIn(state: any): boolean {
             return !!state.token;
         }
     }
