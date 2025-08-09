@@ -34,12 +34,23 @@ class BudgetService
         $formatted_data = [];
         
         foreach ($incomes_in_range as $income) {
-            $formatted_data[$income->date]['income'][] = $income;
+            $key = $income->date instanceof \Carbon\Carbon
+                ? $income->date->toDateString()
+                : \Carbon\Carbon::parse($income->date)->toDateString();
+        
+            $formatted_data[$key]['income'] = $formatted_data[$key]['income'] ?? [];
+            $formatted_data[$key]['income'][] = $income;
         }
-
+        
         foreach ($expenses_in_range as $expense) {
-            $formatted_data[$expense->date]['expense'][] = $expense;
+            $key = $expense->date instanceof \Carbon\Carbon
+                ? $expense->date->toDateString()
+                : \Carbon\Carbon::parse($expense->date)->toDateString();
+        
+            $formatted_data[$key]['expense'] = $formatted_data[$key]['expense'] ?? [];
+            $formatted_data[$key]['expense'][] = $expense;
         }
+        
 
         return [
             'success' => true,

@@ -21,16 +21,16 @@ use App\Http\Controllers\BudgetController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::post('/auth/register', [UserController::class, 'register']);
 Route::post('/auth/login', [UserController::class, 'login']);
-Route::middleware('auth:sanctum')->get('user', [UserController::class, 'get_user']);
-Route::middleware('auth:sanctum')->put('user', [UserController::class, 'update_user']);
+Route::middleware(['validate.token'])->get('user', [UserController::class, 'get_user']);
+Route::middleware(['validate.token'])->put('user', [UserController::class, 'update_user']);
 // Protected routes using JWT validation
-Route::middleware('validate.token')->group(function () {
+Route::middleware(['validate.token'])->group(function () {
     Route::post('/categories', [CategoryController::class, 'createCategory']);
     Route::get('/categories', [CategoryController::class, 'getCategoriesByUser']);
     Route::get('/categories/{category_id}', [CategoryController::class, 'getCategory']);

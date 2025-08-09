@@ -3,36 +3,29 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Model
+
+class User extends Authenticatable implements JWTSubject
 {
     use HasFactory;
 
-    // Specify the table name
     protected $table = 'pw_users';
-
-    // Specify the primary key
     protected $primaryKey = 'id';
-
-    // Disable automatic timestamps
     public $timestamps = false;
 
-    // Define fillable fields
-    protected $fillable = [
-        'email',
-        'password',
-        'name',
-        'balance',
-    ];
+    protected $fillable = ['email', 'password', 'name', 'balance'];
+    protected $hidden = ['password'];
+    protected $casts = ['balance' => 'decimal:2'];
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
-    // Hide the password field
-    protected $hidden = [
-        'password',
-    ];
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
-    // Cast the balance field as a decimal
-    protected $casts = [
-        'balance' => 'decimal:2',
-    ];
 }

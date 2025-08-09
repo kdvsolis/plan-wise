@@ -37,7 +37,7 @@ class AccountService
         // Generate JWT token
         $token = JWTAuth::fromUser($user);
 
-        return ['success' => true, 'token' => $token];
+        return ['success' => true, 'token' => $token, 'user_id' => $user->id];
     }
 
     // Get user data by ID

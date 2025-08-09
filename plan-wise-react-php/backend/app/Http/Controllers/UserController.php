@@ -17,14 +17,14 @@ class UserController extends Controller
     // Register new user
     public function register(Request $request)
     {
-        $result = $this->accountService->register($request->name, $request->email, $request->password);
+        $result = $this->accountService->register($request->name, $request->username, $request->password);
         return response()->json($result);
     }
 
     // Login user
     public function login(Request $request)
     {
-        $result = $this->accountService->login($request->email, $request->password);
+        $result = $this->accountService->login($request->username, $request->password);
         return response()->json($result);
     }
 

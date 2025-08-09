@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Categories extends Model
 {
     // The name of the table
     protected $table = 'pw_categories';

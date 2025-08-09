@@ -1,6 +1,7 @@
+<?php
 namespace App\Services;
 
-use App\Models\Category;
+use App\Models\Categories;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -13,12 +14,12 @@ class CategoryService
             return ['success' => false, 'message' => 'User not found'];
         }
 
-        $existingCategory = Category::where('user_id', $user_id)->where('category_name', $category_name)->first();
+        $existingCategory = Categories::where('user_id', $user_id)->where('category_name', $category_name)->first();
         if ($existingCategory) {
             return ['success' => false, 'message' => 'Category name already exists'];
         }
 
-        $category = Category::create(['user_id' => $user_id, 'category_name' => $category_name]);
+        $category = Categories::create(['user_id' => $user_id, 'category_name' => $category_name]);
 
         return ['success' => true, 'message' => 'Category created successfully', 'category' => $category];
     }
@@ -30,7 +31,7 @@ class CategoryService
             return ['success' => false, 'message' => 'User not found'];
         }
 
-        $categories = Category::where('user_id', $user_id)->get();
+        $categories = Categories::where('user_id', $user_id)->get();
 
         if (!$categories) {
             return ['success' => false, 'message' => 'No categories found for the user'];
@@ -46,7 +47,7 @@ class CategoryService
             return ['success' => false, 'message' => 'User not found'];
         }
 
-        $category = Category::where('user_id', $user_id)->where('id', $category_id)->first();
+        $category = Categories::where('user_id', $user_id)->where('id', $category_id)->first();
         if (!$category) {
             return ['success' => false, 'message' => 'Category not found or not owned by the user'];
         }
@@ -61,7 +62,7 @@ class CategoryService
             return ['success' => false, 'message' => 'User not found'];
         }
 
-        $category = Category::where('user_id', $user_id)->where('id', $category_id)->first();
+        $category = Categories::where('user_id', $user_id)->where('id', $category_id)->first();
         if (!$category) {
             return ['success' => false, 'message' => 'Category not found or not owned by the user'];
         }
@@ -79,7 +80,7 @@ class CategoryService
             return ['success' => false, 'message' => 'User not found'];
         }
 
-        $category = Category::where('user_id', $user_id)->where('id', $category_id)->first();
+        $category = Categories::where('user_id', $user_id)->where('id', $category_id)->first();
         if (!$category) {
             return ['success' => false, 'message' => 'Category not found or not owned by the user'];
         }

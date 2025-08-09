@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\File;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/{any}', function () {
-    return response(file_get_contents(public_path('index.html')), 200)
+    $path = public_path('index.html');
+    abort_unless(file_exists($path), 404);
+    return response(File::get($path), 200)
         ->header('Content-Type', 'text/html');
-})->where('any', '.*');
+})->where('any', '^(?!api)(?!static)(?!.*\.(js|css|png|jpg|jpeg|svg|json|ico)).*$');
+
