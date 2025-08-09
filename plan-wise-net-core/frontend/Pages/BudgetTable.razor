@@ -79,7 +79,7 @@
                                 </div>
                                 @if (dayData.date.ToShortDateString() != "1/1/0001")
                                 {
-                                    @if (monthDailyData[dayData.date] != null && monthDailyData[dayData.date].previousBalance != null && monthDailyData[dayData.date].currentBalance != null)
+                                    @if (monthDailyData.ContainsKey(dayData.date) && monthDailyData[dayData.date] != null && monthDailyData[dayData.date].previousBalance != null && monthDailyData[dayData.date].currentBalance != null)
                                     {
                                         <div class="w-layout-grid uui-table-row-day-of-month balance-column">
                                             <div class="uui-text-size-medium starting-balance">
@@ -99,6 +99,12 @@
                                             </div>
                                         </div>
                                     }
+                                    else
+                                    {
+                                        <div class="w-layout-grid uui-table-row-day-of-month">
+                                            <div class="div-block-2"></div>
+                                        </div>
+                                    }
                                 }
                                 else
                                 {
@@ -108,7 +114,7 @@
                                 }
                                 @if (dayData.date.ToShortDateString() != "1/1/0001")
                                 {
-                                    @if (monthDailyData[dayData.date] != null)
+                                    @if (monthDailyData.ContainsKey(dayData.date) && monthDailyData[dayData.date] != null)
                                     {
                                         <div class="w-layout-grid uui-table-row-day-of-month income-column">
                                             <div class="@((monthDailyData[dayData.date].income).Count > 0 ? "uui-text-size-medium income" : "uui-text-size-medium")">
@@ -126,6 +132,12 @@
                                             }
                                         </div>
                                     }
+                                    else
+                                    {
+                                        <div class="w-layout-grid uui-table-row-day-of-month">
+                                            <div class="div-block-2"></div>
+                                        </div>
+                                    }
                                 }
                                 else
                                 {
@@ -136,7 +148,7 @@
 
                                 @if (dayData.date.ToShortDateString() != "1/1/0001")
                                 {
-                                    @if (monthDailyData[dayData.date] != null)
+                                    @if (monthDailyData.ContainsKey(dayData.date) && monthDailyData[dayData.date] != null)
                                     {
                                         <div class="w-layout-grid uui-table-row-day-of-month expense-column">
                                             @foreach (var expense in monthDailyData[dayData.date].expense)
@@ -144,11 +156,36 @@
                                                 <div class="uui-text-size-medium expense-cell">@expense.expenses</div>
                                             }
                                         </div>
-                                        <div class="w-layout-grid uui-table-row-day-of-month expense-price-column">
+                                    }
+                                    else
+                                    {
+                                        <div class="w-layout-grid uui-table-row-day-of-month">
+                                            <div class="div-block-2"></div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="w-layout-grid uui-table-row-day-of-month">
+                                        <div class="div-block-2"></div>
+                                    </div>
+                                }
+
+                                @if (dayData.date.ToShortDateString() != "1/1/0001")
+                                {
+                                    @if (monthDailyData.ContainsKey(dayData.date) && monthDailyData[dayData.date] != null)
+                                    {
+                                        <div class="w-layout-grid uui-table-row-day-of-month expense-column">
                                             @foreach (var expense in monthDailyData[dayData.date].expense)
                                             {
                                                 <div class="uui-text-size-medium expense-cell">$@expense.amount.ToString("N2")</div>
                                             }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="w-layout-grid uui-table-row-day-of-month">
+                                            <div class="div-block-2"></div>
                                         </div>
                                     }
                                 }
@@ -163,7 +200,7 @@
                                         <div class="action-data">
                                             <button type="button" class="btn btn-primary" @onclick="async()=>await addIncomeModal(dayData.date)">Add Income</button>
                                             <button type="button" class="btn btn-primary" @onclick="async()=>await addExpenseModal(dayData.date)">Add Expense</button>
-                                            <button type="button" class="btn btn-primary" disabled="@(dayData.date.ToShortDateString() != "1/1/0001" && monthDailyData[dayData.date] == null)" @onclick="async()=>await selectedInstanceModal(dayData.date)">Modify Instance</button>
+                                            <button type="button" class="btn btn-primary" disabled="@(dayData.date.ToShortDateString() != "1/1/0001" && monthDailyData.ContainsKey(dayData.date) &&  monthDailyData[dayData.date] == null)" @onclick="async()=>await selectedInstanceModal(dayData.date)">Modify Instance</button>
                                             <button type="button" class="btn btn-primary" @onclick="async()=>await notesModal(dayData.date)">Notes</button>
                                         </div>
                                     </div>
