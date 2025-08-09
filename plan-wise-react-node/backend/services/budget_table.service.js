@@ -31,6 +31,7 @@ class BudgetService {
 
         let formatted_data = {};
         for (let item of incomes_in_range) {
+            item.date = new Date(item.date).toISOString();
             if (!formatted_data[item.date]) {
                 formatted_data[item.date] = { "user_id": user_id, "income": [], "expense": [], "notes": "" };
             }
@@ -39,6 +40,7 @@ class BudgetService {
         }
 
         for (let item of expenses_in_range) {
+            item.date = new Date(item.date).toISOString();
             if (!formatted_data[item.date]) {
                 formatted_data[item.date] = { "user_id": user_id, "income": [], "expense": [], "notes": "" };
             }
